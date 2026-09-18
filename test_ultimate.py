@@ -34,7 +34,7 @@ def test_kernel_core_determinism():
 @pytest.mark.parametrize("mod_tuple", get_banachos_modules())
 def test_component_lipschitz_stability(mod_tuple):
     """Универсальный автоматический тест для ЛЮБОГО подключенного драйвера."""
-    mod_name = mod_tuple[0]
+    mod_name = mod_tuple
     # Динамический импорт найденного подмодуля
     module = importlib.import_module(mod_name)
     
@@ -77,7 +77,7 @@ def auto_generate_readme_report():
     
     rows = []
     for mod_tuple in modules:
-        mod = mod_tuple[0]
+        mod = mod_tuple
         display_name = mod.replace("banachos_", "b").upper()
         rows.append(fr"| **{display_name} Subsystem ({mod}.py)** | Стабильный (Липшицев) | Защищенный (Блокировка) | **ВЕРИФИЦИРОВАНО АВТОМАТИКОЙ (100%)** |")
         
@@ -101,9 +101,9 @@ def auto_generate_readme_report():
             readme_text = f.read()
             
         if marker in readme_text:
-            # Расщепляем по маркеру и берем только чистую верхнюю (базовую) часть
-            base_part = readme_text.split(marker)[0]
-            final_readme = base_part + report_content
+            # Расщепляем по маркеру строго строковым методом и склеиваем через чистый текст
+            parts = readme_text.split(marker)
+            final_readme = parts + report_content
         else:
             final_readme = readme_text + "\n\n" + report_content
             
