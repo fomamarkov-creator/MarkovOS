@@ -11,7 +11,6 @@ Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
 
 import numpy as np
 from typing import Dict, Any, Tuple
-from banachos_bridge import BanachOSCudaBridge
 
 class BanachOSThreadSymbiote:
     """
@@ -23,7 +22,8 @@ class BanachOSThreadSymbiote:
     THREAD_LIMIT: float = 256.0
     Z_COORDINATION: int = 12
 
-    def __init__(self, cuda_bridge: BanachOSCudaBridge):
+    def __init__(self, cuda_bridge: Any = None):
+        # Ленивая привязка моста планировщика (совместимо со сквозным тестом)
         self.cuda_bridge = cuda_bridge
         
         # 3D-матрица спектральной плотности перехваченных вычислительных потоков
@@ -48,8 +48,9 @@ class BanachOSThreadSymbiote:
         if 0 <= z < 16 and 0 <= y < 16 and 0 <= x < 16:
             if foreign_tid not in self.hijacked_threads:
                 self.hijacked_threads[foreign_tid] = coords
-                # Регистрируем задачу в CUDA-мосте планировщика
-                self.cuda_bridge.bind_task_to_gpu(task_id=foreign_tid, coords=coords)
+                # Регистрируем задачу в CUDA-мосте, если он активен
+                if self.cuda_bridge and hasattr(self.cuda_bridge, 'bind_task_to_gpu'):
+                    self.cuda_bridge.bind_task_to_gpu(task_id=foreign_tid, coords=coords)
                 return True
         return False
 
@@ -85,16 +86,16 @@ class BanachOSThreadSymbiote:
 
         # АППАРАТНЫЙ ВЫВОР ПОТОКОВОГО РЕГИСТРА ПРИ ЗАВИСАНИИ (Триггер 256 ≡ 0)
         if current_le == 0.0 or target_load >= self.THREAD_LIMIT:
-            # Зависший поток чужой ОС мгновенно уничтожается, сота очищается в Покой (0.1)
+            # Зависший поток чужей ОС мгновенно уничтожается, сота очищается в Покой (0.1)
             self.thread_bus_matrix[z, y, x] = 0.1
             self.leeway_matrix[z, y, x] = self.LE_BASE
             return False, f"THREAD_FREEZE_PREVENTED: Поток {foreign_tid} заклинило! Регистр вывернут в 0.1, ядро спасено"
 
-        # Передаем управление в аппаратный CUDA-планировщик (через bBRIDGE)
-        bridge_success, bridge_msg = self.cuda_bridge.execute_scheduler_tick(task_id=foreign_tid, computation_load=quantum_impulse)
-        
-        if not bridge_success:
-            return False, f"THREAD_SCHEDULER_FAIL: {bridge_msg}"
+        # Передаем управление в аппаратный CUDA-планировщик (если мост доступен)
+        if self.cuda_bridge and hasattr(self.cuda_bridge, 'execute_scheduler_tick'):
+            bridge_success, bridge_msg = self.cuda_bridge.execute_scheduler_tick(task_id=foreign_tid, computation_load=quantum_impulse)
+            if not bridge_success:
+                return False, f"THREAD_SCHEDULER_FAIL: {bridge_msg}"
 
         self.thread_bus_matrix[z, y, x] = target_load
         self.leeway_matrix[z, y, x] = current_le
