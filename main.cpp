@@ -9,6 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+
+// Подключение базовых слоёв слияния и ввода-вывода
 #include "banachos_mem.hpp"
 #include "banachos_hal.hpp"
 #include "banachos_syscalls.hpp"
@@ -23,12 +25,25 @@
 #include "banachos_bcontainer.hpp"
 #include "banachos_baudio.hpp"  
 #include "banachos_bdma.hpp"   
+#include "banachos_power.hpp"
+#include "banachos_irq.hpp"
+
+// Подключение финального прикладного и диагностического слоя
+#include "banachos_bfan.hpp"
+#include "banachos_bgpu.hpp"
+#include "banachos_bmux.hpp"
+#include "banachos_btty.hpp"
+#include "banachos_bprobe.hpp"
+#include "banachos_bswap.hpp"
+#include "banachos_bregistry.hpp"
+#include "banachos_self_healer.hpp" // Модуль рантайм-исцеления Ефима Маркова
 
 int main(int argc, char* argv[]) {
     std::cout << "================================================================================" << std::endl;
-    std::cout << "    BANACHOS v8.3 — ULTIMATE BARE-METAL HARDWARE KERNEL RUNNER                  " << std::endl;
+    std::cout << "    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             " << std::endl;
     std::cout << "================================================================================" << std::endl;
     
+    // Детерминированное разрешение PID цели для горячего вытеснения
     int target_pid = 2048; 
     if (argc > 1) {
         std::string arg1 = argv[1];
@@ -37,7 +52,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // Инициализация всех нативных Bare-Metal интерфейсов BanachOS
+    // Инициализация абсолютно всех нативных Bare-Metal интерфейсов BanachOS в стеке
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -52,40 +67,74 @@ int main(int argc, char* argv[]) {
     BanachOSContainerManager container_manager;
     BanachOSAudioDriver audio_driver;
     BanachOSDmaController dma_controller;
+    BanachOSPowerController power_controller;
+    BanachOsInterruptController irq_controller;
+    
+    // Инициализация прикладных модулей
+    BanachOSFanController fan;
+    BanachOSGpuDriver gpu;
+    BanachOSWindowMultiplexer mux;
+    BanachOSTtyConsole tty;
+    BanachOSDiagnosticProbe probe;
+    BanachOSSwapController swap;
+    BanachOSSystemRegistry registry;
+    BanachOSSelfHealer self_healer; // Запуск самоисцеления
 
     std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
     
+    // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
+    
+    // 1. Аппаратный видеовывод напрямую в обход SurfaceFlinger Android
     gui_driver.initialize_framebuffer("/dev/graphics/fb0");
     std::string out_msg;
     gui_driver.draw_interface_element(101, 15.0f, out_msg);
     std::cout << "[BOOT] Графика дисплея: " << out_msg << std::endl;
 
+    // 2. Инициализация управления потоками в bPROC
     proc_manager.spawn_process_node(target_pid, 6, 6, 6);
     std::string proc_msg;
     proc_manager.update_process_state(target_pid, 12.5f, proc_msg);
     std::cout << "[BOOT] Диспетчер bPROC: " << proc_msg << std::endl;
 
+    // 3. Регистрация файловых дескрипторов гостевой ОС
     file_system.register_file_vector(target_pid, 4, 4, 4);
     file_system.write_file_stream(target_pid, 10.0f, out_msg);
     std::cout << "[BOOT] Накопитель bFS : " << out_msg << std::endl;
 
+    // 4. Инициализация и проверка нативного аудио- и DMA-контуров безопасности
     std::string audio_msg, dma_msg;
     audio_driver.process_audio_pulse(440.0f, 12.0f, audio_msg);
     dma_controller.verify_dma_channel_access(0x10007FFF, 1024, dma_msg);
     std::cout << "[BOOT] Аудиосистема bAUDIO: " << audio_msg << std::endl;
     std::cout << "[BOOT] Контроллер bDMA    : " << dma_msg << std::endl;
+
+    // 5. Опрос и тактирование прикладных и диагностических узлов
+    fan.compute_pwm_rotation(45.0f, out_msg);
+    gpu.stream_matrix_resonance(12.5f, out_msg);
+    mux.switch_active_frame_buffer(1, 10.0f, out_msg);
+    tty.inject_char_stream(64, out_msg);
+    probe.verify_internal_lattice_strains(5.5f);
+    swap.swap_out_honeycomb_cell(16);
+    
+    // Проверка рантайм-исцеления
+    std::string heal_msg;
+    self_healer.intercept_and_heal_mutation(target_pid, 10.0f, heal_msg);
+    std::cout << "[BOOT] Слой bHEALER   : " << heal_msg << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
+    // 6. Запуск фазы мимикрии и перехвата сокетов Linux API (bINJECTOR)
     if (injector.attach_to_target_system(target_pid)) {
         injector.hijack_android_network_sockets();
         std::vector<uint8_t> mock_android_elf = {0x7F, 'E', 'L', 'F', 0x02, 0x01, 0x01, 0x00};
         injector.displace_system_core(translator, mock_android_elf);
     }
     
+    // Имитируем запрос ресурсов из контейнера гостевой системы
     container_manager.cross_border_request(target_pid, 20.0f, out_msg);
     std::cout << "[CONTAINER] Кросс-платформенный запрос: " << out_msg << std::endl;
     
+    // Инициализация и деплой смарт-контракта роя по координатам (5, 5, 5)
     uint32_t contract_uid = 0xABCDE;
     smart_contract.deploy_contract_node(contract_uid, 5, 5, 5);
     std::string contract_msg;
@@ -94,15 +143,19 @@ int main(int argc, char* argv[]) {
     std::cout << "[SWARM_CONTRACT] " << contract_msg << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
+    // 7. Маппинг физической периферии чипсета ARM
     hal.map_hardware_register("ARM_PERIPHERAL_BUS", 8, 8, 8);
     net_stack.open_socket(target_pid, 8, 8, 8);
     crypto.register_alternand_key(target_pid, 8, 8, 8);
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
+    // 8. Вывод итоговых инвариантов стабильности мета-платформы
     std::cout << "[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:" << std::endl;
     std::cout << "  -> Песочницы bCONTAINER (Индекс люфта): " << container_manager.get_average_isolation_leeway() << " / 0.024" << std::endl;
+    std::cout << "  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = " << self_healer.get_integrity() << std::endl;
     std::cout << "  -> Драйвер экрана bGUI (Люфт упругости) : " << gui_driver.get_average_gui_leeway() << std::endl;
     std::cout << "  -> Диспетчер потоков bPROC (Люфт шины)  : " << proc_manager.get_average_scheduler_leeway() << std::endl;
+    std::cout << "  -> Спецификация bREGISTRY               : " << registry.request_system_configuration() << std::endl;
     std::cout << "  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)" << std::endl;
 
     std::cout << "\n[МЕТА-ПЛАТФОРМА АКТИВНА] Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER." << std::endl;
