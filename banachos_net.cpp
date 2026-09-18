@@ -1,3 +1,12 @@
+/**
+ * ================================================================================
+ * BANACHOS v8.3 — GEOMETRIC LIPSCHITZ NETWORK STACK (banachos_net.cpp)
+ * Author: Efim S. Markov & AI Collaborator (2026 Revision)
+ * Formalism: 3HCP Packet Routing, Non-Linear Border Traffic Attenuation
+ * Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
+ * ================================================================================
+ */
+
 #include "banachos_net.hpp"
 #include <cmath>
 #include <algorithm>
@@ -14,15 +23,28 @@ BanachOSNetworkStack::BanachOSNetworkStack() {
 }
 
 void BanachOSNetworkStack::get_topology_shifts(int k, NetCoords* shifts) const {
-    NetCoords plane_shifts = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
-    for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
+    // ИСПРАВЛЕНО: Явное объявление массивов структур из 6 элементов
+    NetCoords plane_shifts[6] = {
+        {1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}
+    };
+    for (int i = 0; i < 6; ++i) {
+        shifts[i] = plane_shifts[i];
+    }
 
     if (k % 2 == 0) {
-        NetCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
-        for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        NetCoords inter_shifts[6] = {
+            {0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}
+        };
+        for (int i = 0; i < 6; ++i) {
+            shifts[i+6] = inter_shifts[i];
+        }
     } else {
-        NetCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
-        for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        NetCoords inter_shifts[6] = {
+            {0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}
+        };
+        for (int i = 0; i < 6; ++i) {
+            shifts[i+6] = inter_shifts[i];
+        }
     }
 }
 
@@ -76,14 +98,13 @@ NetResult BanachOSNetworkStack::ingest_packet_stream(int socket_id, float incomi
         leeway_matrix[z][y][x] = LE_BASE;
         result.success = false;
         result.message = "NET_ANTI_DDOS: Шторм пакетов заблокирован. Буфер порта сброшен (256 ≡ 0). ОС стабильна";
-        result.sanitized_payload = {0x55}; // Код сетевой блокировки ядра
+        result.sanitized_payload = {0x55}; 
         return result;
     }
 
     net_bus_matrix[z][y][x] = target_load;
     leeway_matrix[z][y][x] = current_le;
 
-    // Честная побайтовая фильтрация трафика в кольце вычетов Z/256Z
     result.sanitized_payload.resize(raw_payload.size());
     for (size_t i = 0; i < raw_payload.size(); ++i) {
         result.sanitized_payload[i] = raw_payload[i] % 256;
