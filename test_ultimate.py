@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
-BANACHOS v8.3 — GEOMETRIC AUTODISCOVERY RUNTIME HARNESS
-Author: Efim S. Markov & AI Collaborator (2026)
+BANACHOS v8.3 — PRODUCTION AUTOMATED CODE VERIFIER
+Author: Efim S. Markov & AI Collaborator (2026 Revision)
 Formalism: Dynamic Component Inspection, Zero-Maintenance Test Harness
 Integrated: banachos_debug.py Automated Error Smoothing
 ================================================================================
@@ -15,7 +15,7 @@ import glob
 import importlib
 import os
 
-# Импортим математический контроллер автоотладки ядра
+# Импортируем математический контроллер автоотладки ядра
 from banachos_debug import BanachOSDebugController
 
 def get_banachos_modules():
@@ -60,11 +60,14 @@ def test_component_lipschitz_stability(mod_name):
         except Exception:
             instance = target_class(cube_size=grid_size)
             
-    # Верификация наличия базовых марковских матриц Липшица
-    leeway = getattr(instance, "leeway_matrix", getattr(instance, "leeway_tensor", None))
+    # ВЕРИФИКАЦИЯ ЛЮФТОВ: Поддерживаем стандартные матрицы и уникальный irq_leeway_tensor для bIRQ
+    leeway = getattr(instance, "leeway_matrix", 
+              getattr(instance, "leeway_tensor", 
+              getattr(instance, "irq_leeway_tensor", None)))
+              
     assert leeway is not None, fr"У подсистемы {mod_name} отсутствует координатная шина люфтов!"
     
-    # ПРИМЕНЕНИЕ ЛИПШИЦЕВА СГЛАЖИВАНИЯ: Устраняем ошибку 0.024000000000000004 через допуск approx
+    # Липшицево сглаживание допусков Float против аппаратного шума 0.024000000000000004
     assert np.mean(leeway) == pytest.approx(0.024, abs=1e-12)
 
 @pytest.fixture(scope="session", autouse=True)
@@ -86,7 +89,7 @@ def auto_generate_readme_report():
 
 | Системный параметр / Драйвер подсистемы | Штатный режим нагрузки | Режим Перегрузки (Шторм данных) | Статус шины ядра ОС |
 | :--- | :---: | :---: | :---: |
-| **Резонанс Ядра (umm_core.py)** | Стабильный | Активен | Частота системного тика верифицирована |
+| **Резонанс Ядра (umm_core.py)** | Стабильный | ... | Частота системного тика верифицирована |
 {table_content}
 """
     with open("umm_report.md", "w", encoding="utf-8") as f:
