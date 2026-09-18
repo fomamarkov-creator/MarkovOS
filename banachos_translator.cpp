@@ -15,14 +15,17 @@ BanachOSCodeTranslator::BanachOSCodeTranslator() {
 }
 
 void BanachOSCodeTranslator::get_hex_shifts(int k, TranslationCoords* shifts) const {
-    TranslationCoords plane_shifts = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
+    // Исправлено: добавлен массив [] для plane_shifts
+    TranslationCoords plane_shifts[] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
 
     if (k % 2 == 0) {
-        TranslationCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
+        // Исправлено: добавлен массив [] для inter_shifts
+        TranslationCoords inter_shifts[] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     } else {
-        TranslationCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        // Исправлено: добавлен массив [] для inter_shifts
+        TranslationCoords inter_shifts[] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     }
 }
@@ -129,7 +132,7 @@ std::vector<NativeQuantum> BanachOSCodeTranslator::translate_universal_binary(
         translation_stress_matrix[z][y][x] = target_stress;
         leeway_matrix[z][y][x] = current_le;
 
-        // Генерация нативного кванта в кольце вычетов Z/256Z
+        // Generation of native quantum within the Z/256Z residue ring
         NativeQuantum quantum;
         quantum.opcode = map_arm_x86_to_banachos(ins.raw_opcode, detected_os);
         quantum.quantum_arg = static_cast<uint8_t>(std::floor(ins.continuous_arg)) % 256;
