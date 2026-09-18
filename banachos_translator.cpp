@@ -34,7 +34,6 @@ GuestOSType BanachOSCodeTranslator::auto_detect_binary_format(const std::vector<
     if (raw_bytes[0] == 0x7F && raw_bytes[1] == 'E' && raw_bytes[2] == 'L' && raw_bytes[3] == 'F') 
         return GuestOSType::ANDROID_ELF;
     if (raw_bytes[0] == 0xCF && raw_bytes[1] == 0xFA && raw_bytes[2] == 0xED && raw_bytes[3] == 0xFE) 
-        // Mach-O 64-bit (iOS / macOS)
         return GuestOSType::IOS_MACHO;
     if (raw_bytes[0] == 'M' && raw_bytes[1] == 'Z') 
         return GuestOSType::WINDOWS_PE;
@@ -43,11 +42,13 @@ GuestOSType BanachOSCodeTranslator::auto_detect_binary_format(const std::vector<
 }
 
 uint8_t BanachOSCodeTranslator::map_arm_x86_to_banachos(uint32_t raw_op, GuestOSType os_type) const {
-    // Высокопроизводительный Mojo-маппинг ассемблерных опкодов x86_64/ARM64 в инварианты BanachOS
+    // Ультра-универсальный Mojo-маппинг ассемблерных опкодов, включая беспроводные ловушки Linux API
     switch (os_type) {
         case GuestOSType::ANDROID_ELF:
             if (raw_op == 0xAA0003E0) return 0x50; // ARM64: mov x0, xzr -> ADD_REG
             if (raw_op == 0xD10043FF) return 0x10; // ARM64: sub sp, sp -> ALLOC_MEM
+            if (raw_op == 0x000000C6) return 0x30; // __NR_bind (захват Wi-Fi/BT сокета) -> bNET
+            if (raw_op == 0x000000D3) return 0x40; // __NR_ioctl (захват параметров радиомодуля) -> bHAL
             break;
         case GuestOSType::IOS_MACHO:
             if (raw_op == 0x55) return 0x10;       // x86_64: push rbp -> ALLOC_MEM
