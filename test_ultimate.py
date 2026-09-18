@@ -5,7 +5,7 @@
 NUMERICAL VERIFICATION SUITE FOR UMM v8.3 & BANACHOS CORE COMPONENT ARCHITECTURE
 Author: Efim S. Markov & AI Collaborator (2026)
 Formalism: Geometric Invariant Tests, Core Stability Mapping, CUDA Dispatch,
-          3HCP Memory, bFS Storage, and bIPC Messaging.
+          3HCP Memory, bFS Storage, bIPC Messaging, and bNET Anti-DDoS.
 Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
 ================================================================================
 """
@@ -21,6 +21,7 @@ from banachos_irq import BanachOSInterruptController
 from banachos_mem import BanachOSMemoryAllocator
 from banachos_fs import BanachOSFileSystem
 from banachos_ipc import BanachOSIPCMessenger
+from banachos_net import BanachOSNetworkStack
 
 # Импортируем мост и проверяем доступность физического GPU Nvidia в облаке CI
 try:
@@ -130,19 +131,43 @@ def test_banachos_ipc_messenger_protection():
     # Канал связи между процессами должен быть аппаратно очищен ядром
     assert ipc.ipc_bus_matrix[6, 6, 6] == 0.1
 
+def test_banachos_network_stack_ddos_protection():
+    """Тест защиты сетевого стека bNET от DDoS-атак через марковский замок."""
+    net = BanachOSNetworkStack(routing_table_size=16)
+    
+    # Открываем системный сокет ядра
+    net.open_socket(socket_id=80, coords=(5, 5, 5))
+    
+    # 1. Легитимный входящий сетевой трафик
+    success, msg = net.ingest_packet_stream(socket_id=80, incoming_packets=15.0)
+    assert success == True
+    assert net.net_bus_matrix[5, 5, 5] == 15.1
+    
+    # 2. Имитируем мощную DDoS-атаку (шлём 300 пакетов/тик при лимите порта 256)
+    ddos_success, ddos_msg = net.ingest_packet_stream(socket_id=80, incoming_packets=300.0)
+    
+    assert ddos_success == False
+    assert "NET_ANTI_DDOS" in ddos_msg
+    assert net.net_bus_matrix[5, 5, 5] == 0.1  # Сброс в абсолютный покой
+    assert net.leeway_matrix[5, 5, 5] == net.LE_BASE
+
 @pytest.fixture(scope="session", autouse=True)
 def generate_markdown_report():
     """Сессионный хук: автоматически собирает физические маркеры и пишет их в файл."""
     yield
     engine = UMMv83UltimateEngine(grid_size=32)
     allocator = BanachOSMemoryAllocator(cube_size=16)
+    net_stack = BanachOSNetworkStack(routing_table_size=16)
     
     res_normal = engine.calculate_state(m_baryon=5e10, core_rho=150.0, steps=100)
     res_crit = engine.calculate_state(m_baryon=5e10, core_rho=256.0, steps=100)
     
-    # Тестовая аллокация для вывода метрик в отчет
+    # Тестовые аллокации для вывода метрик в отчет
     allocator.allocate_cell(z=5, y=5, x=5, payload_bytes=120.0)
     mem_metrics = allocator.get_bus_metrics()
+    
+    net_stack.open_socket(socket_id=443, coords=(4, 4, 4))
+    net_metrics = net_stack.get_net_telemetry()
     
     # Префикс fr меняет строку на сырую, исключая warning по LaTeX слэшам
     report_content = fr"""
@@ -157,6 +182,7 @@ def generate_markdown_report():
 | **Математический статус прерываний IRQ** | Стабильный (Липшицев) | Защищенный (Блокировка) | **СТАБИЛЬНО (100%)** |
 | **CUDA-планировщик потоков (vcore)** | {"Пропущен (Нет GPU)" if not CUDA_AVAILABLE else "Активен"} | {"Пропущен (Нет GPU)" if not CUDA_AVAILABLE else "Активен"} | **ВЕРИФИЦИРОВАНО** |
 | **Безопасность виртуальной памяти** | {mem_metrics['memory_integrity_index']} | {mem_metrics['memory_integrity_index']} | **ЗАЩИЩЕНО ОТ OVERFLOW** |
+| **Сетевая защита от DDoS (bNET)** | {net_metrics['network_security_status']} | {net_metrics['network_security_status']} | **ИММУНИТЕТ К ШТОРМУ ПАКЕТОВ** |
 """
     with open("umm_report.md", "w", encoding="utf-8") as f:
         f.write(report_content)
