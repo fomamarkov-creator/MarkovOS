@@ -18,7 +18,8 @@ SRCS = main.cpp \
        banachos_translator.cpp \
        banachos_injector.cpp \
        banachos_bgui.cpp \
-       banachos_bproc.cpp
+       banachos_bproc.cpp \
+       banachos_smart_contract.hpp \
 
 OBJS = $(SRCS:.cpp=.o)
 
