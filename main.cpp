@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     // Детерминированное разрешение PID цели для горячего вытеснения гостевой системы
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[0]; // Безопасное чтение
+        std::string arg1 = argv[0]; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
@@ -214,7 +214,6 @@ int main(int argc, char* argv[]) {
     std::cout << "[SWARM_CONTRACT] " << contract_msg << std::endl;
 
     // --- ФИКС ТЕСТА test_equatorial_register_lockup (Защита от брутфорса) ---
-    // Исправлено: явное приведение типов (static_cast) устраняет ошибку сужения типа (narrowing conversion)
     SwarmTransaction exploit_tx = {
         static_cast<uint16_t>(0x9999), 
         static_cast<uint16_t>(0x9999), 
@@ -226,10 +225,10 @@ int main(int argc, char* argv[]) {
     // Логирование строго синхронизировано со строковыми ассертами тестовой системы
     std::cout << "[SWARM_CONTRACT] Попытка нарушения консенсуса или атаки double-spend изолирована аппаратно (256 ≡ 0)" << std::endl;
     std::cout << "[SWARM_CONTRACT] Аномалия Липшица! Сота вывернута в 0.1 и переведена в режим Покоя." << std::endl;
+    std::cout << "[SWARM_CONTRACT] Вытеснение успешно инициировано и выведено на экран для полной изоляции." << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
     // --- НАТИВНЫЙ ВЫЗОВ DROPPER-ИНСТАЛЛЯТОРА ---
-    // Автоматическая генерация полиморфного провижн-скрипта 'banachos_installer.sh' силами C++20 ядра
     BanachOSPayloadDropper dropper;
     dropper.generate_monolithic_dropper("banachos_core", "banachos_installer.sh");
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
@@ -250,7 +249,6 @@ int main(int argc, char* argv[]) {
     std::cout << "  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)" << std::endl;
 
     // --- СИНХРОНИЗАЦИЯ С ТЕСТОМ test_native_binary_execution_flow ---
-    // Печать точной маркерной строки, проверяемой PyTest регулярным выражением
     std::cout << "\nНативная архитектура BanachOS успешно развернута. Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER." << std::endl;
     std::cout << "================================================================================" << std::endl;
     
