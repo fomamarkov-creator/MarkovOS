@@ -1,7 +1,7 @@
 name: UMM v8.3 Production Math Engine & Documentation CI
 
 on:
-  workflow_dispatch: # ИСКЛЮЧИТЕЛЬНО РУЧНОЙ ТРИГГЕР (Добавляет кнопку "Run workflow" на GitHub. Авто-пуш отключен)
+  workflow_dispatch: # ИСКЛЮЧИТЕЛЬНО РУЧНОЙ ТРИГГЕР
 
 permissions:
   contents: write # Разрешение боту GitHub Actions перезаписывать README.md
@@ -30,6 +30,13 @@ jobs:
     - name: Compile Real-Time Report into README
       run: |
         python -c "
+        import os
+        
+        # Защита на случай, если тесты пропустили генерацию отчета
+        if not os.path.exists('umm_report.md'):
+            print('Критическая ошибка: узел bDEBUG не сформировал umm_report.md')
+            exit(1)
+            
         with open('README.template.md', 'r', encoding='utf-8') as f:
             template = f.read()
         with open('umm_report.md', 'r', encoding='utf-8') as f:
@@ -38,10 +45,14 @@ jobs:
         start_tag = '<!-- MARKOV_REPORT_START -->'
         end_tag = '<!-- MARKOV_REPORT_END -->'
         
-        parts = template.split(start_tag)
-        head = parts
-        tail = parts.split(end_tag)
-        
+        # Корректное строковое разделение шаблона по тегам-маркерам
+        try:
+            head, rest = template.split(start_tag, 1)
+            _, tail = rest.split(end_tag, 1)
+        except ValueError:
+            print('Ошибка: В файле README.template.md не найдены обязательные маркерные теги!')
+            exit(1)
+            
         final_readme = head + start_tag + '\n' + report + '\n' + end_tag + tail
         with open('README.md', 'w', encoding='utf-8') as f:
             f.write(final_readme)
