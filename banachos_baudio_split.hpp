@@ -27,17 +27,22 @@ public:
     static constexpr int SIZE = 16;
 
     BanachOSAudioSplitter() {
-        for (int z = 0; z < SIZE; ++z)
-            for (int y = 0; y < SIZE; ++y)
-                for (int x = 0; x < SIZE; ++x)
+        for (int z = 0; z < SIZE; ++z) {
+            for (int y = 0; y < SIZE; ++y) {
+                for (int x = 0; x < SIZE; ++x) {
                     dynamic_leeway_tensor[z][y][x] = L_E0;
+                }
+            }
+        }
     }
 
     void apply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {
         if (z >= 0 && z < SIZE && y >= 0 && y < SIZE && x >= 0 && x < SIZE) {
-            // Имитация деформации соты под внешним давлением
             dynamic_leeway_tensor[z][y][x] = std::clamp(clamp_x, 0.0f, L_E0);
         }
+        // Подавление ворнингов неиспользуемых параметров
+        (void)clamp_y;
+        (void)clamp_z;
     }
 
     /**
@@ -60,6 +65,9 @@ public:
 
         return {fx, fy, fz};
     }
+
+private:
+    float dynamic_leeway_tensor[SIZE][SIZE][SIZE]; // Добавлено отсутствовавшее поле матрицы
 };
 
 #endif // BANACHOS_BAUDIO_SPLIT_HPP
