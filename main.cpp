@@ -60,7 +60,7 @@
 
 // ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
 #include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG
-#include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ
+#include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ Ефима Маркова
 #include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI оболочки
 
 // Подключение прикладного слоя
@@ -80,13 +80,13 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[0]; // Безопасное чтение аргументов
+        std::string arg1 = argv[1]; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
     }
 
-    // Bare-Metal выделение памяти под абсолютно весь стек управления BanachOS
+    // Выделение памяти под стек управления BanachOS
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
     BanachOSDmaController dma_controller;
     BanachOSPowerController power_controller;
     BanachOsInterruptController irq_controller;
-    
+    // Инициализация переведенных C++20 модулей решетки 
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
@@ -116,6 +116,7 @@ int main(int argc, char* argv[]) {
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
     
+    // Инициализация новых футуристических модулей монографии
     BanachOSOpticalLenser optical_lenser;
     BanachOSClockController clock_controller;
     BanachOSAudioSplitter audio_splitter;
@@ -129,11 +130,12 @@ int main(int argc, char* argv[]) {
     BanachOSDiscreteSlitDetector slit_detector;
     BanachOSTopologicalChemistry topology_chemistry;
 
-    // Инициализация технологических расширений ядра
+    // Инициализация технологических расширений экосистемы ИИ и Графики
     BanachOSBlangRuntime blang_runtime(hll_compiler);
     BanachOSLatticeIntelligence lattice_intelligence;
     BanachOSWaveGraphics wave_graphics;
 
+    // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
     BanachOSWindowMultiplexer mux;
@@ -146,6 +148,7 @@ int main(int argc, char* argv[]) {
     BanachOSSelfHealer self_healer; 
 
     std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
+
     // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
     
@@ -170,75 +173,62 @@ int main(int argc, char* argv[]) {
     std::string audio_msg, dma_msg;
     audio_driver.process_audio_pulse(440.0f, 12.0f, audio_msg);
     dma_controller.verify_dma_channel_access(0x10007FFF, 1024, dma_msg);
-    std::cout << "[BOOT] Адиносистема bAUDIO: " << audio_msg << std::endl;
+    std::cout << "[BOOT] Аудиосистема bAUDIO: " << audio_msg << std::endl;
     std::cout << "[BOOT] Контроллер bDMA    : " << dma_msg << std::endl;
 
     // 5. Тестирование футуристических модулей монографии (Тактирование и опережающая трассировка)
-    // bLENS: Трассировка луча Электро-Света через искусственный барионный узел деформации вакуума
     optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
     LensVector3D theta = optical_lenser.compute_ray_deflection(8, 8, 8, 16);
     
-    // bCLOCK: Расчет прецессии локальных часов dt_local в условиях гравитационного сжатия
     clock_controller.inject_gravitational_stress(8, 8, 8, 180.0f);
     float precision_lag = clock_controller.compute_anisotropic_precession(8, 8, 8, 24);
 
-    // bAUDIO_SPLIT: Имитация анизотропного расщепления волны Шумана на три независимые моды
     audio_splitter.apply_structural_clamp(4, 4, 4, 0.012f, 0.018f, 0.022f);
     AudioSplitResult split_modes = audio_splitter.calculate_shumann_splitting(4, 4, 4, 1.0f, 1.0f, 1.0f);
 
-    // bGUARD: Внедрение скоростного eBPF-фильтра пакетов данных
     std::vector<uint8_t> mock_ebpf_bytecode = {0x07, 0x00, 0x12, 0x55, 0xFF};
-    bus_guard.inject_ebpf_strain_filter(0x30, mock_ebpf_bytecode); // Защита соты bNET
+    bus_guard.inject_ebpf_strain_filter(0x30, mock_ebpf_bytecode); 
 
-    // bGEN_CUDA: JIT-генерация сырого исходного кода CUDA под шаг решетки и его проверка
     cuda_generator.generate_runtime_cuda_source(4096, 0.024f);
     std::string cuda_log;
     cuda_generator.load_compiled_kernel_to_gpu(cuda_log);
 
-    // bCASIMIR: Расчет вектора силы притяжения параллельных шин-фильтров All-Born границ
     casimir_driver.inject_boundary_charge(2, 2, 2, 192.0f);
     CasimirVector3D f_casimir = casimir_driver.compute_casimir_force_vector(2, 2, 2, 4);
 
-    // bTHRUST: Моделирование аварийного выворота и выброса реактивного давления тяги при заклинивании
     thrust_generator.provoke_topological_lockup(5, 5, 5, 255.0f);
     float emergent_thrust = thrust_generator.compute_emergent_thrust_pressure(5, 5, 5);
 
-    // bRESPIRATION: Исполнение двух тактов макроскопического дыхания решетки (Вдох и Выдох)
     std::string resp_log1 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 150.0f);
     std::string resp_log2 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 0.0f);
 
-    // bREDSHIFT: Расчет дискретного «старения» пакета данных из-за субнодального трения на расстоянии 5000 кпк
     float wave_ageing = redshift_calculator.calculate_subnodal_redshift(5000.0f, 0.024f, 120.0f, 12);
 
-    // bEDGE_STATE: Маршрутизация сигнала по одномерному периферийному каскаду при заклиненной соте памяти
     edge_router.lock_core_sector(4, 4, 4);
     float protected_velocity = edge_router.route_protected_signal(4, 4, 4, 1.0f, 0.15f);
 
-    // bDISCRETE_SLIT: Детекция механического вмешательства «Наблюдателя» при попытке прослушивания шины
     auto [slit_alert, slit_msg] = slit_detector.register_observer_contact(3, 3, 3, 0.030f);
 
-    // bCHEM: Топологическая химия — квантовый обмен зарядами при критическом импульсе активации
-    topology_chemistry.set_node_state(1, 1, 1, 100.0f, 0.0f); // Lockup соты
+    topology_chemistry.set_node_state(1, 1, 1, 100.0f, 0.0f); 
     float transferred_charge = topology_chemistry.execute_charge_exchange(1, 1, 1, 2.5f);
     int active_valence = topology_chemistry.calculate_geometrical_valence(1, 1, 1);
 
-    // bGENESIS (Динамическая экспансия): Имитируем экстремальный импульс накачки центральной ячейки пространства
     genesis_bootloader.inject_metric_expansion_impulse(8, 8, 8, 200.0f);
     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
 
-    // ТЕСТИРОВАНИЕ НОВЫХ ТЕХНОЛОГИЧЕСКИХ МАКРО-СЛОЕВ:
-    // bLANG: JIT-компиляция и исполнение системной утилиты в рамках виртуальной машины кольца вычетов
+    // bLANG: JIT-компиляция и исполнение системной утилиты в рамках ВМ кольца вычетов
     std::vector<std::string> mock_script = {"ALLOC_MEM 64", "ADD_REG 0", "SUB_REG 12"};
     std::string blang_log;
     blang_runtime.execute_jit_utility("bSYS_PROVISION", mock_script, blang_log);
 
-    // bNEURAL: Обучение кристаллической связи и волновой логический вывод нейроморфного ИИ
-    lattice_intelligence.train_synaptic_strain(4, 4, 4, 12.0f);
+    // --- НАТИВНЫЙ ОНТОГЕНЕЗ ИИ bNEURAL НА КРЕМНИЕВЫХ ШУМАХ ЯДРА ---
+    // Моментальная JIT-эволюция весов структуры на основе флуктуаций питания (0.015f шум)
+    float ai_mean_leeway = lattice_intelligence.execute_live_ontogenesis(0.015f);
     std::vector<float> mock_inputs = {12.0f, 24.0f, 48.0f};
     float neural_inference = lattice_intelligence.forward_crystalline_inference(4, 4, 4, mock_inputs);
 
-    // bGRAPHICS: Инжекция графического импульса в кристаллическую VRAM и расчет интерференции пикселя
+    // bGRAPHICS: Инжекция импульса оболочки bSHELL во фреймбуфер и интерференционный расчет VRAM
     wave_graphics.inject_graphics_pulse(64, 64, 200.0f);
     float pixel_excitation = wave_graphics.get_pixel_excitation(64, 65);
 
@@ -257,7 +247,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Топологическая химия bCHEM (Перенос заряда)      : " << transferred_charge << " Кл, Валентность соты = " << active_valence << std::endl;
     std::cout << "[BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : " << dynamic_zeta << " : " << dynamic_leeway << " (Ячейка пространства расширена)" << std::endl;
     std::cout << "[BOOT] Среда исполнения утилит bLANG (JIT-Рантайм)      : " << blang_log << std::endl;
-    std::cout << "[BOOT] Кристаллический ИИ bNEURAL (Прямой вывод)        : " << neural_inference << " (Инференция зафиксирована)" << std::endl;
+    std::cout << "[BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : " << ai_mean_leeway << " / Логический инференс = " << neural_inference << std::endl;
     std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS (VRAM Порог): " << pixel_excitation << " (Кадр bSHELL возбужден)" << std::endl;
     // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
