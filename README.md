@@ -1,39 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bgui.cpp -o banachos_bgui.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bproc.cpp -o banachos_bproc.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bcontainer.cpp -o banachos_bcontainer.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_baudio.cpp -o banachos_baudio.o
-g++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core
-================================================================================
-[bBUILD] 100% МОНОЛИТ ОПЕРАЦИОННОЙ СИСТЕМЫ BANACHOS v8.3 СКОМПИЛИРОВАН!
-[bBUILD] Последние Python-макеты вытеснены. Все инварианты кремния активны.
-================================================================================
-============================= test session starts ==============================
-platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.16/x64/bin/python
-cachedir: .pytest_cache
-rootdir: /home/runner/work/MarkovOS/MarkovOS
-collecting ... collected 4 items
-
-test_native_core.py::test_check_for_forgotten_native_modules 
-[CI/CD] Запуск промышленной сборки bBUILD...
-
-[SCANNER] Проверка архитектурной целостности репозитория...
-PASSED
-test_native_core.py::test_native_binary_execution_flow PASSED
-test_native_core.py::test_equatorial_register_lockup PASSED
-test_native_core.py::test_installer_symbiote_generation PASSED
-
-============================== 4 passed in 6.38s ===============================
+        |                     ^~~~~~~~~~~~~~~
+  banachos_bneural.hpp: In member function ‘void BanachOSLatticeIntelligence::train_synaptic_strain(int, int, int, float)’:
+  banachos_bneural.hpp:42:32: error: ‘crystalline_weights’ was not declared in this scope
+     42 |             float new_strain = crystalline_weights[z][y][x] - (error_gradient * 0.001f);
+        |                                ^~~~~~~~~~~~~~~~~~~
+  banachos_bneural.hpp: In member function ‘float BanachOSLatticeIntelligence::forward_crystalline_inference(int, int, int, const std::vector<float>&)’:
+  banachos_bneural.hpp:60:35: error: ‘crystalline_weights’ was not declared in this scope
+     60 |             float weight_factor = crystalline_weights[cz][cy][cx] / L_E0;
+        |                                   ^~~~~~~~~~~~~~~~~~~
+  make: *** [Makefile:91: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:62:\nbanachos_blang_runtime.hpp: In member function ‘bool BanachOSBlangRuntime::execute_jit_utility(const std::string&, const std::vector<std::__cxx11::basic_string<char> >&, std::string&)’:\nbanachos_blang_runtime.hpp:55:38: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]\n   55 |             uint8_t arg = (vm.pc + 1 < code_size) ? binary_image[vm.pc + 1] : static_cast<uint8_t>(0);\n      |                            ~~~~~~~~~~^~~~~~~~~~~\nIn file included from main.cpp:63:\nbanachos_bneural.hpp: In constructor ‘BanachOSLatticeIntelligence::BanachOSLatticeIntelligence()’:\nbanachos_bneural.hpp:30:21: error: ‘crystalline_weights’ was not declared in this scope\n   30 |                     crystalline_weights[z][y][x] = L_E0; // Исходная эластичность связей\n      |                     ^~~~~~~~~~~~~~~~~~~\nbanachos_bneural.hpp:31:21: error: ‘synaptic_charge’ was not declared in this scope\n   31 |                     synaptic_charge[z][y][x] = 10.0f;\n      |                     ^~~~~~~~~~~~~~~\nbanachos_bneural.hpp: In member function ‘void BanachOSLatticeIntelligence::train_synaptic_strain(int, int, int, float)’:\nbanachos_bneural.hpp:42:32: error: ‘crystalline_weights’ was not declared in this scope\n   42 |             float new_strain = crystalline_weights[z][y][x] - (error_gradient * 0.001f);\n      |                                ^~~~~~~~~~~~~~~~~~~\nbanachos_bneural.hpp: In member function ‘float BanachOSLatticeIntelligence::forward_crystalline_inference(int, int, int, const std::vector<float>&)’:\nbanachos_bneural.hpp:60:35: error: ‘crystalline_weights’ was not declared in this scope\n   60 |             float weight_factor = crystalline_weights[cz][cy][cx] / L_E0;\n      |                                   ^~~~~~~~~~~~~~~~~~~\nmake: *** [Makefile:91: main.o] Error 1\n').returncode
+ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  In file included from main.cpp:62:
+  banachos_blang_runtime.hpp: In member function ‘bool BanachOSBlangRuntime::execute_jit_utility(const std::string&, const std::vector<std::__cxx11::basic_string<char> >&, std::string&)’:
+  banachos_blang_runtime.hpp:55:38: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+     55 |             uint8_t arg = (vm.pc + 1 < code_size) ? binary_image[vm.pc + 1] : static_cast<uint8_t>(0);
+        |                            ~~~~~~~~~~^~~~~~~~~~~
+  In file included from main.cpp:63:
+  banachos_bneural.hpp: In constructor ‘BanachOSLatticeIntelligence::BanachOSLatticeIntelligence()’:
+  banachos_bneural.hpp:30:21: error: ‘crystalline_weights’ was not declared in this scope
+     30 |                     crystalline_weights[z][y][x] = L_E0; // Исходная эластичность связей
+        |                     ^~~~~~~~~~~~~~~~~~~
+  banachos_bneural.hpp:31:21: error: ‘synaptic_charge’ was not declared in this scope
+     31 |                     synaptic_charge[z][y][x] = 10.0f;
+        |                     ^~~~~~~~~~~~~~~
+  banachos_bneural.hpp: In member function ‘void BanachOSLatticeIntelligence::train_synaptic_strain(int, int, int, float)’:
+  banachos_bneural.hpp:42:32: error: ‘crystalline_weights’ was not declared in this scope
+     42 |             float new_strain = crystalline_weights[z][y][x] - (error_gradient * 0.001f);
+        |                                ^~~~~~~~~~~~~~~~~~~
+  banachos_bneural.hpp: In member function ‘float BanachOSLatticeIntelligence::forward_crystalline_inference(int, int, int, const std::vector<float>&)’:
+  banachos_bneural.hpp:60:35: error: ‘crystalline_weights’ was not declared in this scope
+     60 |             float weight_factor = crystalline_weights[cz][cy][cx] / L_E0;
+        |                                   ^~~~~~~~~~~~~~~~~~~
+  make: *** [Makefile:91: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:62:\nbanachos_blang_runtime.hpp: In member function ‘bool BanachOSBlangRuntime::execute_jit_utility(const std::string&, const std::vector<std::__cxx11::basic_string<char> >&, std::string&)’:\nbanachos_blang_runtime.hpp:55:38: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]\n   55 |             uint8_t arg = (vm.pc + 1 < code_size) ? binary_image[vm.pc + 1] : static_cast<uint8_t>(0);\n      |                            ~~~~~~~~~~^~~~~~~~~~~\nIn file included from main.cpp:63:\nbanachos_bneural.hpp: In constructor ‘BanachOSLatticeIntelligence::BanachOSLatticeIntelligence()’:\nbanachos_bneural.hpp:30:21: error: ‘crystalline_weights’ was not declared in this scope\n   30 |                     crystalline_weights[z][y][x] = L_E0; // Исходная эластичность связей\n      |                     ^~~~~~~~~~~~~~~~~~~\nbanachos_bneural.hpp:31:21: error: ‘synaptic_charge’ was not declared in this scope\n   31 |                     synaptic_charge[z][y][x] = 10.0f;\n      |                     ^~~~~~~~~~~~~~~\nbanachos_bneural.hpp: In member function ‘void BanachOSLatticeIntelligence::train_synaptic_strain(int, int, int, float)’:\nbanachos_bneural.hpp:42:32: error: ‘crystalline_weights’ was not declared in this scope\n   42 |             float new_strain = crystalline_weights[z][y][x] - (error_gradient * 0.001f);\n      |                                ^~~~~~~~~~~~~~~~~~~\nbanachos_bneural.hpp: In member function ‘float BanachOSLatticeIntelligence::forward_crystalline_inference(int, int, int, const std::vector<float>&)’:\nbanachos_bneural.hpp:60:35: error: ‘crystalline_weights’ was not declared in this scope\n   60 |             float weight_factor = crystalline_weights[cz][cy][cx] / L_E0;\n      |                                   ^~~~~~~~~~~~~~~~~~~\nmake: *** [Makefile:91: main.o] Error 1\n').returncode
+============================== 4 errors in 0.83s ===============================
 ```
 <!-- CRASH_END -->
 
