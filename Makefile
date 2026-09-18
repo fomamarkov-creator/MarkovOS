@@ -50,7 +50,8 @@ DEPS = banachos_mem.hpp \
        banachos_bprobe.hpp \
        banachos_bswap.hpp \
        banachos_bregistry.hpp \
-       banachos_injector.hpp
+       banachos_injector.hpp \
+       banachos_self_healer.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
