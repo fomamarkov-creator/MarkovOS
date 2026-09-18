@@ -20,6 +20,10 @@
 struct AudioSplitResult { float fx; float fy; float fz; };
 
 class BanachOSAudioSplitter {
+private:
+    // Объявление матрицы перенесено в верхнюю приватную секцию класса
+    float dynamic_leeway_tensor[16][16][16];
+
 public:
     static constexpr float C_ETHER = 299792.458f;    // Скорость волны в расслабленной LC-матрице
     static constexpr float L_E0 = 0.024f;            // Базовый зазор Покоя
@@ -40,7 +44,7 @@ public:
         if (z >= 0 && z < SIZE && y >= 0 && y < SIZE && x >= 0 && x < SIZE) {
             dynamic_leeway_tensor[z][y][x] = std::clamp(clamp_x, 0.0f, L_E0);
         }
-        // Подавление ворнингов неиспользуемых параметров
+        // Надежное гашение ворнингов неиспользуемых параметров через приведение к void
         (void)clamp_y;
         (void)clamp_z;
     }
@@ -65,9 +69,6 @@ public:
 
         return {fx, fy, fz};
     }
-
-private:
-    float dynamic_leeway_tensor[SIZE][SIZE][SIZE]; // Добавлено отсутствовавшее поле матрицы
 };
 
 #endif // BANACHOS_BAUDIO_SPLIT_HPP
