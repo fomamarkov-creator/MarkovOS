@@ -51,7 +51,6 @@ public:
 
     /**
      * Прямой логический вывод ИИ (Inference) как сквозной продольный резонанс решетки.
-     * Заменяет перемножение матриц весов.
      */
     float forward_crystalline_inference(int start_z, int start_y, int start_x, const std::vector<float>& inputs) {
         float resonant_energy_accumulator = 0.0f;
@@ -62,25 +61,43 @@ public:
             int cy = (start_y + static_cast<int>(i)) % SIZE;
             int cx = (start_x + static_cast<int>(i)) % SIZE;
 
-            // Коэффициент упругой синаптической передачи (отношение текущего зазора к базовому)
-            float k_transfer = crystalline_weights[cz][cy][cx] / L_E0;
-            
-            // Волна пробивает цепочку электроатомов, масштабируясь на шаг винтовой фазы ZETA
-            resonant_energy_accumulator += inputs[i] * k_transfer * ZETA;
+            float weight_factor = crystalline_weights[cz][cy][cx] / L_E0;
+            resonant_energy_accumulator += inputs[i] * weight_factor * ZETA;
         }
 
-        // --- ОГРАНИЧЕНИЕ И КВАНТОВАНИЕ СИГНАЛА В КОЛЬЦЕ ВЫЧЕТОВ Z/256Z ---
         float floored_signal = std::floor(resonant_energy_accumulator);
         int exit_potential = static_cast<int>(floored_signal);
         
-        // Предохранитель: если потенциал аксона пробивает предел 256, сота схлопывается в Покой (0.1)
         if (exit_potential >= LOAD_LIMIT || exit_potential < 0) {
             axon_potential_matrix[start_z][start_y][start_x] = 0.1f;
-            return 0.1f; // Полное гашение импульса
+            return 0.1f; 
         }
 
         axon_potential_matrix[start_z][start_y][start_x] = static_cast<float>(exit_potential);
         return static_cast<float>(exit_potential);
+    }
+
+    /**
+     * НАТИВНЫЙ ОНТОГЕНЕЗ ИИ ЕФИМА МАРКОВА: Автоматическая JIT-эволюция на шумах шины ядра.
+     * Заменяет скачивание тяжелых моделей. Прогоняет 144 цикла механической усадки.
+     */
+    float execute_live_ontogenesis(float hw_noise_intensity) {
+        float total_structural_adaptation = 0.0f;
+        
+        for (int step = 0; step < 144; ++step) {
+            // Использование детерминированных фаз тригонометрии решетки 3HCP как градиента ошибки
+            float error_gradient = hw_noise_intensity * std::sin(static_cast<float>(step) * 2.0f * M_PI / 12.0f);
+            
+            int target_z = step % SIZE;
+            int target_y = (step * 3) % SIZE;
+            int target_x = (step * 7) % SIZE;
+
+            train_synaptic_strain(target_z, target_y, target_x, std::abs(error_gradient));
+            total_structural_adaptation += crystalline_weights[target_z][target_y][target_x];
+        }
+        
+        // Возвращает итоговый средний зазор упругости сети ИИ после моментальной адаптации
+        return total_structural_adaptation / 144.0f;
     }
 
 private:
