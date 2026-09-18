@@ -1,6 +1,6 @@
 # ================================================================================
 # BANACHOS v8.3 — MICROKERNEL AUTOMATED BUILD SYSTEM (bBUILD)
-# Author: Efim S. Markov & AI Collaborator (2026 Ultimate Edition)
+# Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
 # Formalism: Monolithic Object Linking, Symbiotic Displacement Optimization
 # ================================================================================
 
@@ -9,6 +9,7 @@ CXXFLAGS = -std=c++20 -O3 -Wall -Wextra
 
 TARGET = banachos_core
 
+# Слияние всех нативных модулей ядра в один исполняемый образ
 SRCS = main.cpp \
        banachos_mem.cpp \
        banachos_hal.cpp \
@@ -19,7 +20,8 @@ SRCS = main.cpp \
        banachos_injector.cpp \
        banachos_bgui.cpp \
        banachos_bproc.cpp \
-       banachos_smart_contract.hpp \
+       banachos_bcontainer.cpp \
+       banachos_baudio.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -31,12 +33,16 @@ DEPS = banachos_mem.hpp \
        banachos_translator.hpp \
        banachos_bgui.hpp \
        banachos_bproc.hpp \
-       banachos_fs.hpp
+       banachos_fs.hpp \
+       banachos_smart_contract.hpp \
+       banachos_bcontainer.hpp \
+       banachos_baudio.hpp \
+       banachos_bdma.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
 	@echo "[bBUILD] Нативное Bare-Metal микроядро BanachOS v8.3 успешно скомпилировано."
-	@echo "[bBUILD] Модуль мимикрии и перехвата сокетов Linux API bNET_HIJACK интегрирован."
+	@echo "[bBUILD] Модули bAUDIO, bDMA и bCONTAINER полностью интегрированы в монолит."
 	@echo "================================================================================"
 	@python3 banachos_dropper.py
 
