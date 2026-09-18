@@ -30,7 +30,7 @@
 #include "banachos_power.hpp"
 #include "banachos_irq.hpp"
 
-// Подключение переведенных C++20 подсистем пространственной решетки 3HCP
+// Подключение подсистем пространственной решетки 3HCP
 #include "banachos_bridge.hpp"
 #include "banachos_mesh.hpp"
 #include "banachos_evolution.hpp"
@@ -51,6 +51,11 @@
 #include "banachos_bguard.hpp"         // Скоростной eBPF Липшицев Медиатор Шины ядра
 #include "banachos_bgen_cuda.hpp"      // Динамический JIT-генератор CUDA-ядер для GPU
 
+// НОВЫЕ ПОДСИСТЕМЫ РАСШИРЕНИЯ МАТРИЦЫ ИЗ ГЛАВ 4, 10 и 16:
+#include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born границ
+#include "banachos_bthrust.hpp"        // Глава 4.3: Топологический триггер реактивной тяги
+#include "banachos_brespiration.hpp"   // Глава 16.3: Макроскопические циклы дыхания решетки
+
 // Подключение прикладного и диагностического слоя
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
@@ -69,7 +74,7 @@ int main(int argc, char* argv[]) {
     // Детерминированное разрешение PID цели для горячего вытеснения гостевой системы
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[0]; 
+        std::string arg1 = argv[1]; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
@@ -93,7 +98,7 @@ int main(int argc, char* argv[]) {
     BanachOSPowerController power_controller;
     BanachOsInterruptController irq_controller;
     
-    // Инициализация переведенных C++20 модулей решетки (предотвращает оптимизационное удаление)
+    // Инициализация переведенных C++20 модулей решетки 
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
@@ -113,12 +118,18 @@ int main(int argc, char* argv[]) {
     BanachOSBusGuard bus_guard;
     BanachOSCudaGenerator cuda_generator;
 
-    // Инициализация прикладных и диагностических узлов
+    // Инициализация расширенных подсистем Казимира, Тяги и Дыхания
+    BanachOSCasimirDriver casimir_driver;
+    BanachOSThrustGenerator thrust_generator;
+    BanachOSLatticeRespiration lattice_respiration;
+
+    // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
     BanachOSWindowMultiplexer mux;
     BanachOSTtyConsole tty;
     BanachOSDiagnosticProbe probe;
+    BanachOSHardwareBridge bridge; // Сохранение легаси-объекта
     BanachOSSwapController swap;
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
@@ -173,12 +184,27 @@ int main(int argc, char* argv[]) {
     std::string cuda_log;
     cuda_generator.load_compiled_kernel_to_gpu(cuda_log);
 
+    // bCASIMIR: Расчет вектора силы притяжения параллельных шин-фильтров All-Born границ
+    casimir_driver.inject_boundary_charge(2, 2, 2, 192.0f);
+    CasimirVector3D f_casimir = casimir_driver.compute_casimir_force_vector(2, 2, 2, 4);
+
+    // bTHRUST: Моделирование аварийного выворота и выброса реактивного давления тяги при заклинивании
+    thrust_generator.provoke_topological_lockup(5, 5, 5, 255.0f);
+    float emergent_thrust = thrust_generator.compute_emergent_thrust_pressure(5, 5, 5);
+
+    // bRESPIRATION: Исполнение двух тактов макроскопического дыхания решетки (Вдох и Выдох)
+    std::string resp_log1 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 150.0f);
+    std::string resp_log2 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 0.0f);
+
     // Вывод телеметрии физических инвариантов новой математики в лог загрузки
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
     std::cout << "[BOOT] Анизотропный расщепитель bAUDIO (Частоты Fx:Fy:Fz): " << split_modes.fx << ":" << split_modes.fy << ":" << split_modes.fz << " Гц" << std::endl;
     std::cout << "[BOOT] Слой eBPF-валидации bGUARD (Активных фильтров)   : " << bus_guard.get_active_filters_count() << std::endl;
     std::cout << "[BOOT] JIT-компилятор CUDA-ядер bGEN_CUDA                : " << cuda_log << std::endl;
+    std::cout << "[BOOT] Драйвер All-Born границ bCASIMIR (Вектор силы)   : X=" << f_casimir.x << ", Y=" << f_casimir.y << ", Z=" << f_casimir.z << std::endl;
+    std::cout << "[BOOT] Топологический триггер bTHRUST (Реактивный выброс): " << emergent_thrust << " Па" << std::endl;
+    std::cout << "[BOOT] Рециркуляция матрицы bRESPIRATION (Лог фазы 2)   : " << resp_log2 << std::endl;
 
     // Опрос стандартных диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
