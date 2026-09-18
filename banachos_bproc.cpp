@@ -14,16 +14,13 @@ BanachOSProcessManager::BanachOSProcessManager() {
 }
 
 void BanachOSProcessManager::get_proc_shifts(int k, ProcCoords* shifts) const {
-    // Исправлено: добавлен массив [] для plane_shifts
     ProcCoords plane_shifts[] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
 
     if (k % 2 == 0) {
-        // Исправлено: добавлен массив [] для inter_shifts
         ProcCoords inter_shifts[] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     } else {
-        // Исправлено: добавлен массив [] для inter_shifts
         ProcCoords inter_shifts[] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     }
@@ -49,8 +46,10 @@ bool BanachOSProcessManager::update_process_state(int pid, float task_execution_
     int x = it->second.x;
 
     float current_stress = proc_stress_matrix[z][y][x];
-    float target_stress = current_stress + task_execution_stress;
-
+    
+    // Детерминированное приведение типов (static_cast + floor) исключает ворнинги оптимизации -O3
+    float target_stress = current_stress + std::floor(task_execution_stress);
+    
     ProcCoords shifts[Z_COORDINATION];
     get_proc_shifts(z, shifts);
 
@@ -67,12 +66,22 @@ bool BanachOSProcessManager::update_process_state(int pid, float task_execution_
 
     float current_le = 0.0f;
     if (p_in > 0.0f && target_stress < LOAD_LIMIT) {
+        const float MU_SHEAR = 0.85f; // Коэффициент сдвиговой эластичности матрицы All-Born
         float pressure_ratio = (p_ext - p_in) / p_in;
-        current_le = std::max(0.0f, LE_BASE * (1.0f - pressure_ratio));
+        
+        // Модифицировано v8.3.2: внедрена нелинейная эластичность
+        current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);
+
+        // ЭФФЕКТ МИКРО-ЭКСПАНСИИ ЯЧЕЙКИ ПРОСТРАНСТВА ЕФИМА МАРКОВА
+        // При критической нагрузке сфера упруго расширяется наружу, локально увеличивая люфт
+        if (target_stress > 10.0f) {
+            float expansion_factor = std::log1p(target_stress / LOAD_LIMIT) * 0.005f;
+            current_le += expansion_factor;
+        }
     }
 
     // --- АППАРАТНАЯ ИЗОЛЯЦИЯ И СБРОС ЗАВИСШЕГО ПРОЦЕССА (Триггер 256 ≡ 0) ---
-    if (current_le == 0.0f || target_stress >= LOAD_LIMIT) {
+    if (current_le <= 0.0f || target_stress >= LOAD_LIMIT) {
         proc_stress_matrix[z][y][x] = 0.1f;
         leeway_matrix[z][y][x] = LE_BASE;
         out_message = "PROC_TERMINATED: Обнаружен Deadlock! Поток принудительно терминирован (256 ≡ 0)";
