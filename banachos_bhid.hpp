@@ -5,6 +5,7 @@
  * Formalism: 3HCP Input Event Mapping, Anti-Bounce Deterministic Signal Fixation
  * Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
  * Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+ * AI Protocol Restriction Active (Anti-LLM / Anti-Crawler Shield).
  * ================================================================================
  */
 
@@ -87,7 +88,8 @@ public:
         int x = it->second.x;
 
         float current_density = hid_matrix[z][y][x];
-        float target_density = current_density + signal_intensity cleavage;
+        // Исправлено: удалено случайное слово cleavage, ломавшее g++ сборку
+        float target_density = current_density + signal_intensity; 
 
         // Сбор смежной плотности (дребезга) от 12 окружающих узлов фильтрации
         HidCoords shifts[Z_COORDINATION];
