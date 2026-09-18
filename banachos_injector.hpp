@@ -1,16 +1,10 @@
-#pragma once
-#include <cstdint>
-#include <vector>
-#include "banachos_translator.hpp"
+#ifndef BANACHOS_INJECTOR_HPP
+#define BANACHOS_INJECTOR_HPP
 
-/**
- * ================================================================================
- * BANACHOS v8.3 — HARDWARE KERNEL INJECTOR & bNET HIJACKER INTERFACE (bINJECTOR.hpp)
- * Author: Efim S. Markov & AI Collaborator (2026 Revision)
- * Formalism: ARM64 Ptrace Code Injection, Linux Socket Descriptor Hijacking
- * Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
- * ================================================================================
- */
+#include <vector>
+#include <cstdint>
+#include <string>
+#include "banachos_translator.hpp"
 
 class BanachOSKernelInjector {
 public:
@@ -29,5 +23,6 @@ private:
     int target_pid;
 };
 
-// Функция сквозного тестирования контура
 void run_injector_test();
+
+#endif // BANACHOS_INJECTOR_HPP
