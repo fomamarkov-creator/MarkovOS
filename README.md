@@ -1,46 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-
-test_native_core.py:22: AssertionError
-=========================== short test summary info ============================
-ERROR test_native_core.py::test_check_for_forgotten_native_modules - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
-     80 |         std::string arg1 = argv;
-        |                            ^~~~
+        |     ^~~~~~~~~~~~~~~~~~~~~~
+        |     BanachOSIPCMessenger
+  main.cpp:152:5: error: ‘proc_manager’ was not declared in this scope
+    152 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);
+        |     ^~~~~~~~~~~~
   make: *** [Makefile:78: main.o] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
-ERROR test_native_core.py::test_native_binary_execution_flow - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
-     80 |         std::string arg1 = argv;
-        |                            ^~~~
-  make: *** [Makefile:78: main.o] Error 1
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
-ERROR test_native_core.py::test_equatorial_register_lockup - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
-     80 |         std::string arg1 = argv;
-        |                            ^~~~
-  make: *** [Makefile:78: main.o] Error 1
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:24:\nbanachos_bproc.hpp:5:91: error: non-member function ‘float calculate_elastic_scheduler_leeway(float, float, float)’ cannot have cv-qualifier\n    5 |     float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {\n      |                                                                                           ^~~~~\nbanachos_bproc.hpp: In function ‘float calculate_elastic_scheduler_leeway(float, float, float)’:\nbanachos_bproc.hpp:12:28: error: ‘LE_BASE’ was not declared in this scope\n   12 |         float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);\n      |                            ^~~~~~~\nbanachos_bproc.hpp:17:43: error: ‘log1p’ is not a member of ‘std’\n   17 |             float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;\n      |                                           ^~~~~\nbanachos_bproc.hpp:21:21: error: ‘clamp’ is not a member of ‘std’\n   21 |         return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука\n      |                     ^~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmain.cpp:94:5: error: ‘BanachOSProcessManager’ was not declared in this scope; did you mean ‘BanachOSIPCMessenger’?\n   94 |     BanachOSProcessManager proc_manager;\n      |     ^~~~~~~~~~~~~~~~~~~~~~\n      |     BanachOSIPCMessenger\nmain.cpp:152:5: error: ‘proc_manager’ was not declared in this scope\n  152 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);\n      |     ^~~~~~~~~~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
 ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  In file included from main.cpp:24:
+  banachos_bproc.hpp:5:91: error: non-member function ‘float calculate_elastic_scheduler_leeway(float, float, float)’ cannot have cv-qualifier
+      5 |     float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {
+        |                                                                                           ^~~~~
+  banachos_bproc.hpp: In function ‘float calculate_elastic_scheduler_leeway(float, float, float)’:
+  banachos_bproc.hpp:12:28: error: ‘LE_BASE’ was not declared in this scope
+     12 |         float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);
+        |                            ^~~~~~~
+  banachos_bproc.hpp:17:43: error: ‘log1p’ is not a member of ‘std’
+     17 |             float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;
+        |                                           ^~~~~
+  banachos_bproc.hpp:21:21: error: ‘clamp’ is not a member of ‘std’
+     21 |         return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука
+        |                     ^~~~~
   main.cpp: In function ‘int main(int, char**)’:
   main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
      80 |         std::string arg1 = argv;
         |                            ^~~~
+  main.cpp:94:5: error: ‘BanachOSProcessManager’ was not declared in this scope; did you mean ‘BanachOSIPCMessenger’?
+     94 |     BanachOSProcessManager proc_manager;
+        |     ^~~~~~~~~~~~~~~~~~~~~~
+        |     BanachOSIPCMessenger
+  main.cpp:152:5: error: ‘proc_manager’ was not declared in this scope
+    152 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);
+        |     ^~~~~~~~~~~~
   make: *** [Makefile:78: main.o] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
-============================== 4 errors in 1.05s ===============================
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:24:\nbanachos_bproc.hpp:5:91: error: non-member function ‘float calculate_elastic_scheduler_leeway(float, float, float)’ cannot have cv-qualifier\n    5 |     float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {\n      |                                                                                           ^~~~~\nbanachos_bproc.hpp: In function ‘float calculate_elastic_scheduler_leeway(float, float, float)’:\nbanachos_bproc.hpp:12:28: error: ‘LE_BASE’ was not declared in this scope\n   12 |         float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);\n      |                            ^~~~~~~\nbanachos_bproc.hpp:17:43: error: ‘log1p’ is not a member of ‘std’\n   17 |             float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;\n      |                                           ^~~~~\nbanachos_bproc.hpp:21:21: error: ‘clamp’ is not a member of ‘std’\n   21 |         return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука\n      |                     ^~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmain.cpp:94:5: error: ‘BanachOSProcessManager’ was not declared in this scope; did you mean ‘BanachOSIPCMessenger’?\n   94 |     BanachOSProcessManager proc_manager;\n      |     ^~~~~~~~~~~~~~~~~~~~~~\n      |     BanachOSIPCMessenger\nmain.cpp:152:5: error: ‘proc_manager’ was not declared in this scope\n  152 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);\n      |     ^~~~~~~~~~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+============================== 4 errors in 1.16s ===============================
 ```
 <!-- CRASH_END -->
 
