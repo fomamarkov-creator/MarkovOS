@@ -64,6 +64,19 @@ DEPS = banachos_mem.hpp \
        banachos_thread_symbiote.hpp \
        banachos_dropper.hpp \
        banachos_genesis.hpp
+# Продолжение списка DEPS — Физико-химические модули расширения (Главы 4, 5, 6, 7, 8, 9, 10, 14, 16)
+DEPS += banachos_blens.hpp \
+        banachos_bclock.hpp \
+        banachos_baudio_split.hpp \
+        banachos_bguard.hpp \
+        banachos_bgen_cuda.hpp \
+        banachos_bcasimir.hpp \
+        banachos_bthrust.hpp \
+        banachos_brespiration.hpp \
+        banachos_bredshift.hpp \
+        banachos_bedge_state.hpp \
+        banachos_bdiscreteslit.hpp \
+        banachos_bchem.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
