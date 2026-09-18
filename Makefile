@@ -51,14 +51,25 @@ DEPS = banachos_mem.hpp \
        banachos_bswap.hpp \
        banachos_bregistry.hpp \
        banachos_injector.hpp \
-       banachos_self_healer.hpp
+       banachos_self_healer.hpp \
+       banachos_bridge.hpp \
+       banachos_mesh.hpp \
+       banachos_evolution.hpp \
+       banachos_bhid.hpp \
+       banachos_ipc.hpp \
+       banachos_defrag.hpp \
+       banachos_iso_builder.hpp \
+       banachos_compiler.hpp \
+       banachos_hll_compiler.hpp \
+       banachos_thread_symbiote.hpp \
+       banachos_dropper.hpp \
+       banachos_genesis.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
 	@echo "[bBUILD] 100% МОНОЛИТ ОПЕРАЦИОННОЙ СИСТЕМЫ BANACHOS v8.3 СКОМПИЛИРОВАН!"
 	@echo "[bBUILD] Последние Python-макеты вытеснены. Все инварианты кремния активны."
 	@echo "================================================================================"
-	@python3 banachos_dropper.py
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
