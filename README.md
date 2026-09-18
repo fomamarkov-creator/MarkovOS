@@ -1,6 +1,26 @@
 <!-- CRASH_START -->
-### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 20 СТРОК СБОЯ):
+### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
+        |                                                               ^
+  banachos_crypto.cpp:24:97: error: too many initializers for ‘CryptoCoords’
+     24 |         CryptoCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        |                                                                                                 ^
+  banachos_crypto.cpp:25:63: error: no match for ‘operator[]’ (operand types are ‘CryptoCoords’ and ‘int’)
+     25 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        |                                                               ^
+  make: *** [Makefile:67: banachos_crypto.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o\n', stderr='banachos_syscalls.cpp: In member function ‘SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int, uint8_t, const std::vector<unsigned char>&)’:\nbanachos_syscalls.cpp:12:63: warning: unused parameter ‘foreign_pid’ [-Wunused-parameter]\n   12 | SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {\n      |                                                           ~~~~^~~~~~~~~~~\nbanachos_crypto.cpp: In member function ‘void BanachOSCryptoEngine::get_crypto_shifts(int, CryptoCoords*) const’:\nbanachos_crypto.cpp:17:90: error: too many initializers for ‘CryptoCoords’\n   17 |     CryptoCoords plane_shifts ...|                                                         ^\nbanachos_crypto.cpp:21:93: error: too many initializers for ‘CryptoCoords’\n   21 |         CryptoCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};\n      |                                                                                             ^\nbanachos_crypto.cpp:22:63: error: no match for ‘operator[]’ (operand types are ‘CryptoCoords’ and ‘int’)\n   22 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];\n      |                                                               ^\nbanachos_crypto.cpp:24:97: error: too many initializers for ‘CryptoCoords’\n   24 |         CryptoCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};\n      |                                                                                                 ^\nbanachos_crypto.cpp:25:63: error: no match for ‘operator[]’ (operand types are ‘CryptoCoords’ and ‘int’)\n   25 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];\n      |                                                               ^\nmake: *** [Makefile:67: banachos_crypto.o] Error 1\n').returncode
+ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  banachos_syscalls.cpp: In member function ‘SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int, uint8_t, const std::vector<unsigned char>&)’:
+  banachos_syscalls.cpp:12:63: warning: unused parameter ‘foreign_pid’ [-Wunused-parameter]
+     12 | SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {
+        |                                                           ~~~~^~~~~~~~~~~
+  banachos_crypto.cpp: In member function ‘void BanachOSCryptoEngine::get_crypto_shifts(int, CryptoCoords*) const’:
+  banachos_crypto.cpp:17:90: error: too many initializers for ‘CryptoCoords’
+     17 |     CryptoCoords plane_shifts = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
+        |                                                                                          ^
   banachos_crypto.cpp:18:57: error: no match for ‘operator[]’ (operand types are ‘CryptoCoords’ and ‘int’)
      18 |     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
         |                                                         ^
@@ -20,7 +40,7 @@
   
 assert 2 == 0
  +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o\n', stderr='banachos_syscalls.cpp: In member function ‘SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int, uint8_t, const std::vector<unsigned char>&)’:\nbanachos_syscalls.cpp:12:63: warning: unused parameter ‘foreign_pid’ [-Wunused-parameter]\n   12 | SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {\n      |                                                           ~~~~^~~~~~~~~~~\nbanachos_crypto.cpp: In member function ‘void BanachOSCryptoEngine::get_crypto_shifts(int, CryptoCoords*) const’:\nbanachos_crypto.cpp:17:90: error: too many initializers for ‘CryptoCoords’\n   17 |     CryptoCoords plane_shifts ...|                                                         ^\nbanachos_crypto.cpp:21:93: error: too many initializers for ‘CryptoCoords’\n   21 |         CryptoCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};\n      |                                                                                             ^\nbanachos_crypto.cpp:22:63: error: no match for ‘operator[]’ (operand types are ‘CryptoCoords’ and ‘int’)\n   22 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];\n      |                                                               ^\nbanachos_crypto.cpp:24:97: error: too many initializers for ‘CryptoCoords’\n   24 |         CryptoCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};\n      |                                                                                                 ^\nbanachos_crypto.cpp:25:63: error: no match for ‘operator[]’ (operand types are ‘CryptoCoords’ and ‘int’)\n   25 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];\n      |                                                               ^\nmake: *** [Makefile:67: banachos_crypto.o] Error 1\n').returncode
-============================== 4 errors in 3.35s ===============================
+============================== 4 errors in 3.84s ===============================
 ```
 <!-- CRASH_END -->
 
