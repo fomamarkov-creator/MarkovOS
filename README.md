@@ -1,46 +1,39 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:24:\nbanachos_bproc.hpp:5:91: error: non-member function ‘float calculate_elastic_scheduler_leeway(float, float, float)’ cannot have cv-qualifier\n    5 |     float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {\n      |                                                                                           ^~~~~\nbanachos_bproc.hpp: In function ‘float calculate_elastic_scheduler_leeway(float, float, float)’:\nbanachos_bproc.hpp:12:28: error: ‘LE_BASE’ was not declared in this scope\n   12 |         float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);\n      |                            ^~~~~~~\nbanachos_bproc.hpp:17:43: error: ‘log1p’ is not a member of ‘std’\n   17 |             float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;\n      |                                           ^~~~~\nbanachos_bproc.hpp:21:21: error: ‘clamp’ is not a member of ‘std’\n   21 |         return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука\n   ...as not declared in this scope; did you mean ‘BanachOSIPCMessenger’?\n   93 |     BanachOSProcessManager proc_manager;\n      |     ^~~~~~~~~~~~~~~~~~~~~~\n      |     BanachOSIPCMessenger\nmain.cpp:147:5: error: ‘proc_manager’ was not declared in this scope\n  147 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);\n      |     ^~~~~~~~~~~~\nmain.cpp:214:24: error: ‘class BanachOSGenesisBootloader’ has no member named ‘inject_metric_expansion_impulse’\n  214 |     genesis_bootloader.inject_metric_expansion_impulse(8, 8, 8, 200.0f);\n      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nmain.cpp:215:45: error: ‘class BanachOSGenesisBootloader’ has no member named ‘get_cell_volume_metric’\n  215 |     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);\n      |                                             ^~~~~~~~~~~~~~~~~~~~~~\nmain.cpp:216:47: error: ‘class BanachOSGenesisBootloader’ has no member named ‘get_cell_clearance_metric’\n  216 |     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);\n      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~\nmake: *** [Makefile:91: main.o] Error 1\n').returncode
-ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  In file included from main.cpp:24:
-  banachos_bproc.hpp:5:91: error: non-member function ‘float calculate_elastic_scheduler_leeway(float, float, float)’ cannot have cv-qualifier
-      5 |     float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {
-        |                                                                                           ^~~~~
-  banachos_bproc.hpp: In function ‘float calculate_elastic_scheduler_leeway(float, float, float)’:
-  banachos_bproc.hpp:12:28: error: ‘LE_BASE’ was not declared in this scope
-     12 |         float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);
-        |                            ^~~~~~~
-  banachos_bproc.hpp:17:43: error: ‘log1p’ is not a member of ‘std’
-     17 |             float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;
-        |                                           ^~~~~
-  banachos_bproc.hpp:21:21: error: ‘clamp’ is not a member of ‘std’
-     21 |         return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука
-        |                     ^~~~~
-  main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:93:5: error: ‘BanachOSProcessManager’ was not declared in this scope; did you mean ‘BanachOSIPCMessenger’?
-     93 |     BanachOSProcessManager proc_manager;
-        |     ^~~~~~~~~~~~~~~~~~~~~~
-        |     BanachOSIPCMessenger
-  main.cpp:147:5: error: ‘proc_manager’ was not declared in this scope
-    147 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);
-        |     ^~~~~~~~~~~~
-  main.cpp:214:24: error: ‘class BanachOSGenesisBootloader’ has no member named ‘inject_metric_expansion_impulse’
-    214 |     genesis_bootloader.inject_metric_expansion_impulse(8, 8, 8, 200.0f);
-        |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  main.cpp:215:45: error: ‘class BanachOSGenesisBootloader’ has no member named ‘get_cell_volume_metric’
-    215 |     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
-        |                                             ^~~~~~~~~~~~~~~~~~~~~~
-  main.cpp:216:47: error: ‘class BanachOSGenesisBootloader’ has no member named ‘get_cell_clearance_metric’
-    216 |     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
-        |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~
-  make: *** [Makefile:91: main.o] Error 1
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:24:\nbanachos_bproc.hpp:5:91: error: non-member function ‘float calculate_elastic_scheduler_leeway(float, float, float)’ cannot have cv-qualifier\n    5 |     float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {\n      |                                                                                           ^~~~~\nbanachos_bproc.hpp: In function ‘float calculate_elastic_scheduler_leeway(float, float, float)’:\nbanachos_bproc.hpp:12:28: error: ‘LE_BASE’ was not declared in this scope\n   12 |         float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);\n      |                            ^~~~~~~\nbanachos_bproc.hpp:17:43: error: ‘log1p’ is not a member of ‘std’\n   17 |             float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;\n      |                                           ^~~~~\nbanachos_bproc.hpp:21:21: error: ‘clamp’ is not a member of ‘std’\n   21 |         return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука\n   ...as not declared in this scope; did you mean ‘BanachOSIPCMessenger’?\n   93 |     BanachOSProcessManager proc_manager;\n      |     ^~~~~~~~~~~~~~~~~~~~~~\n      |     BanachOSIPCMessenger\nmain.cpp:147:5: error: ‘proc_manager’ was not declared in this scope\n  147 |     proc_manager.spawn_process_node(target_pid, 6, 6, 6);\n      |     ^~~~~~~~~~~~\nmain.cpp:214:24: error: ‘class BanachOSGenesisBootloader’ has no member named ‘inject_metric_expansion_impulse’\n  214 |     genesis_bootloader.inject_metric_expansion_impulse(8, 8, 8, 200.0f);\n      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nmain.cpp:215:45: error: ‘class BanachOSGenesisBootloader’ has no member named ‘get_cell_volume_metric’\n  215 |     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);\n      |                                             ^~~~~~~~~~~~~~~~~~~~~~\nmain.cpp:216:47: error: ‘class BanachOSGenesisBootloader’ has no member named ‘get_cell_clearance_metric’\n  216 |     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);\n      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~\nmake: *** [Makefile:91: main.o] Error 1\n').returncode
-============================== 4 errors in 0.89s ===============================
+g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bgui.cpp -o banachos_bgui.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bproc.cpp -o banachos_bproc.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bcontainer.cpp -o banachos_bcontainer.o
+g++ -std=c++20 -O3 -Wall -Wextra -c banachos_baudio.cpp -o banachos_baudio.o
+g++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core
+================================================================================
+[bBUILD] 100% МОНОЛИТ ОПЕРАЦИОННОЙ СИСТЕМЫ BANACHOS v8.3 СКОМПИЛИРОВАН!
+[bBUILD] Последние Python-макеты вытеснены. Все инварианты кремния активны.
+================================================================================
+============================= test session starts ==============================
+platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.16/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/MarkovOS/MarkovOS
+collecting ... collected 4 items
+
+test_native_core.py::test_check_for_forgotten_native_modules 
+[CI/CD] Запуск промышленной сборки bBUILD...
+
+[SCANNER] Проверка архитектурной целостности репозитория...
+PASSED
+test_native_core.py::test_native_binary_execution_flow PASSED
+test_native_core.py::test_equatorial_register_lockup PASSED
+test_native_core.py::test_installer_symbiote_generation PASSED
+
+============================== 4 passed in 11.68s ==============================
 ```
 <!-- CRASH_END -->
 
