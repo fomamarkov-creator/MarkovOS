@@ -31,6 +31,7 @@ def test_kernel_core_determinism():
     state_normal = engine.calculate_state(4e10, 100.0, 10)
     state_compressed = engine.calculate_state(4e10, 250.0, 10)
     assert state_compressed["shumann_hz"] > state_normal["shumann_hz"]
+
 @pytest.mark.parametrize("mod_tuple", get_banachos_modules())
 def test_component_lipschitz_stability(mod_tuple):
     """Универсальный автоматический тест для ЛЮБОГО подключенного драйвера."""
@@ -101,9 +102,9 @@ def auto_generate_readme_report():
             readme_text = f.read()
             
         if marker in readme_text:
-            # Расщепляем по маркеру строго строковым методом и склеиваем через чистый текст
+            # Извлекаем только текст ДО маркера, чтобы предотвратить дублирование или падение
             parts = readme_text.split(marker)
-            final_readme = parts + report_content
+            final_readme = parts[0] + report_content
         else:
             final_readme = readme_text + "\n\n" + report_content
             
