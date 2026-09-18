@@ -1,22 +1,43 @@
-    /**
-     * Вычисление нелинейного липшицева зазора упругости шины bPROC (Модификация v8.3.1)
-     * Интегрирует модуль сдвиговой эластичности MU_SHEAR и динамическую экспансию ячейки.
-     */
-    float calculate_elastic_scheduler_leeway(float p_ext, float p_in, float local_charge) const {
-        if (p_in <= 0.0f) return 0.0f;
+/**
+ * ================================================================================
+ * BANACHOS v8.3 — PROCESS MANAGER INTERFACE (banachos_bproc.hpp)
+ * Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
+ * Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+ * ================================================================================
+ */
 
-        const float MU_SHEAR = 0.85f; // Коэффициент сдвиговой эластичности All-Born матрицы
-        float pressure_ratio = (p_ext - p_in) / p_in;
+#ifndef BANACHOS_BPROC_HPP
+#define BANACHOS_BPROC_HPP
 
-        // Эластичный отклик зазора по Маркову: учитывает сопротивление сдвигу окружающих ячеек
-        float current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);
+#include <string>
+#include <map>
+#include <vector>
+#include <cmath>
+#include <algorithm>
 
-        // --- ЭФФЕКТ МИКРО-ЭКСПАНСИИ ЯЧЕЙКИ ПРОСТРАНСТВА ---
-        // Если внутреннее давление растет, сфера упруго деформируется наружу, временно увеличивая локальный люфт
-        if (local_charge > 10.0f) {
-            float expansion_factor = std::log1p(local_charge / 256.0f) * 0.05f;
-            current_le += expansion_factor; // Локальное расширение зазора упругости соты
-        }
+struct ProcCoords { int z; int y; int x; };
 
-        return std::clamp(current_le, 0.0f, 0.1f); // Верхний упругий ограничитель предела Гука
-    }
+class BanachOSProcessManager {
+public:
+    static constexpr float LE_BASE = 0.024f;
+    static constexpr float LOAD_LIMIT = 256.0f;
+    static constexpr int Z_COORDINATION = 12;
+    static constexpr int SIZE = 16;
+
+    BanachOSProcessManager();
+
+    void get_proc_shifts(int k, ProcCoords* shifts) const;
+    bool spawn_process_node(int pid, int z, int y, int x);
+    bool update_process_state(int pid, float task_execution_stress, std::string& out_message);
+    
+    float get_average_scheduler_leeway() const;
+    float get_peak_process_stress_load() const;
+    int get_active_pids_count() const;
+
+private:
+    float proc_stress_matrix[SIZE][SIZE][SIZE];
+    float leeway_matrix[SIZE][SIZE][SIZE];
+    std::map<int, ProcCoords> process_table;
+};
+
+#endif // BANACHOS_BPROC_HPP
