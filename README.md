@@ -1,3 +1,49 @@
+<!-- CRASH_START -->
+### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
+```text
+
+test_native_core.py:22: AssertionError
+=========================== short test summary info ============================
+ERROR test_native_core.py::test_check_for_forgotten_native_modules - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
+     80 |         std::string arg1 = argv;
+        |                            ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ERROR test_native_core.py::test_native_binary_execution_flow - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
+     80 |         std::string arg1 = argv;
+        |                            ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ERROR test_native_core.py::test_equatorial_register_lockup - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
+     80 |         std::string arg1 = argv;
+        |                            ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
+     80 |         std::string arg1 = argv;
+        |                            ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='main.cpp: In function ‘int main(int, char**)’:\nmain.cpp:80:28: error: conversion from ‘char**’ to non-scalar type ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} requested\n   80 |         std::string arg1 = argv;\n      |                            ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+============================== 4 errors in 1.05s ===============================
+```
+<!-- CRASH_END -->
+
 # BanachOS / UMM v8.3 — Production Math Engine
 
 Репозиторий содержит низкоуровневое вычислительное ядро **Universal Metric Mismatch (UMM) v8.3**, реализующее принципы Новой Физической Математики Е. С. Маркова над 12-координатной гексагональной $3\text{HCP}$-решеткой. 
