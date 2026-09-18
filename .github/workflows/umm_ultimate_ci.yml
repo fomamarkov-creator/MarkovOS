@@ -27,6 +27,9 @@ jobs:
     - name: Execute Strict Matrix and Spectral Tests
       run: pytest test_ultimate.py -v -s
 
+    - name: Execute Massive 10,000 Node Swarm Stress Test
+      run: python test_swarm_stress.py
+
     - name: Compile Real-Time Report into README
       run: |
         python -c "
@@ -47,11 +50,9 @@ jobs:
             report_content = f.read()
             
         if start_tag in readme_text:
-            # Безопасное строковое расщепление: берем только то, что до тега
-            head = readme_text.split(start_tag)[0]
-            final_readme = head + start_tag + '\n\n' + report_content + '\n'
+            head = readme_text.split(start_tag)
+            final_readme = head[0] + start_tag + '\n\n' + report_content + '\n'
         else:
-            # Предохранитель на случай случайного удаления тега из README
             final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
             
         with open(readme_path, 'w', encoding='utf-8') as f:
