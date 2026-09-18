@@ -49,7 +49,8 @@ DEPS = banachos_mem.hpp \
        banachos_btty.hpp \
        banachos_bprobe.hpp \
        banachos_bswap.hpp \
-       banachos_bregistry.hpp
+       banachos_bregistry.hpp \
+       banachos_injector.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
