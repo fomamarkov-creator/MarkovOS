@@ -14,14 +14,17 @@ BanachOSContainerManager::BanachOSContainerManager() {
 }
 
 void BanachOSContainerManager::get_container_shifts(int k, ContainerCoords* shifts) const {
-    ContainerCoords plane_shifts = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
+    // Исправлено: добавлен массив [] для plane_shifts
+    ContainerCoords plane_shifts[] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
 
     if (k % 2 == 0) {
-        ContainerCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
+        // Исправлено: добавлен массив [] для inter_shifts
+        ContainerCoords inter_shifts[] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     } else {
-        ContainerCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        // Исправлено: добавлен массив [] для inter_shifts
+        ContainerCoords inter_shifts[] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     }
 }
