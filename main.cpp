@@ -53,13 +53,14 @@
 #include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born границ
 #include "banachos_bthrust.hpp"        // Глава 4.3: Топологический триггер реактивной тяги
 #include "banachos_brespiration.hpp"   // Глава 16.3: Макроскопические циклы дыхания решетки
-
-// НОВЕЙШИЕ ПОДСИСТЕМЫ РАСШИРЕНИЯ МАТРИЦЫ ИЗ ГЛАВ 6, 9 и 14:
 #include "banachos_bredshift.hpp"      // Глава 6.1: Субнодальное сдвиговое старение пакетов
-#include "banachos_bedge_state.hpp"     // Глава 9.3: Топологический отказоустойчивый маршрутизатор
+#include "banachos_bedge_state.hpp"    // Глава 9.3: Топологический отказоустойчивый маршрутизатор
 #include "banachos_bdiscreteslit.hpp"  // Глава 14: Квантовый детектор скрытого чтения Наблюдателя
 
-// Подключение прикладного и диагностического слоя
+// НОВЕЙШИЙ ТОПОЛОГИЧЕСКИЙ ХИМИЧЕСКИЙ ДВИЖОК:
+#include "banachos_bchem.hpp"          // Глава 4.2: Валентность и квантовый обмен зарядами
+
+// Подключение прикладного слоя
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
 #include "banachos_bmux.hpp"
@@ -67,23 +68,21 @@
 #include "banachos_bprobe.hpp"
 #include "banachos_bswap.hpp"
 #include "banachos_bregistry.hpp"
-#include "banachos_self_healer.hpp"    // Модуль рантайм-исцеления Ефима Маркова
+#include "banachos_self_healer.hpp"    
 
 int main(int argc, char* argv[]) {
     std::cout << "================================================================================" << std::endl;
     std::cout << "    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             " << std::endl;
     std::cout << "================================================================================" << std::endl;
     
-    // Детерминированное разрешение PID цели для горячего вытеснения гостевой системы
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[0]; 
+        std::string arg1 = argv; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
     }
 
-    // Инициализация абсолютно всех нативных Bare-Metal интерфейсов BanachOS в стеке
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -101,7 +100,6 @@ int main(int argc, char* argv[]) {
     BanachOSPowerController power_controller;
     BanachOsInterruptController irq_controller;
     
-    // Инициализация переведенных C++20 модулей решетки 
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
@@ -114,7 +112,6 @@ int main(int argc, char* argv[]) {
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
     
-    // Инициализация новых футуристических модулей монографии
     BanachOSOpticalLenser optical_lenser;
     BanachOSClockController clock_controller;
     BanachOSAudioSplitter audio_splitter;
@@ -123,13 +120,13 @@ int main(int argc, char* argv[]) {
     BanachOSCasimirDriver casimir_driver;
     BanachOSThrustGenerator thrust_generator;
     BanachOSLatticeRespiration lattice_respiration;
-
-    // Инициализация новейших расширений: Старение волн, Краевые токи, Разрешение наблюдателя
     BanachOSRedshiftCalculator redshift_calculator;
     BanachOSEdgeRouter edge_router;
     BanachOSDiscreteSlitDetector slit_detector;
 
-    // Инициализация прикладных и диагностических инструментов
+    // Стек-аллокация химического движка bCHEM
+    BanachOSTopologicalChemistry topology_chemistry;
+
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
     BanachOSWindowMultiplexer mux;
@@ -137,7 +134,7 @@ int main(int argc, char* argv[]) {
     BanachOSDiagnosticProbe probe;
     BanachOSHardwareBridge bridge;
     BanachOSSwapController swap;
-    BanachOSSwapController bswap; // Сохранение легаси-объекта для тестов
+    BanachOSSwapController bswap; 
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
 
@@ -213,6 +210,11 @@ int main(int argc, char* argv[]) {
     // bDISCRETE_SLIT: Детекция механического вмешательства «Наблюдателя» при попытке прослушивания шины
     auto [slit_alert, slit_msg] = slit_detector.register_observer_contact(3, 3, 3, 0.030f);
 
+    // bCHEM: Топологическая химия — квантовый обмен зарядами при критическом импульсе активации
+    topology_chemistry.set_node_state(1, 1, 1, 100.0f, 0.0f); // Lockup соты
+    float transferred_charge = topology_chemistry.execute_charge_exchange(1, 1, 1, 2.5f);
+    int active_valence = topology_chemistry.calculate_geometrical_valence(1, 1, 1);
+
     // Вывод телеметрии физических инвариантов новой математики в лог загрузки
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
@@ -225,6 +227,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Субнодальное сдвиговое старение пакетов bREDSHIFT : " << wave_ageing << " z-единиц" << std::endl;
     std::cout << "[BOOT] Каскадный роутер краевых токов bEDGE_STATE        : Скорость сигнала = " << protected_velocity << std::endl;
     std::cout << "[BOOT] Детектор скрытого чтения bDISCRETE_SLIT           : " << slit_msg << std::endl;
+    std::cout << "[BOOT] Топологическая химия bCHEM (Перенос заряда)      : " << transferred_charge << " Кл, Валентность соты = " << active_valence << std::endl;
 
     // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
