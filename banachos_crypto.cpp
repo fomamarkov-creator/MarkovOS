@@ -14,14 +14,17 @@ BanachOSCryptoEngine::BanachOSCryptoEngine() {
 }
 
 void BanachOSCryptoEngine::get_crypto_shifts(int k, CryptoCoords* shifts) const {
-    CryptoCoords plane_shifts = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
+    // Исправлено: plane_shifts изменен на массив []
+    CryptoCoords plane_shifts[] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
 
     if (k % 2 == 0) {
-        CryptoCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
+        // Исправлено: inter_shifts изменен на массив []
+        CryptoCoords inter_shifts[] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     } else {
-        CryptoCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        // Исправлено: inter_shifts изменен на массив []
+        CryptoCoords inter_shifts[] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     }
 }
