@@ -1,17 +1,17 @@
 # ================================================================================
 # BANACHOS v8.3 — MICROKERNEL AUTOMATED BUILD SYSTEM (bBUILD)
-# Author: Efim S. Markov & AI Collaborator (2026 Revision)
-# Formalism: Monolithic Object Linking, Strict Compiler Flag Optimization
+# Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
+# Formalism: Monolithic Object Linking, Symbiotic Displacement Flag Optimization
 # ================================================================================
 
-# Настройка компилятора под стандарт C++20
+# Настройка компилятора под стандарт C++20 с максимальной оптимизацией скорости
 CXX = g++
 CXXFLAGS = -std=c++20 -O3 -Wall -Wextra
 
-# Имя итогового нативного бинарника операционной системы
+# Имя готового нативного бинарного файла мета-платформы
 TARGET = banachos_core
 
-# Список всех исходных файлов реализации
+# Список всех исходных модулей C++ реализации ядра
 SRCS = main.cpp \
        banachos_mem.cpp \
        banachos_hal.cpp \
@@ -20,10 +20,10 @@ SRCS = main.cpp \
        banachos_crypto.cpp \
        banachos_translator.cpp
 
-# Автоматическое определение объектных файлов (.o)
+# Автоматическая генерация объектных блоков (.o)
 OBJS = $(SRCS:.cpp=.o)
 
-# Заголовки для отслеживания изменений и автокомпиляции
+# Заголовки для отслеживания зависимостей и сквозной компиляции
 DEPS = banachos_mem.hpp \
        banachos_hal.hpp \
        banachos_syscalls.hpp \
@@ -31,24 +31,25 @@ DEPS = banachos_mem.hpp \
        banachos_crypto.hpp \
        banachos_translator.hpp
 
-# Главная цель сборки операционной системы
+# Главное правило сборки всей нативной операционной системы
 all: $(TARGET)
 	@echo "================================================================================"
-	@echo "[bBUILD] Операционная система BanachOS v8.3 успешно собрана в монолит."
-	@echo "[bBUILD] Для запуска нативного ядра выполните команду: ./$(TARGET)"
+	@echo "[bBUILD] Нативное Bare-Metal микроядро BanachOS v8.3 успешно скомпилировано."
+	@echo "[bBUILD] Модуль мимикрии и вытеснения bHIJACKER интегрирован в бинарный образ."
+	@echo "[bBUILD] Для эмуляции такт-цикла на хосте выполните: ./$(TARGET)"
 	@echo "================================================================================"
 
-# Линковка объектных файлов в финальный исполняемый файл
+# Линковка объектных блоков в единый монолитный бинарник
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
 
-# Компиляция каждого .cpp файла в объектный модуль .o
+# Компиляция каждого отдельного .cpp файла в объектный модуль .o
 %.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Очистка репозитория от временных файлов компиляции
+# Очистка файловой системы репозитория от кэша сборки
 clean:
 	rm -f $(OBJS) $(TARGET) banachos_firmware.bin banachos_distribution.iso
-	@echo "[bBUILD] Временные бинарные блоки и кэш успешно удалены из bFS."
+	@echo "[bBUILD] Очистка завершена. Промежуточные бинарные кванты удалены из bFS."
 
 .PHONY: all clean
