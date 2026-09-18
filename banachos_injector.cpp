@@ -115,7 +115,13 @@ public:
         }
 
         off_t target_address = 0x00400000; 
-        pwrite(mem_fd, native_payload.data(), native_payload.size(), target_address);
+        
+        // Исправлено: обрабатываем возвращаемое значение pwrite, чтобы убрать warning компилятора
+        ssize_t written = pwrite(mem_fd, native_payload.data(), native_payload.size(), target_address);
+        if (written < 0) {
+            std::cout << "[bINJECTOR] Предупреждение: Аппаратный сбой pwrite в виртуальную страницу." << std::endl;
+        }
+        
         close(mem_fd);
 
         std::cout << "[bINJECTOR] НАЛЕТУ: Нативные кванты BanachOS успешно вшиты в кремний гостевого процесса." << std::endl;
