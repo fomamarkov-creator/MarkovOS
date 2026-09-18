@@ -1,14 +1,10 @@
 name: UMM v8.3 Production Math Engine & Documentation CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch: # ИСКЛЮЧИТЕЛЬНО РУЧНОЙ ТРИГГЕР (Добавляет кнопку "Run workflow" на GitHub. Авто-пуш отключен)
 
 permissions:
-  contents: write
+  contents: write # Разрешение боту GitHub Actions перезаписывать README.md
 
 jobs:
   mathematical_validation_and_doc:
@@ -26,7 +22,6 @@ jobs:
     - name: Inject Strict Computational Stack
       run: |
         python -m pip install --upgrade pip
-        # Добавляем torch и cupy для сборки нашего планировщика прерываний
         pip install numpy pytest torch cupy-cuda12x
 
     - name: Execute Strict Matrix and Spectral Tests
@@ -44,8 +39,8 @@ jobs:
         end_tag = '<!-- MARKOV_REPORT_END -->'
         
         parts = template.split(start_tag)
-        head = parts[0]
-        tail = parts[1].split(end_tag)[1]
+        head = parts
+        tail = parts.split(end_tag)
         
         final_readme = head + start_tag + '\n' + report + '\n' + end_tag + tail
         with open('README.md', 'w', encoding='utf-8') as f:
