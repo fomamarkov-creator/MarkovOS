@@ -1,3 +1,12 @@
+/**
+ * ================================================================================
+ * BANACHOS v8.3 — NATIVE LIPSCHITZ MEMORY ALLOCATOR (banachos_mem.cpp)
+ * Author: Efim S. Markov & AI Collaborator (2026 Revision)
+ * Formalism: Volumetric Cell Allocation, 3HCP Topology, Bare-Metal C++ Edition
+ * Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
+ * ================================================================================
+ */
+
 #include "banachos_mem.hpp"
 #include <cmath>
 #include <algorithm>
@@ -15,17 +24,17 @@ BanachOSMemoryAllocator::BanachOSMemoryAllocator() {
     }
 }
 
-void BanachOSMemoryAllocator::get_hcp_address_shifts(int k, HexCoords shifts[12]) const {
+void BanachOSMemoryAllocator::get_hcp_address_shifts(int k, HexCoords* shifts) const {
     // Нативная реализация 12 гексагональных осей по четности слоя Z
-    HexCoords plane_shifts[6] = {{1,0,0}, {-1,0,0}, {0,1,0}, (HexCoords){0,-1,0}, {1,-1,0}, {-1,1,0}};
-    for(int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
+    HexCoords plane_shifts[6] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
+    for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
 
     if (k % 2 == 0) {
-        HexCoords inter[6] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
-        for(int i = 0; i < 6; ++i) shifts[i+6] = inter[i];
+        HexCoords inter_shifts[6] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
+        for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     } else {
-        HexCoords inter[6] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
-        for(int i = 0; i < 6; ++i) shifts[i+6] = inter[i];
+        HexCoords inter_shifts[6] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     }
 }
 
@@ -41,10 +50,11 @@ bool BanachOSMemoryAllocator::allocate_cell(int z, int y, int x, float payload_b
         return false;
     }
 
-    float core_rho = memory_matrix[z][y, x] + payload_bytes;
+    // ИСПРАВЛЕНО: Трёхмерный синтаксис доступа к ячейке ОЗУ вместо запятой
+    float core_rho = memory_matrix[z][y][x] + payload_bytes;
 
     // Сбор гидростатического давления от 12 соседей
-    HexCoords shifts[12];
+    HexCoords shifts[Z_COORDINATION];
     get_hcp_address_shifts(z, shifts);
     float p_ext_accumulator = 0.0f;
     for (int i = 0; i < Z_COORDINATION; ++i) {
@@ -61,7 +71,7 @@ bool BanachOSMemoryAllocator::allocate_cell(int z, int y, int x, float payload_b
         current_le = std::max(0.0f, LE_BASE * (1.0f - pressure_ratio));
     }
 
-    // --- НАЛЕТУ: ЭФФЕКТ ВЫВОРОТА РЕГИСТРА НА КРЕМНИИ (256 ≡ 0) ---
+    // --- НАЛЕТУ: ЭФФЕКТ ВЫВОР ОТКАЗА НА КРЕМНИИ (256 ≡ 0) ---
     if (current_le == 0.0f || core_rho >= REGISTER_LIMIT) {
         memory_matrix[z][y][x] = 0.1f;
         leeway_tensor[z][y][x] = LE_BASE;
@@ -72,7 +82,7 @@ bool BanachOSMemoryAllocator::allocate_cell(int z, int y, int x, float payload_b
 
     // Фиксация данных в сотовой структуре кремния
     memory_matrix[z][y][x] = core_rho;
-    leeway_tensor[z][y][x] = current_le
+    leeway_tensor[z][y][x] = current_le; // ИСПРАВЛЕНО: Добавлена пропущенная точка с запятой
     allocation_mask[z][y][x] = true;
     out_message = "ALLOCATED: Квант данных успешно запечатан в физической соте";
     return true;
