@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
+#include <iostream>  // Исправлено: добавлено для std::cout и std::endl
+#include <cstring>   // Исправлено: добавлено для memset
 
 // Эмуляция структур Linux Framebuffer для обеспечения кросс-компиляции Bare-Metal
 #define FBIOGET_VSCREENINFO 0x4600
@@ -35,14 +37,17 @@ BanachOSGraphicsDriver::~BanachOSGraphicsDriver() {
 }
 
 void BanachOSGraphicsDriver::get_gui_shifts(int k, GuiCoords* shifts) const {
-    GuiCoords plane_shifts = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
+    // Исправлено: добавлен массив [] для plane_shifts
+    GuiCoords plane_shifts[] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
 
     if (k % 2 == 0) {
-        GuiCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
+        // Исправлено: добавлен массив [] для inter_shifts
+        GuiCoords inter_shifts[] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     } else {
-        GuiCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        // Исправлено: добавлен массив [] для inter_shifts
+        GuiCoords inter_shifts[] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
     }
 }
@@ -113,7 +118,8 @@ bool BanachOSGraphicsDriver::draw_interface_element(int element_id, float render
         
         // Очищаем VRAM (сброс экрана в стабильный чёрный цвет Покоя)
         if (vram_memory_map) {
-            std::memset(vram_memory_map, 0x00, screensize);
+            // Исправлено: std::memset заменен на memset
+            memset(vram_memory_map, 0x00, screensize);
         }
         
         out_message = "GUI_TRAP: Аномальный мерцающий шторм кадров погашен экваториальным замком (256 ≡ 0)";
