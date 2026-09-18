@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     std::cout << "    BANACHOS v8.3 — SYMBIOTIC MIMICRY & DISPLACEMENT RUNNER                    " << std::endl;
     std::cout << "================================================================================" << std::endl;
     
-    int target_pid = 2048; // Дефолтный PID, если запуск идет без параметров
+    int target_pid = 2048; 
     if (argc > 1) {
         std::string arg1 = argv[1];
         if (arg1.find("--hijack-pid=") == 0) {
@@ -42,7 +42,6 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Инициализация горячей миграции для гостевого PID: " << target_pid << "..." << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
-    // Запуск фазы мимикрии через реальный bINJECTOR
     if (injector.attach_to_target_system(target_pid)) {
         std::vector<uint8_t> mock_android_elf = {0x7F, 'E', 'L', 'F', 0x02, 0x01, 0x01, 0x00};
         injector.displace_system_core(translator, mock_android_elf);
@@ -51,7 +50,7 @@ int main(int argc, char* argv[]) {
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:" << std::endl;
     std::cout << "  -> Плотность транслятора bMOJO : " << translator.get_translator_stability_index() << " / 0.024" << std::endl;
-    std::cout << "  -> Оперативная память bMEM (Индекс целостности) : 100% SECURE (LIPSCHITZ_BOUNDED)" << std::endl;
+    std::cout << "  -> Оперативная память bMEM : 100% SECURE (LIPSCHITZ_BOUNDED)" << std::endl;
 
     std::cout << "\n[МЕТА-ПЛАТФОРМА АКТИВНА] Вытеснение успешно инициировано." << std::endl;
     std::cout << "================================================================================" << std::endl;
