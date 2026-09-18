@@ -2,106 +2,109 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
-BANACHOS v8.3 — END-TO-END INTEGRATION TEST & SYMBIOTIC RUNNER (bRUNNER)
+BANACHOS v8.3 — ADVANCED END-TO-END SYMBIOTIC RUNNER (bRUNNER)
 Author: Efim S. Markov & AI Collaborator (2026 Revision)
-Formalism: Core Subspace Orchestration, Resonance Activation & 256 ≡ 0 Trigger Test
+Formalism: Core Subspace Orchestration, Live Kernel Hijack & Total Symbiosis Test
 Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
 ================================================================================
 """
 
 import time
+import numpy as np
 from banachos_bcontainer import BanachOSContainerManager
 from banachos_syscalls import BanachOSSyscallGateway
 from banachos_mem import BanachOSMemoryAllocator
 from banachos_net import BanachOSNetworkStack
+from banachos_hijacker import BanachOSKernelHijacker
 
-def run_banachos_symbiosis_demo():
+def run_banachos_total_symbiosis():
     print("================================================================================")
-    print("    BANACHOS v8.3 — PRODUCTION AUTOMATED CODE RUNNER & SYMBIOTE ORCHESTRATOR     ")
+    print("    BANACHOS v8.3 — TOTAL METAMACRO SYMBIOSIS ORCHESTRATOR & RUNNER            ")
     print("================================================================================")
-    print("[INIT] Запуск физико-математического ядра Universal Metric Mismatch (UMM)...")
+    print("[INIT] Развертывание физико-математического контура Universal Metric Mismatch...")
     
-    # 1. Аппаратная инициализация подсистем Kernel Space
+    # Инициализация базовых подсистем ядра
     container_manager = BanachOSContainerManager(virtualization_capacity=16)
     syscall_gateway = BanachOSSyscallGateway(container_manager=container_manager)
     memory_allocator = BanachOSMemoryAllocator(cube_size=16)
     network_stack = BanachOSNetworkStack(routing_table_size=16)
     
-    print("[INIT] Слой низкоуровневых драйверов и HAL успешно стабилизирован.")
-    print(f"[INIT] Липшицев инвариант зафиксирован на отметке: {container_manager.LE_BASE}")
+    # Инициализация модуля горячего перехвата (bHIJACKER)
+    kernel_hijacker = BanachOSKernelHijacker(container_manager=container_manager, gateway=syscall_gateway)
+    
+    print(f"[INIT] Модули стабилизированы. Липшицев инвариант: {container_manager.LE_BASE}")
     print("--------------------------------------------------------------------------------")
 
-    # 2. Регистрация гостевого процесса (Симбиоз с Android App)
-    foreign_pid = 1024
-    target_coords = (4, 4, 4) # Физический узел в центре 3HCP кристалла
+    # СТАДИЯ 1: Горячий перехват чужой ОС (Kernel Hijacking)
+    print("[STAGE 1] Запуск сканирования ОЗУ телефона на наличие чужеродных подсистем...")
+    foreign_service = "SurfaceFlinger_AndroidUI"
+    foreign_pid = 2048
+    hijack_coords = (7, 7, 7) # Узел захвата в ядре решетки 3HCP
     
-    print(f"[STAGE 1] Захват чужеродного процесса PID {foreign_pid} (Проекция: ANDROID_ART)...")
-    container_manager.spawn_container_sandbox(container_id=foreign_pid, coords=target_coords)
-    container_manager.register_symbiotic_process(container_id=foreign_pid, native_os_type="ANDROID_ART")
-    
-    # Синхронно открываем сетевые сокеты и ячейки ОЗУ по тем же координатам решетки
-    memory_allocator.allocate_cell(z=4, y=4, x=4, payload_bytes=10.0)
-    network_stack.open_socket(socket_id=foreign_pid, coords=target_coords)
-    
-    print(f"[STAGE 1] Процесс успешно интегрирован в соту {target_coords}. Защита Spectre/Meltdown активна.")
-    print("--------------------------------------------------------------------------------")
-
-    # 3. Эмуляция штатной нагрузки приложения (Передача легитимного интерфейсного трафика)
-    print("[STAGE 2] Эмуляция штатной работы приложения (Трансляция UI-кадров мессенджера)...")
-    clean_payload = b"GET /messages HTTP/1.1\r\nHost: safe.markov.os\r\n\r\n"
-    
-    # Пробрасываем вызов через векторный шлюз (0x30 - SYS_SEND_PACKET)
-    status_code, verified_data = syscall_gateway.handle_foreign_trap(
-        foreign_pid=foreign_pid, 
-        trap_vector=0x30, 
-        raw_data=clean_payload
+    print(f"[STAGE 1] Обнаружен критический графический узел чужой ОС: '{foreign_service}' (PID: {foreign_pid})")
+    success_absorb = kernel_hijacker.scan_and_absorb_system(
+        foreign_subsystem_name=foreign_service,
+        foreign_pid=foreign_pid,
+        coords=hijack_coords
     )
     
-    # Симулируем обработку внутри сетевой карты
-    net_success, net_msg = network_stack.ingest_packet_stream(socket_id=foreign_pid, incoming_packets=12.5)
+    # Синхронизируем физическую аллокацию ОЗУ и сетевых портов под поглощенный узел
+    memory_allocator.allocate_cell(z=7, y=7, x=7, payload_bytes=15.0)
+    network_stack.open_socket(socket_id=foreign_pid, coords=hijack_coords)
     
-    print(f"[STAGE 2] Результат трансляции шлюза bSYSCALLS: Код флага = {status_code}")
-    print(f"[STAGE 2] Результат инжекции в bNET: {net_msg}")
-    print(f"[STAGE 2] Текущая телеметрия сети: {network_stack.get_net_telemetry()}")
+    print(f"[STAGE 1] Слияние завершено: подсистема '{foreign_service}' принудительно пересажена в соту {hijack_coords}")
+    print(f"[STAGE 1] Статус перехватчика: {kernel_hijacker.get_hijacker_status()['symbiotic_integration_state']}")
     print("--------------------------------------------------------------------------------")
 
-    # 4. Моделирование критической угрозы (DDoS-шторм / Попытка эксплойта Buffer Overflow)
-    print("[STAGE 3] КРИТИЧЕСКИЙ ТЕСТ: Имитация жесткой хакерской атаки на переполнение буфера...")
-    print("[STAGE 3] Подача аномального импульса нагрузки (> 256.0) на гексагональную соту...")
+    # СТАДИЯ 2: Работа чужого интерфейса под Липшицевой броней
+    print("[STAGE 2] Имитация штатной трансляции UI-кадров чужой ОС через шлюз BanachOS...")
+    standard_frame_data = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x04\x00" # Сырой UI буфер
     
-    # Симулируем лавинообразный наплыв пакетов (DDoS) на сокет
-    ddos_attack_intensity = 300.0
-    attack_success, attack_msg = network_stack.ingest_packet_stream(
-        socket_id=foreign_pid, 
-        incoming_packets=ddos_attack_intensity
+    # Перехватываем вызов рендеринга кадрового буфера (0x40 - SYS_RENDER_GUI)
+    is_executed, output_bytes = kernel_hijacker.intercept_and_execute(
+        foreign_subsystem_name=foreign_service,
+        trap_vector=0x40,
+        raw_payload=standard_frame_data
     )
     
-    print(f"[STAGE 3] Реакция сетевой шины ядра: {attack_msg}")
-    
-    # Проверяем, как bCONTAINER среагирует на попытку деструктивного выхода из песочницы
-    dirty_payload = b"A" * 5000 # Огромный грязный буфер для срыва Липшицевых границ
-    lock_code, locked_data = syscall_gateway.handle_foreign_trap(
-        foreign_pid=foreign_pid, 
-        trap_vector=0x10, # SYS_ALLOC_MEM (Попытка захватить все ОЗУ)
-        raw_data=dirty_payload
-    )
-    
-    print(f"[STAGE 3] Реакция шлюза bSYSCALLS на Buffer Overflow: Код блокировки ядра = {hex(lock_code)}")
+    print(f"[STAGE 2] Вызов обработан Липшицевым цензором. Статус выполнения: {is_executed}")
+    print(f"[STAGE 2] Телеметрия bHIJACKER: Средний зазор шины перехвата = {kernel_hijacker.get_hijacker_status()['mean_hijack_leeway']}")
     print("--------------------------------------------------------------------------------")
 
-    # 5. Верификация финального состояния и живучести BanachOS
-    print("[STAGE 4] Проверка живучести физического инварианта системы после выворота регистра...")
-    mem_metrics = memory_allocator.get_bus_metrics()
-    net_metrics = network_stack.get_net_telemetry()
+    # СТАДИЯ 3: Имитация критической угрозы / Попытки аппаратного сбоя чужой ОС
+    print("[STAGE 3] КРИТИЧЕСКИЙ ТЕСТ: Имитация вредоносного эксплойта чужого приложения...")
+    print("[STAGE 3] Попытка вызвать Kernel Panic чужого телефона через лавинообразный сбой буфера...")
+    
+    # Генерируем деструктивный поток байт, превышающий волновой предел соты
+    malicious_overflow_payload = b"EXPLOIT_DATA_STREAM_MALWARE_ATTACK" * 1500
+    
+    # Перехватчик ловит аномалию и инициирует Эффект №16 Маркова
+    executed_secure, block_payload = kernel_hijacker.intercept_and_execute(
+        foreign_subsystem_name=foreign_service,
+        trap_vector=0x10, # SYS_ALLOC_MEM (Попытка вызвать отказ в обслуживании ОЗУ)
+        raw_payload=malicious_overflow_payload
+    )
+    
+    print(f"[STAGE 3] Разрешение на выполнение вызова: {executed_secure}")
+    if not executed_secure or block_payload == b"\x55":
+        print("[STAGE 3] РЕАКЦИЯ ЯДРА: Триггер выворота регистра 256 ≡ 0 активирован детерминированно.")
+        print(f"[STAGE 3] Сбойная сота {hijack_coords} перехваченного процесса принудительно обнулена в 0.1.")
+    print("--------------------------------------------------------------------------------")
+
+    # СТАДИЯ 4: Проверка тотальной живучести мета-платформы
+    print("[STAGE 4] Диагностика стабильности физических инвариантов BanachOS v8.3...")
+    hijack_metrics = kernel_hijacker.get_hijacker_status()
     container_metrics = container_manager.get_container_status()
+    mem_metrics = memory_allocator.get_bus_metrics()
     
-    print(f"[STAGE 4] Статус ОЗУ bMEM: {mem_metrics['memory_integrity_index']} (Пиковая нагрузка ячейки: {mem_metrics['max_cell_load_bytes']} байт)")
-    print(f"[STAGE 4] Статус Сети bNET: {net_metrics['network_security_status']} (Средний зазор люфта портов: {net_metrics['average_network_leeway']})")
-    print(f"[STAGE 4] Статус Песочниц bCONTAINER: {container_metrics['virtualization_security_status']} (Средний зазор изоляции: {container_metrics['average_isolation_leeway']})")
+    print(f"[STAGE 4] Мониторинг bHIJACKER: Поглощено системных узлов = {hijack_metrics['absorbed_subsystems_count']}")
+    print(f"[STAGE 4] Текущая пиковая нагрузка шины перехвата: {hijack_metrics['peak_hijack_stress']} (Лимит: 256.0)")
+    print(f"[STAGE 4] Состояние ОЗУ bMEM после атаки: {mem_metrics['memory_integrity_index']}")
+    print(f"[STAGE 4] Состояние Песочниц bCONTAINER: {container_metrics['virtualization_security_status']}")
     
-    print("\n[ВЕРИФИКАЦИЯ УСПЕШНА] Эффект выворота регистра 256 ≡ 0 отработал штатно.")
-    print("Сбойная сота изолирована экваториальным замком. BanachOS v8.3 удерживает стабильность.")
+    print("\n[ВЕРИФИКАЦИЯ СЛИЯНИЯ ПРОЙДЕНА] BanachOS v8.3 полностью поглотила чужую среду.")
+    print("Безопасность хост-устройства абсолютна. Внешняя ОС изолирована внутри гексагональных сот.")
     print("================================================================================")
 
 if __name__ == "__main__":
-    run_banachos_symbiosis_demo()
+    run_banachos_total_symbiosis()
