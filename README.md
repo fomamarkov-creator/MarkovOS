@@ -1,23 +1,23 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp
 In file included from main.cpp:62:
 banachos_blang_runtime.hpp: In member function ‘bool BanachOSBlangRuntime::execute_jit_utility(const std::string&, const std::vector<std::__cxx11::basic_string<char> >&, std::string&)’:
 banachos_blang_runtime.hpp:55:38: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
    55 |             uint8_t arg = (vm.pc + 1 < code_size) ? binary_image[vm.pc + 1] : static_cast<uint8_t>(0);
       |                            ~~~~~~~~~~^~~~~~~~~~~
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bgui.cpp -o banachos_bgui.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bproc.cpp -o banachos_bproc.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_bcontainer.cpp -o banachos_bcontainer.o
-g++ -std=c++20 -O3 -Wall -Wextra -c banachos_baudio.cpp -o banachos_baudio.o
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_bgui.o banachos_bgui.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_bproc.o banachos_bproc.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_bcontainer.o banachos_bcontainer.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_baudio.o banachos_baudio.cpp
 g++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core
 ================================================================================
 [bBUILD] 100% МОНОЛИТ ОПЕРАЦИОННОЙ СИСТЕМЫ BANACHOS v8.3 СКОМПИЛИРОВАН!
@@ -38,7 +38,7 @@ test_native_core.py::test_native_binary_execution_flow PASSED
 test_native_core.py::test_equatorial_register_lockup PASSED
 test_native_core.py::test_installer_symbiote_generation PASSED
 
-============================== 4 passed in 12.44s ==============================
+============================== 4 passed in 20.32s ==============================
 ```
 <!-- CRASH_END -->
 
