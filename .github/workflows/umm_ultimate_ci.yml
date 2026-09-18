@@ -39,34 +39,32 @@ jobs:
       if: success()
       run: python test_swarm_stress.py
 
-    - name: Handle Build Failure & Generate 20-Line Crash Dump
+    - name: Handle Build Failure & Generate 40-Line Crash Dump
       if: failure()
       run: |
         echo "========================================================================"
-        echo "[bDEBUG] ОБНАРУЖЕН КРАХ СБОРКИ. ГЕНЕРАЦИЯ МАРКОВСКОГО ДАМПА ДЛЯ ОПЕРАТОРА..."
+        echo "[bDEBUG] ОБНАРУЖЕН КРАХ СБОРКИ. ГЕНЕРАЦИЯ МАРКОВСКОГО ДАМПА (40 СТРОК)..."
         
-        # Пересобираем и ловим последние 20 строк чистой ошибки g++ / pytest
+        # Пересобираем и ловим последние 40 строк чистой ошибки g++ / pytest
         make > crash_raw.log 2>&1 || true
         pytest test_native_core.py -v -s >> crash_raw.log 2>&1 || true
-        tail -n 20 crash_raw.log > 20_line_crash.log
+        tail -n 40 crash_raw.log > 40_line_crash.log
         
         python -c "
         import os
         
-        crash_data = '<!-- CRASH_START -->\n### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 20 СТРОК СБОЯ):\n\`\`\`text\n'
-        with open('20_line_crash.log', 'r', encoding='utf-8') as f:
+        crash_data = '<!-- CRASH_START -->\n### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):\n\`\`\`text\n'
+        with open('40_line_crash.log', 'r', encoding='utf-8') as f:
             crash_data += f.read()
         crash_data += '\`\`\`\n<!-- CRASH_END -->\n\n'
         
         with open('README.md', 'r', encoding='utf-8') as f:
             old_readme = f.read()
             
-        # Вычищаем старые дампы крашей, если они были, чтобы не плодить мусор
         if '<!-- CRASH_START -->' in old_readme:
             parts = old_readme.split('<!-- CRASH_END -->')
             old_readme = parts[1].strip()
             
-        # Вшиваем аварийный отчет на самый верх файла
         new_readme = crash_data + old_readme
         with open('README.md', 'w', encoding='utf-8') as f:
             f.write(new_readme)
@@ -75,7 +73,7 @@ jobs:
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions Bot"
         git add README.md
-        git commit -m "fix(core): inject 20-line compilation crash dump [skip ci]" || true
+        git commit -m "fix(core): inject 40-line compilation crash dump [skip ci]" || true
         git push || true
         exit 1
 
@@ -92,13 +90,12 @@ jobs:
         with open(report_path, 'r', encoding='utf-8') as f:
             report_content = f.read()
             
-        # При успешной сборке вычищаем аварийные дампы, если они висели вверху
         if '<!-- CRASH_START -->' in readme_text:
             readme_text = readme_text.split('<!-- CRASH_END -->')[1].strip()
             
         if start_tag in readme_text:
-            head = readme_text.split(start_tag)[0]
-            final_readme = head + start_tag + '\n\n' + report_content + '\n'
+            head = readme_text.split(start_tag)
+            final_readme = head[0] + start_tag + '\n\n' + report_content + '\n'
         else:
             final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
         with open(readme_path, 'w', encoding='utf-8') as f:
