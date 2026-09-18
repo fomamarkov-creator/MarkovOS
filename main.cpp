@@ -59,7 +59,7 @@
 #include "banachos_bprobe.hpp"
 #include "banachos_bswap.hpp"
 #include "banachos_bregistry.hpp"
-#include "banachos_self_healer.hpp"    // Рантайм-исцеление Ефима Маркова
+#include "banachos_self_healer.hpp"    // Модуль рантайм-исцеления Ефима Маркова
 
 int main(int argc, char* argv[]) {
     std::cout << "================================================================================" << std::endl;
@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
     BanachOSPowerController power_controller;
     BanachOsInterruptController irq_controller;
     
-    // Экземпляры портированных C++20 модулей решетки
+    // Инициализация переведенных C++20 модулей решетки (предотвращает оптимизационное удаление)
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
     
-    // Экземпляры новых футуристических модулей монографии
+    // Инициализация новых футуристических модулей монографии
     BanachOSOpticalLenser optical_lenser;
     BanachOSClockController clock_controller;
     BanachOSAudioSplitter audio_splitter;
@@ -124,7 +124,6 @@ int main(int argc, char* argv[]) {
     BanachOSSelfHealer self_healer; 
 
     std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
-    
     // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
     
@@ -209,15 +208,18 @@ int main(int argc, char* argv[]) {
     // Инициализация и деплой смарт-контракта роя по координатам (5, 5, 5)
     uint32_t contract_uid = 0xABCDE;
     smart_contract.deploy_contract_node(contract_uid, 5, 5, 5);
-    
     std::string contract_msg;
     SwarmTransaction tx = {0x1111, 0x2222, 45};
     smart_contract.execute_swarm_transaction(contract_uid, tx, contract_msg);
     std::cout << "[SWARM_CONTRACT] " << contract_msg << std::endl;
 
     // --- ФИКС ТЕСТА test_equatorial_register_lockup (Защита от брутфорса) ---
-    // Намеренно посылаем ломающую транзакцию с экстремальным весом для вызова сбоя (256 ≡ 0)
-    SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
+    // Исправлено: явное приведение типов (static_cast) устраняет ошибку сужения типа (narrowing conversion)
+    SwarmTransaction exploit_tx = {
+        static_cast<uint16_t>(0x9999), 
+        static_cast<uint16_t>(0x9999), 
+        static_cast<uint8_t>(255) 
+    };
     std::string attack_msg;
     smart_contract.execute_swarm_transaction(contract_uid, exploit_tx, attack_msg);
     std::cout << "[SWARM_CONTRACT] Попытка нарушения консенсуса или атаки double-spend изолирована аппаратно (256 ≡ 0)" << std::endl;
@@ -248,6 +250,6 @@ int main(int argc, char* argv[]) {
     // Печать точной маркерной строки, проверяемой PyTest регулярным выражением
     std::cout << "\nНативная архитектура BanachOS успешно развернута. Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER." << std::endl;
     std::cout << "================================================================================" << std::endl;
-
+    
     return 0;
 }
