@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     // Детерминированное разрешение PID цели для горячего вытеснения гостевой системы
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[1];
+        std::string arg1 = argv[0]; // Безопасное чтение
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
