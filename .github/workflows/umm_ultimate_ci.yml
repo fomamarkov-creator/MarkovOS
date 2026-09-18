@@ -1,13 +1,17 @@
-name: UMM v8.3 Production Math Engine CI
+name: UMM v8.3 Production Math Engine & Documentation CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ] # Автоматический триггер при изменении файлов и пуше
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch: # МГНОВЕННЫЙ РУЧНОЙ ТРИГГЕР (Добавляет кнопку "Run workflow" на GitHub)
+
+permissions:
+  contents: write # Разрешение боту GitHub Actions перезаписывать README.md
 
 jobs:
-  mathematical_validation:
+  mathematical_validation_and_doc:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +30,31 @@ jobs:
 
     - name: Execute Strict Matrix and Spectral Tests
       run: pytest test_ultimate.py -v -s
+
+    - name: Compile Real-Time Report into README
+      run: |
+        python -c "
+        with open('README.template.md', 'r', encoding='utf-8') as f:
+            template = f.read()
+        with open('umm_report.md', 'r', encoding='utf-8') as f:
+            report = f.read()
+            
+        start_tag = '<!-- MARKOV_REPORT_START -->'
+        end_tag = '<!-- MARKOV_REPORT_END -->'
+        
+        parts = template.split(start_tag)
+        head = parts[0]
+        tail = parts[1].split(end_tag)[1]
+        
+        final_readme = head + start_tag + '\n' + report + '\n' + end_tag + tail
+        with open('README.md', 'w', encoding='utf-8') as f:
+            f.write(final_readme)
+        "
+
+    - name: Auto-Commit and Push Generated README
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions Bot"
+        git add README.md
+        # Коммитим только если таблица реально обновилась, предотвращая зацикливание сборки
+        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants table [skip ci]" && git push)
