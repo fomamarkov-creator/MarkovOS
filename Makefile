@@ -9,7 +9,6 @@ CXXFLAGS = -std=c++20 -O3 -Wall -Wextra
 
 TARGET = banachos_core
 
-# Добавили banachos_injector.cpp в список исходников
 SRCS = main.cpp \
        banachos_mem.cpp \
        banachos_hal.cpp \
@@ -27,13 +26,15 @@ DEPS = banachos_mem.hpp \
        banachos_syscalls.hpp \
        banachos_net.hpp \
        banachos_crypto.hpp \
-       banachos_translator.hpp
+       banachos_translator.hpp \
+       banachos_bgui.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
 	@echo "[bBUILD] Нативное Bare-Metal микроядро BanachOS v8.3 успешно скомпилировано."
-	@echo "[bBUILD] Живой модуль инжектора и горячего вытеснения bINJECTOR интегрирован."
+	@echo "[bBUILD] Живой модуль инжектора и перехвата сокетов Linux API bNET_HIJACK интегрирован."
 	@echo "================================================================================"
+	@python3 banachos_dropper.py
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
@@ -42,7 +43,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET) banachos_firmware.bin banachos_distribution.iso
+	rm -f $(OBJS) $(TARGET) banachos_firmware.bin banachos_distribution.iso banachos_installer.sh
 	@echo "[bBUILD] Очистка завершена. Промежуточные бинарные кванты удалены из bFS."
 
 .PHONY: all clean
