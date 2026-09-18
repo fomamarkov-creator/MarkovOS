@@ -2,14 +2,15 @@
 #include <cmath>
 
 BanachOSSyscallGateway::BanachOSSyscallGateway() {
-    // Маппинг аппаратныхPOSIX-векторов прерываний чужой архитектуры
+    // Маппинг аппаратных POSIX-векторов прерываний чужой архитектуры
     foreign_mapping[0x10] = "SYS_ALLOC_MEM";
     foreign_mapping[0x20] = "SYS_WRITE_DISK";
     foreign_mapping[0x30] = "SYS_SEND_PACKET";
     foreign_mapping[0x40] = "SYS_RENDER_GUI";
 }
 
-SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {
+// Исправлено: добавлен атрибут [[maybe_unused]] для foreign_pid
+SyscallResult BanachOSSyscallGateway::handle_foreign_trap([[maybe_unused]] int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {
     SyscallResult result;
     
     // Если вектор прерывания не зарегистрирован — жестко тушим вызов в ноль
