@@ -58,6 +58,11 @@
 #include "banachos_bdiscreteslit.hpp"  // Глава 14: Квантовый детектор скрытого чтения Наблюдателя
 #include "banachos_bchem.hpp"          // Глава 4.2: Валентность и квантовый обмен зарядами
 
+// ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
+#include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG
+#include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ
+#include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI оболочки
+
 // Подключение прикладного слоя
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
@@ -75,13 +80,13 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[1]; 
+        std::string arg1 = argv[0]; // Безопасное чтение аргументов
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
     }
 
-    // Полная bare-metal аллокация управляющих классов на стеке ядра
+    // Bare-Metal выделение памяти под абсолютно весь стек управления BanachOS
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -124,6 +129,11 @@ int main(int argc, char* argv[]) {
     BanachOSDiscreteSlitDetector slit_detector;
     BanachOSTopologicalChemistry topology_chemistry;
 
+    // Инициализация технологических расширений ядра
+    BanachOSBlangRuntime blang_runtime(hll_compiler);
+    BanachOSLatticeIntelligence lattice_intelligence;
+    BanachOSWaveGraphics wave_graphics;
+
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
     BanachOSWindowMultiplexer mux;
@@ -134,6 +144,8 @@ int main(int argc, char* argv[]) {
     BanachOSSwapController bswap; 
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
+
+    std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
     // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
     
@@ -158,7 +170,7 @@ int main(int argc, char* argv[]) {
     std::string audio_msg, dma_msg;
     audio_driver.process_audio_pulse(440.0f, 12.0f, audio_msg);
     dma_controller.verify_dma_channel_access(0x10007FFF, 1024, dma_msg);
-    std::cout << "[BOOT] Аудиосистема bAUDIO: " << audio_msg << std::endl;
+    std::cout << "[BOOT] Адиносистема bAUDIO: " << audio_msg << std::endl;
     std::cout << "[BOOT] Контроллер bDMA    : " << dma_msg << std::endl;
 
     // 5. Тестирование футуристических модулей монографии (Тактирование и опережающая трассировка)
@@ -215,6 +227,21 @@ int main(int argc, char* argv[]) {
     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
 
+    // ТЕСТИРОВАНИЕ НОВЫХ ТЕХНОЛОГИЧЕСКИХ МАКРО-СЛОЕВ:
+    // bLANG: JIT-компиляция и исполнение системной утилиты в рамках виртуальной машины кольца вычетов
+    std::vector<std::string> mock_script = {"ALLOC_MEM 64", "ADD_REG 0", "SUB_REG 12"};
+    std::string blang_log;
+    blang_runtime.execute_jit_utility("bSYS_PROVISION", mock_script, blang_log);
+
+    // bNEURAL: Обучение кристаллической связи и волновой логический вывод нейроморфного ИИ
+    lattice_intelligence.train_synaptic_strain(4, 4, 4, 12.0f);
+    std::vector<float> mock_inputs = {12.0f, 24.0f, 48.0f};
+    float neural_inference = lattice_intelligence.forward_crystalline_inference(4, 4, 4, mock_inputs);
+
+    // bGRAPHICS: Инжекция графического импульса в кристаллическую VRAM и расчет интерференции пикселя
+    wave_graphics.inject_graphics_pulse(64, 64, 200.0f);
+    float pixel_excitation = wave_graphics.get_pixel_excitation(64, 65);
+
     // Вывод телеметрии физических инвариантов новой математики в лог загрузки
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
@@ -229,9 +256,10 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Детектор скрытого чтения bDISCRETE_SLIT           : " << slit_msg << std::endl;
     std::cout << "[BOOT] Топологическая химия bCHEM (Перенос заряда)      : " << transferred_charge << " Кл, Валентность соты = " << active_valence << std::endl;
     std::cout << "[BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : " << dynamic_zeta << " : " << dynamic_leeway << " (Ячейка пространства расширена)" << std::endl;
-
-    std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
-    // Опрос стандартных диагностических и прикладных узлов
+    std::cout << "[BOOT] Среда исполнения утилит bLANG (JIT-Рантайм)      : " << blang_log << std::endl;
+    std::cout << "[BOOT] Кристаллический ИИ bNEURAL (Прямой вывод)        : " << neural_inference << " (Инференция зафиксирована)" << std::endl;
+    std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS (VRAM Порог): " << pixel_excitation << " (Кадр bSHELL возбужден)" << std::endl;
+    // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
     mux.switch_active_frame_buffer(1, 10.0f, out_msg);
