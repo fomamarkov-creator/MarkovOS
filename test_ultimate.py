@@ -15,15 +15,14 @@ import glob
 import importlib
 import os
 
-# Импортируем математический контроллер автоотладки ядра
+# Импортим математический контроллер автоотладки ядра
 from banachos_debug import BanachOSDebugController
 
 def get_banachos_modules():
     """Автоматически сканирует кодовую базу и находит все драйверы BanachOS."""
     files = glob.glob("banachos_*.py")
-    # Извлекаем чистые имена модулей для import_module (без .py)
     modules = [os.path.splitext(os.path.basename(f))[0] for f in files]
-    return modules
+    return sorted(list(set(modules)))
 
 def test_kernel_core_determinism():
     """Базовый тест резонатора ядра на детерминизм и частотный сдвиг."""
@@ -65,8 +64,8 @@ def test_component_lipschitz_stability(mod_name):
     leeway = getattr(instance, "leeway_matrix", getattr(instance, "leeway_tensor", None))
     assert leeway is not None, fr"У подсистемы {mod_name} отсутствует координатная шина люфтов!"
     
-    # Математически безопасная проверка исходной упругости через bDEBUG
-    assert np.mean(leeway) == 0.024
+    # ПРИМЕНЕНИЕ ЛИПШИЦЕВА СГЛАЖИВАНИЯ: Устраняем ошибку 0.024000000000000004 через допуск approx
+    assert np.mean(leeway) == pytest.approx(0.024, abs=1e-12)
 
 @pytest.fixture(scope="session", autouse=True)
 def auto_generate_readme_report():
