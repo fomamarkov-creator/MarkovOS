@@ -1,46 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-        |     ^~~~~~~~~~
-        |     getppid
-  banachos_injector.cpp:48:9: error: ‘is_merged’ was not declared in this scope
-     48 |         is_merged = true;
-        |         ^~~~~~~~~
-  banachos_injector.cpp:56:9: error: ‘is_merged’ was not declared in this scope
-     56 |         is_merged = true;
-        |         ^~~~~~~~~
-  banachos_injector.cpp: At global scope:
-  banachos_injector.cpp:64:6: error: ‘BanachOSKernelInjector’ has not been declared
-     64 | bool BanachOSKernelInjector::hijack_android_network_sockets() {
-        |      ^~~~~~~~~~~~~~~~~~~~~~
-  banachos_injector.cpp: In function ‘bool hijack_android_network_sockets()’:
-  banachos_injector.cpp:65:10: error: ‘is_merged’ was not declared in this scope
-     65 |     if (!is_merged) return false;
-        |          ^~~~~~~~~
-  banachos_injector.cpp: At global scope:
-  banachos_injector.cpp:78:6: error: ‘BanachOSKernelInjector’ has not been declared
-     78 | bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator& translator, const std::vector<uint8_t>& raw_kernel_stream) {
-        |      ^~~~~~~~~~~~~~~~~~~~~~
-  banachos_injector.cpp: In function ‘bool displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:
-  banachos_injector.cpp:79:10: error: ‘is_merged’ was not declared in this scope
-     79 |     if (!is_merged) {
-        |          ^~~~~~~~~
-  banachos_injector.cpp:101:54: error: ‘target_pid’ was not declared in this scope; did you mean ‘target_ins’?
-    101 |     std::string mem_path = "/proc/" + std::to_string(target_pid) + "/mem";
-        |                                                      ^~~~~~~~~~
-        |                                                      target_ins
-  banachos_injector.cpp: In function ‘void run_injector_test()’:
-  banachos_injector.cpp:133:5: error: ‘BanachOSKernelInjector’ was not declared in this scope
-    133 |     BanachOSKernelInjector injector;
-        |     ^~~~~~~~~~~~~~~~~~~~~~
-  banachos_injector.cpp:136:9: error: ‘injector’ was not declared in this scope
-    136 |     if (injector.attach_to_target_system(1)) {
-        |         ^~~~~~~~
-  make: *** [Makefile:67: banachos_injector.o] Error 1
+  /usr/bin/ld: main.o: in function `main':
+  main.cpp:(.text.startup+0x1ca): undefined reference to `BanachOSKernelInjector::BanachOSKernelInjector()'
+  /usr/bin/ld: main.cpp:(.text.startup+0xe6d): undefined reference to `BanachOSKernelInjector::attach_to_target_system(int)'
+  /usr/bin/ld: main.cpp:(.text.startup+0xe79): undefined reference to `BanachOSKernelInjector::hijack_android_network_sockets()'
+  /usr/bin/ld: main.cpp:(.text.startup+0xed4): undefined reference to `BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, std::vector<unsigned char, std::allocator<unsigned char> > const&)'
+  /usr/bin/ld: main.cpp:(.text.startup+0x1546): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'
+  collect2: error: ld returned 1 exit status
+  make: *** [Makefile:64: banachos_core] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o\n', stderr='banachos_injector.cpp:31:1: error: ‘BanachOSKernelInjector’ does not name a type\n   31 | BanachOSKernelInjector::BanachOSKernelInjector() : is_merged(false), target_pid(-1) {}\n      | ^~~~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp:34:1: error: ‘BanachOSKernelInjector’ does not name a type\n   34 | BanachOSKernelInjector::~BanachOSKernelInjector() {\n      | ^~~~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp:41:6: error: ‘BanachOSKernelInjector’ has not been declared\n   41 | bool BanachOSKernelInjector::attach_to_target_system(int ...ace_system_core(BanachOSCodeTranslator& translator, const std::vector<uint8_t>& raw_kernel_stream) {\n      |      ^~~~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp: In function ‘bool displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:79:10: error: ‘is_merged’ was not declared in this scope\n   79 |     if (!is_merged) {\n      |          ^~~~~~~~~\nbanachos_injector.cpp:101:54: error: ‘target_pid’ was not declared in this scope; did you mean ‘target_ins’?\n  101 |     std::string mem_path = "/proc/" + std::to_string(target_pid) + "/mem";\n      |                                                      ^~~~~~~~~~\n      |                                                      target_ins\nbanachos_injector.cpp: In function ‘void run_injector_test()’:\nbanachos_injector.cpp:133:5: error: ‘BanachOSKernelInjector’ was not declared in this scope\n  133 |     BanachOSKernelInjector injector;\n      |     ^~~~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp:136:9: error: ‘injector’ was not declared in this scope\n  136 |     if (injector.attach_to_target_system(1)) {\n      |         ^~~~~~~~\nmake: *** [Makefile:67: banachos_injector.o] Error 1\n').returncode
-============================== 4 errors in 5.51s ===============================
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bgui.cpp -o banachos_bgui.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bproc.cpp -o banachos_bproc.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bcontainer.cpp -o banachos_bcontainer.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_baudio.cpp -o banachos_baudio.o\ng++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core\n', stderr="/usr/bin/ld: main.o: in function `main.cold':\nmain.cpp:(.text.unlikely+0x83): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'\n/usr/bin/ld: main.o: in function `main':\nmain.cpp:(.text.startup+0x1ca): undefined reference to `BanachOSKernelInjector::BanachOSKernelInjector()'\n/usr/bin/ld: main.cpp:(.text.startup+0xe6d): undefined reference to `BanachOSKernelInjector::attach_to_target_system(int)'\n/usr/bin/ld: main.cpp:(.text.startup+0xe79): undefined reference to `BanachOSKernelInjector::hijack_android_network_sockets()'\n/usr/bin/ld: main.cpp:(.text.startup+0xed4): undefined reference to `BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, std::vector<unsigned char, std::allocator<unsigned char> > const&)'\n/usr/bin/ld: main.cpp:(.text.startup+0x1546): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'\ncollect2: error: ld returned 1 exit status\nmake: *** [Makefile:64: banachos_core] Error 1\n").returncode
+ERROR test_native_core.py::test_equatorial_register_lockup - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  /usr/bin/ld: main.o: in function `main.cold':
+  main.cpp:(.text.unlikely+0x83): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'
+  /usr/bin/ld: main.o: in function `main':
+  main.cpp:(.text.startup+0x1ca): undefined reference to `BanachOSKernelInjector::BanachOSKernelInjector()'
+  /usr/bin/ld: main.cpp:(.text.startup+0xe6d): undefined reference to `BanachOSKernelInjector::attach_to_target_system(int)'
+  /usr/bin/ld: main.cpp:(.text.startup+0xe79): undefined reference to `BanachOSKernelInjector::hijack_android_network_sockets()'
+  /usr/bin/ld: main.cpp:(.text.startup+0xed4): undefined reference to `BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, std::vector<unsigned char, std::allocator<unsigned char> > const&)'
+  /usr/bin/ld: main.cpp:(.text.startup+0x1546): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'
+  collect2: error: ld returned 1 exit status
+  make: *** [Makefile:64: banachos_core] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bgui.cpp -o banachos_bgui.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bproc.cpp -o banachos_bproc.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bcontainer.cpp -o banachos_bcontainer.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_baudio.cpp -o banachos_baudio.o\ng++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core\n', stderr="/usr/bin/ld: main.o: in function `main.cold':\nmain.cpp:(.text.unlikely+0x83): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'\n/usr/bin/ld: main.o: in function `main':\nmain.cpp:(.text.startup+0x1ca): undefined reference to `BanachOSKernelInjector::BanachOSKernelInjector()'\n/usr/bin/ld: main.cpp:(.text.startup+0xe6d): undefined reference to `BanachOSKernelInjector::attach_to_target_system(int)'\n/usr/bin/ld: main.cpp:(.text.startup+0xe79): undefined reference to `BanachOSKernelInjector::hijack_android_network_sockets()'\n/usr/bin/ld: main.cpp:(.text.startup+0xed4): undefined reference to `BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, std::vector<unsigned char, std::allocator<unsigned char> > const&)'\n/usr/bin/ld: main.cpp:(.text.startup+0x1546): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'\ncollect2: error: ld returned 1 exit status\nmake: *** [Makefile:64: banachos_core] Error 1\n").returncode
+ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  /usr/bin/ld: main.o: in function `main.cold':
+  main.cpp:(.text.unlikely+0x83): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'
+  /usr/bin/ld: main.o: in function `main':
+  main.cpp:(.text.startup+0x1ca): undefined reference to `BanachOSKernelInjector::BanachOSKernelInjector()'
+  /usr/bin/ld: main.cpp:(.text.startup+0xe6d): undefined reference to `BanachOSKernelInjector::attach_to_target_system(int)'
+  /usr/bin/ld: main.cpp:(.text.startup+0xe79): undefined reference to `BanachOSKernelInjector::hijack_android_network_sockets()'
+  /usr/bin/ld: main.cpp:(.text.startup+0xed4): undefined reference to `BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, std::vector<unsigned char, std::allocator<unsigned char> > const&)'
+  /usr/bin/ld: main.cpp:(.text.startup+0x1546): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'
+  collect2: error: ld returned 1 exit status
+  make: *** [Makefile:64: banachos_core] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_crypto.cpp -o banachos_crypto.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_translator.cpp -o banachos_translator.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_injector.cpp -o banachos_injector.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bgui.cpp -o banachos_bgui.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bproc.cpp -o banachos_bproc.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_bcontainer.cpp -o banachos_bcontainer.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_baudio.cpp -o banachos_baudio.o\ng++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core\n', stderr="/usr/bin/ld: main.o: in function `main.cold':\nmain.cpp:(.text.unlikely+0x83): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'\n/usr/bin/ld: main.o: in function `main':\nmain.cpp:(.text.startup+0x1ca): undefined reference to `BanachOSKernelInjector::BanachOSKernelInjector()'\n/usr/bin/ld: main.cpp:(.text.startup+0xe6d): undefined reference to `BanachOSKernelInjector::attach_to_target_system(int)'\n/usr/bin/ld: main.cpp:(.text.startup+0xe79): undefined reference to `BanachOSKernelInjector::hijack_android_network_sockets()'\n/usr/bin/ld: main.cpp:(.text.startup+0xed4): undefined reference to `BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, std::vector<unsigned char, std::allocator<unsigned char> > const&)'\n/usr/bin/ld: main.cpp:(.text.startup+0x1546): undefined reference to `BanachOSKernelInjector::~BanachOSKernelInjector()'\ncollect2: error: ld returned 1 exit status\nmake: *** [Makefile:64: banachos_core] Error 1\n").returncode
+============================== 4 errors in 8.70s ===============================
 ```
 <!-- CRASH_END -->
 
