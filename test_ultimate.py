@@ -72,7 +72,7 @@ def test_component_lipschitz_stability(mod_tuple):
 
 @pytest.fixture(scope="session", autouse=True)
 def auto_generate_readme_report():
-    """Автоматически собирает статусы всех драйверов и атомарно встраивает таблицу в README."""
+    """Автоматически собирает статусы всех драйверов и сохраняет промежуточный отчет для CI/CD."""
     yield
     modules = get_banachos_modules()
     
@@ -93,20 +93,7 @@ def auto_generate_readme_report():
 {table_content}
 """
     
-    # Детерминированное и безопасное обновление основного файла README.md
-    readme_path = "README.md"
-    marker = "### 📊 Результаты автоматической верификации"
-    
-    if os.path.exists(readme_path):
-        with open(readme_path, "r", encoding="utf-8") as f:
-            readme_text = f.read()
-            
-        if marker in readme_text:
-            # Извлекаем только текст ДО маркера, чтобы предотвратить дублирование или падение
-            parts = readme_text.split(marker)
-            final_readme = parts[0] + report_content
-        else:
-            final_readme = readme_text + "\n\n" + report_content
-            
-        with open(readme_path, "w", encoding="utf-8") as f:
-            f.write(final_readme)
+    # Записываем чистый изолированный отчет для пайплайна Ефима Маркова
+    report_path = "umm_report.md"
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write(report_content)
