@@ -9,7 +9,7 @@ BanachOSSyscallGateway::BanachOSSyscallGateway() {
     foreign_mapping[0x40] = "SYS_RENDER_GUI";
 }
 
-// Исправлено: добавлен атрибут [[maybe_unused]] для foreign_pid
+// Добавлен атрибут [[maybe_unused]] для аргумента foreign_pid
 SyscallResult BanachOSSyscallGateway::handle_foreign_trap([[maybe_unused]] int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {
     SyscallResult result;
     
