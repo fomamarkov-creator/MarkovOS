@@ -1,46 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-  banachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’
-     90 |         float target_density = current_density + signal_intensity cleavage;
-        |                                                                   ^~~~~~~~
-  main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
-    175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
+    220 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
         |                                                    ^~~~
   make: *** [Makefile:78: main.o] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:36:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
-ERROR test_native_core.py::test_equatorial_register_lockup - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  In file included from main.cpp:36:
-  banachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:
-  banachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’
-     90 |         float target_density = current_density + signal_intensity cleavage;
-        |                                                                   ^~~~~~~~
-  main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
-    175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
-        |                                                    ^~~~
-  make: *** [Makefile:78: main.o] Error 1
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:36:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:37:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nIn file included from main.cpp:50:\nbanachos_baudio_split.hpp: In constructor ‘BanachOSAudioSplitter::BanachOSAudioSplitter()’:\nbanachos_baudio_split.hpp:33:21: error: ‘dynamic_leeway_tensor’ was not declared in this scope\n   33 |                     dynamic_leeway_tensor[z][y][x] = L_E0;\n      |                     ^~~~~~~~~~~~~~~~~~~~~\nbanachos_baudio_split.hpp: In member function ‘void BanachOSAudioSplitter::apply_structural_clamp(int, int, int, float, float, float)’:\nbanachos_baudio_split.hpp:39:13: error: ‘dynamic_leeway_tensor’ was not declared in this scope\n   39 |             dynamic_leeway_tensor[z][y][x] = std::clamp(clamp_x, 0.0f, L_...pply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {\n      |                                                                     ~~~~~~^~~~~~~\nbanachos_baudio_split.hpp:36:90: warning: unused parameter ‘clamp_z’ [-Wunused-parameter]\n   36 |     void apply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {\n      |                                                                                    ~~~~~~^~~~~~~\nbanachos_baudio_split.hpp: In member function ‘AudioSplitResult BanachOSAudioSplitter::calculate_shumann_splitting(int, int, int, float, float, float) const’:\nbanachos_baudio_split.hpp:47:23: error: ‘dynamic_leeway_tensor’ was not declared in this scope\n   47 |         float luu_x = dynamic_leeway_tensor[z][y][x];\n      |                       ^~~~~~~~~~~~~~~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:220:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  220 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
 ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  In file included from main.cpp:36:
+  In file included from main.cpp:37:
   banachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:
   banachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’
      90 |         float target_density = current_density + signal_intensity cleavage;
         |                                                                   ^~~~~~~~
+  In file included from main.cpp:50:
+  banachos_baudio_split.hpp: In constructor ‘BanachOSAudioSplitter::BanachOSAudioSplitter()’:
+  banachos_baudio_split.hpp:33:21: error: ‘dynamic_leeway_tensor’ was not declared in this scope
+     33 |                     dynamic_leeway_tensor[z][y][x] = L_E0;
+        |                     ^~~~~~~~~~~~~~~~~~~~~
+  banachos_baudio_split.hpp: In member function ‘void BanachOSAudioSplitter::apply_structural_clamp(int, int, int, float, float, float)’:
+  banachos_baudio_split.hpp:39:13: error: ‘dynamic_leeway_tensor’ was not declared in this scope
+     39 |             dynamic_leeway_tensor[z][y][x] = std::clamp(clamp_x, 0.0f, L_E0);
+        |             ^~~~~~~~~~~~~~~~~~~~~
+  banachos_baudio_split.hpp:36:75: warning: unused parameter ‘clamp_y’ [-Wunused-parameter]
+     36 |     void apply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {
+        |                                                                     ~~~~~~^~~~~~~
+  banachos_baudio_split.hpp:36:90: warning: unused parameter ‘clamp_z’ [-Wunused-parameter]
+     36 |     void apply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {
+        |                                                                                    ~~~~~~^~~~~~~
+  banachos_baudio_split.hpp: In member function ‘AudioSplitResult BanachOSAudioSplitter::calculate_shumann_splitting(int, int, int, float, float, float) const’:
+  banachos_baudio_split.hpp:47:23: error: ‘dynamic_leeway_tensor’ was not declared in this scope
+     47 |         float luu_x = dynamic_leeway_tensor[z][y][x];
+        |                       ^~~~~~~~~~~~~~~~~~~~~
   main.cpp: In function ‘int main(int, char**)’:
-  main.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
-    175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
+  main.cpp:220:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
+    220 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
         |                                                    ^~~~
   make: *** [Makefile:78: main.o] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:36:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
-============================== 4 errors in 0.69s ===============================
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:37:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nIn file included from main.cpp:50:\nbanachos_baudio_split.hpp: In constructor ‘BanachOSAudioSplitter::BanachOSAudioSplitter()’:\nbanachos_baudio_split.hpp:33:21: error: ‘dynamic_leeway_tensor’ was not declared in this scope\n   33 |                     dynamic_leeway_tensor[z][y][x] = L_E0;\n      |                     ^~~~~~~~~~~~~~~~~~~~~\nbanachos_baudio_split.hpp: In member function ‘void BanachOSAudioSplitter::apply_structural_clamp(int, int, int, float, float, float)’:\nbanachos_baudio_split.hpp:39:13: error: ‘dynamic_leeway_tensor’ was not declared in this scope\n   39 |             dynamic_leeway_tensor[z][y][x] = std::clamp(clamp_x, 0.0f, L_...pply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {\n      |                                                                     ~~~~~~^~~~~~~\nbanachos_baudio_split.hpp:36:90: warning: unused parameter ‘clamp_z’ [-Wunused-parameter]\n   36 |     void apply_structural_clamp(int z, int y, int x, float clamp_x, float clamp_y, float clamp_z) {\n      |                                                                                    ~~~~~~^~~~~~~\nbanachos_baudio_split.hpp: In member function ‘AudioSplitResult BanachOSAudioSplitter::calculate_shumann_splitting(int, int, int, float, float, float) const’:\nbanachos_baudio_split.hpp:47:23: error: ‘dynamic_leeway_tensor’ was not declared in this scope\n   47 |         float luu_x = dynamic_leeway_tensor[z][y][x];\n      |                       ^~~~~~~~~~~~~~~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:220:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  220 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+============================== 4 errors in 1.14s ===============================
 ```
 <!-- CRASH_END -->
 
