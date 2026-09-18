@@ -60,10 +60,14 @@ def test_component_lipschitz_stability(mod_name):
         except Exception:
             instance = target_class(cube_size=grid_size)
             
-    # ВЕРИФИКАЦИЯ ЛЮФТОВ: Поддерживаем стандартные матрицы и уникальный irq_leeway_tensor для bIRQ
-    leeway = getattr(instance, "leeway_matrix", 
-              getattr(instance, "leeway_tensor", 
-              getattr(instance, "irq_leeway_tensor", None)))
+    # ПРЯМОЙ И СТРОГИЙ ПОИСК ТЕНЗОРА ЛЮФТОВ ДЛЯ ВСЕХ МОДЕЛЕЙ ЯДРА
+    leeway = None
+    if hasattr(instance, "leeway_matrix"):
+        leeway = instance.leeway_matrix
+    elif hasattr(instance, "leeway_tensor"):
+        leeway = instance.leeway_tensor
+    elif hasattr(instance, "irq_leeway_tensor"):
+        leeway = instance.irq_leeway_tensor
               
     assert leeway is not None, fr"У подсистемы {mod_name} отсутствует координатная шина люфтов!"
     
@@ -89,7 +93,7 @@ def auto_generate_readme_report():
 
 | Системный параметр / Драйвер подсистемы | Штатный режим нагрузки | Режим Перегрузки (Шторм данных) | Статус шины ядра ОС |
 | :--- | :---: | :---: | :---: |
-| **Резонанс Ядра (umm_core.py)** | Стабильный | ... | Частота системного тика верифицирована |
+| **Резонанс Ядра (umm_core.py)** | Стабильный | Активен | Частота системного тика верифицирована |
 {table_content}
 """
     with open("umm_report.md", "w", encoding="utf-8") as f:
