@@ -1,7 +1,7 @@
 # ================================================================================
 # BANACHOS v8.3 — MICROKERNEL AUTOMATED BUILD SYSTEM (bBUILD)
-# Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
-# Formalism: Monolithic Object Linking, Symbiotic Displacement Flag Optimization
+# Author: Efim S. Markov & AI Collaborator (2026 Ultimate Edition)
+# Formalism: Monolithic Object Linking, Symbiotic Displacement Optimization
 # ================================================================================
 
 CXX = g++
@@ -17,7 +17,7 @@ SRCS = main.cpp \
        banachos_crypto.cpp \
        banachos_translator.cpp \
        banachos_injector.cpp \
-       banachos_bgui.cpp
+       banachos_bgui.cpp \
        banachos_bproc.cpp
 
 OBJS = $(SRCS:.cpp=.o)
@@ -28,12 +28,14 @@ DEPS = banachos_mem.hpp \
        banachos_net.hpp \
        banachos_crypto.hpp \
        banachos_translator.hpp \
-       banachos_bgui.hpp
+       banachos_bgui.hpp \
+       banachos_bproc.hpp \
+       banachos_fs.hpp
 
 all: $(TARGET)
 	@echo "================================================================================"
 	@echo "[bBUILD] Нативное Bare-Metal микроядро BanachOS v8.3 успешно скомпилировано."
-	@echo "[bBUILD] Живой модуль инжектора и перехвата сокетов Linux API bNET_HIJACK интегрирован."
+	@echo "[bBUILD] Модуль мимикрии и перехвата сокетов Linux API bNET_HIJACK интегрирован."
 	@echo "================================================================================"
 	@python3 banachos_dropper.py
 
