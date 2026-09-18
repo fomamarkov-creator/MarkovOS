@@ -1,3 +1,29 @@
+<!-- CRASH_START -->
+### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 20 СТРОК СБОЯ):
+```text
+  banachos_net.cpp:18:57: error: no match for ‘operator[]’ (operand types are ‘NetCoords’ and ‘int’)
+     18 |     for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
+        |                                                         ^
+  banachos_net.cpp:21:90: error: too many initializers for ‘NetCoords’
+     21 |         NetCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
+        |                                                                                          ^
+  banachos_net.cpp:22:63: error: no match for ‘operator[]’ (operand types are ‘NetCoords’ and ‘int’)
+     22 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        |                                                               ^
+  banachos_net.cpp:24:94: error: too many initializers for ‘NetCoords’
+     24 |         NetCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};
+        |                                                                                              ^
+  banachos_net.cpp:25:63: error: no match for ‘operator[]’ (operand types are ‘NetCoords’ and ‘int’)
+     25 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        |                                                               ^
+  make: *** [Makefile:67: banachos_net.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_mem.cpp -o banachos_mem.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_hal.cpp -o banachos_hal.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_syscalls.cpp -o banachos_syscalls.o\ng++ -std=c++20 -O3 -Wall -Wextra -c banachos_net.cpp -o banachos_net.o\n', stderr='In file included from main.cpp:38:\nbanachos_bregistry.hpp:6:49: warning: unsigned conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} changes value from ‘256’ to ‘0’ [-Woverflow]\n    6 |     static constexpr uint8_t KERNEL_RING_BASE = 256;\n      |                                                 ^~~\nbanachos_syscalls.cpp: In member function ‘SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int, uint8_t, const std::vector<unsigned char>&)’:\nbanachos_syscalls.cpp:12:63: warning: unused parameter ‘foreign_pid’ [-Wunused-parameter]\n   12 | SyscallResult BanachOSSyscallGateway::handle_foreign_trap(int foreign_pid, uint8_t trap_vector, const std::vector<uint8_t>& raw_data) {\n      |                                                           ~~~~^~~~~~~~~~~...i) shifts[i] = plane_shifts[i];\n      |                                                         ^\nbanachos_net.cpp:21:90: error: too many initializers for ‘NetCoords’\n   21 |         NetCoords inter_shifts = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};\n      |                                                                                          ^\nbanachos_net.cpp:22:63: error: no match for ‘operator[]’ (operand types are ‘NetCoords’ and ‘int’)\n   22 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];\n      |                                                               ^\nbanachos_net.cpp:24:94: error: too many initializers for ‘NetCoords’\n   24 |         NetCoords inter_shifts = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}};\n      |                                                                                              ^\nbanachos_net.cpp:25:63: error: no match for ‘operator[]’ (operand types are ‘NetCoords’ and ‘int’)\n   25 |         for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];\n      |                                                               ^\nmake: *** [Makefile:67: banachos_net.o] Error 1\n').returncode
+============================== 3 errors in 2.20s ===============================
+```
+<!-- CRASH_END -->
+
 # BanachOS / UMM v8.3 — Production Math Engine
 
 Репозиторий содержит низкоуровневое вычислительное ядро **Universal Metric Mismatch (UMM) v8.3**, реализующее принципы Новой Физической Математики Е. С. Маркова над 12-координатной гексагональной $3\text{HCP}$-решеткой. 
