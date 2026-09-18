@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>     // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Подключение математических инвариантов округления
 #include <cstdint>
 #include <string>
 #include <vector>
