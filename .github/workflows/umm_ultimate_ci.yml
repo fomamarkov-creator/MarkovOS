@@ -1,0 +1,28 @@
+name: UMM v8.3 Production Math Engine CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  mathematical_validation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v4
+
+    - name: Set up Enterprise Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Inject Strict Computational Stack
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy pytest
+
+    - name: Execute Strict Matrix and Spectral Tests
+      run: pytest test_ultimate.py -v -s
