@@ -33,7 +33,7 @@ def test_kernel_core_determinism():
     assert state_compressed["shumann_hz"] > state_normal["shumann_hz"]
 @pytest.mark.parametrize("mod_name", get_banachos_modules())
 def test_component_lipschitz_stability(mod_name):
-    """Универсальный автоматический тест для ЛЮБОГО подключенного драйвера."""
+    """Универсальный автоматический тест для LЮБОГО подключенного драйвера."""
     # Динамический импорт найденного подмодуля
     module = importlib.import_module(mod_name)
     
@@ -60,14 +60,8 @@ def test_component_lipschitz_stability(mod_name):
         except Exception:
             instance = target_class(cube_size=grid_size)
             
-    # ПРЯМОЙ И СТРОГИЙ ПОИСК ТЕНЗОРА ЛЮФТОВ ДЛЯ ВСЕХ МОДЕЛЕЙ ЯДРА
-    leeway = None
-    if hasattr(instance, "leeway_matrix"):
-        leeway = instance.leeway_matrix
-    elif hasattr(instance, "leeway_tensor"):
-        leeway = instance.leeway_tensor
-    elif hasattr(instance, "irq_leeway_tensor"):
-        leeway = instance.irq_leeway_tensor
+    # МАТЕМАТИЧЕСКОЕ СГЛАЖИВАНИЕ АВТООТЛАДЧИКА bDEBUG
+    leeway = BanachOSDebugController.extract_leeway_matrix(instance)
               
     assert leeway is not None, fr"У подсистемы {mod_name} отсутствует координатная шина люфтов!"
     
