@@ -50,11 +50,14 @@
 #include "banachos_baudio_split.hpp"   // Глава 7: Анизотропный расщепитель частот Шумана
 #include "banachos_bguard.hpp"         // Скоростной eBPF Липшицев Медиатор Шины ядра
 #include "banachos_bgen_cuda.hpp"      // Динамический JIT-генератор CUDA-ядер для GPU
-
-// НОВЫЕ ПОДСИСТЕМЫ РАСШИРЕНИЯ МАТРИЦЫ ИЗ ГЛАВ 4, 10 и 16:
 #include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born границ
 #include "banachos_bthrust.hpp"        // Глава 4.3: Топологический триггер реактивной тяги
 #include "banachos_brespiration.hpp"   // Глава 16.3: Макроскопические циклы дыхания решетки
+
+// НОВЕЙШИЕ ПОДСИСТЕМЫ РАСШИРЕНИЯ МАТРИЦЫ ИЗ ГЛАВ 6, 9 и 14:
+#include "banachos_bredshift.hpp"      // Глава 6.1: Субнодальное сдвиговое старение пакетов
+#include "banachos_bedge_state.hpp"     // Глава 9.3: Топологический отказоустойчивый маршрутизатор
+#include "banachos_bdiscreteslit.hpp"  // Глава 14: Квантовый детектор скрытого чтения Наблюдателя
 
 // Подключение прикладного и диагностического слоя
 #include "banachos_bfan.hpp"
@@ -74,7 +77,7 @@ int main(int argc, char* argv[]) {
     // Детерминированное разрешение PID цели для горячего вытеснения гостевой системы
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[1]; 
+        std::string arg1 = argv[0]; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
@@ -117,11 +120,14 @@ int main(int argc, char* argv[]) {
     BanachOSAudioSplitter audio_splitter;
     BanachOSBusGuard bus_guard;
     BanachOSCudaGenerator cuda_generator;
-
-    // Инициализация расширенных подсистем Казимира, Тяги и Дыхания
     BanachOSCasimirDriver casimir_driver;
     BanachOSThrustGenerator thrust_generator;
     BanachOSLatticeRespiration lattice_respiration;
+
+    // Инициализация новейших расширений: Старение волн, Краевые токи, Разрешение наблюдателя
+    BanachOSRedshiftCalculator redshift_calculator;
+    BanachOSEdgeRouter edge_router;
+    BanachOSDiscreteSlitDetector slit_detector;
 
     // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
@@ -129,8 +135,9 @@ int main(int argc, char* argv[]) {
     BanachOSWindowMultiplexer mux;
     BanachOSTtyConsole tty;
     BanachOSDiagnosticProbe probe;
-    BanachOSHardwareBridge bridge; // Сохранение легаси-объекта
+    BanachOSHardwareBridge bridge;
     BanachOSSwapController swap;
+    BanachOSSwapController bswap; // Сохранение легаси-объекта для тестов
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
 
@@ -196,6 +203,16 @@ int main(int argc, char* argv[]) {
     std::string resp_log1 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 150.0f);
     std::string resp_log2 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 0.0f);
 
+    // bREDSHIFT: Расчет дискретного «старения» пакета данных из-за субнодального трения на расстоянии 5000 кпк
+    float wave_ageing = redshift_calculator.calculate_subnodal_redshift(5000.0f, 0.024f, 120.0f, 12);
+
+    // bEDGE_STATE: Маршрутизация сигнала по одномерному периферийному каскаду при заклиненной соте памяти
+    edge_router.lock_core_sector(4, 4, 4);
+    float protected_velocity = edge_router.route_protected_signal(4, 4, 4, 1.0f, 0.15f);
+
+    // bDISCRETE_SLIT: Детекция механического вмешательства «Наблюдателя» при попытке прослушивания шины
+    auto [slit_alert, slit_msg] = slit_detector.register_observer_contact(3, 3, 3, 0.030f);
+
     // Вывод телеметрии физических инвариантов новой математики в лог загрузки
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
@@ -205,8 +222,11 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Драйвер All-Born границ bCASIMIR (Вектор силы)   : X=" << f_casimir.x << ", Y=" << f_casimir.y << ", Z=" << f_casimir.z << std::endl;
     std::cout << "[BOOT] Топологический триггер bTHRUST (Реактивный выброс): " << emergent_thrust << " Па" << std::endl;
     std::cout << "[BOOT] Рециркуляция матрицы bRESPIRATION (Лог фазы 2)   : " << resp_log2 << std::endl;
+    std::cout << "[BOOT] Субнодальное сдвиговое старение пакетов bREDSHIFT : " << wave_ageing << " z-единиц" << std::endl;
+    std::cout << "[BOOT] Каскадный роутер краевых токов bEDGE_STATE        : Скорость сигнала = " << protected_velocity << std::endl;
+    std::cout << "[BOOT] Детектор скрытого чтения bDISCRETE_SLIT           : " << slit_msg << std::endl;
 
-    // Опрос стандартных диагностических и прикладных узлов
+    // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
     mux.switch_active_frame_buffer(1, 10.0f, out_msg);
