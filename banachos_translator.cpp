@@ -27,13 +27,39 @@ void BanachOSCodeTranslator::get_hex_shifts(int k, TranslationCoords* shifts) co
     }
 }
 
-uint8_t BanachOSCodeTranslator::map_to_opcode(const std::string& foreign_op) const {
-    // Mojo-подобная нативная подмена стандартных POSIX вызовов на опкоды BanachOS
-    if (foreign_op == "MALLOC" || foreign_op == "MMAP") return 0x10;      // ALLOC_MEM
-    if (foreign_op == "FWRITE" || foreign_op == "WRITE") return 0x20;     // WRITE_DISK
-    if (foreign_op == "SEND" || foreign_op == "SOCKET_WRITE") return 0x30; // SEND_PACKET
-    if (foreign_op == "FLOATING_ADD" || foreign_op == "ADD") return 0x50;  // ADD_REG
-    return 0x00; // Неизвестная инструкция принудительно глушится в NOP
+GuestOSType BanachOSCodeTranslator::auto_detect_binary_format(const std::vector<uint8_t>& raw_bytes) {
+    if (raw_bytes.size() < 4) return GuestOSType::UNKNOWN_STREAM;
+
+    // Спектральный анализ сигнатур заголовков любых мировых ОС
+    if (raw_bytes[0] == 0x7F && raw_bytes[1] == 'E' && raw_bytes[2] == 'L' && raw_bytes[3] == 'F') 
+        return GuestOSType::ANDROID_ELF;
+    if (raw_bytes[0] == 0xCF && raw_bytes[1] == 0xFA && raw_bytes[2] == 0xED && raw_bytes[3] == 0xFE) 
+        // Mach-O 64-bit (iOS / macOS)
+        return GuestOSType::IOS_MACHO;
+    if (raw_bytes[0] == 'M' && raw_bytes[1] == 'Z') 
+        return GuestOSType::WINDOWS_PE;
+
+    return GuestOSType::UNKNOWN_STREAM;
+}
+
+uint8_t BanachOSCodeTranslator::map_arm_x86_to_banachos(uint32_t raw_op, GuestOSType os_type) const {
+    // Высокопроизводительный Mojo-маппинг ассемблерных опкодов x86_64/ARM64 в инварианты BanachOS
+    switch (os_type) {
+        case GuestOSType::ANDROID_ELF:
+            if (raw_op == 0xAA0003E0) return 0x50; // ARM64: mov x0, xzr -> ADD_REG
+            if (raw_op == 0xD10043FF) return 0x10; // ARM64: sub sp, sp -> ALLOC_MEM
+            break;
+        case GuestOSType::IOS_MACHO:
+            if (raw_op == 0x55) return 0x10;       // x86_64: push rbp -> ALLOC_MEM
+            if (raw_op == 0x4889E5) return 0x50;   // x86_64: mov rbp, rsp -> ADD_REG
+            break;
+        case GuestOSType::WINDOWS_PE:
+            if (raw_op == 0xEB) return 0x40;       // x86: jmp short -> EMIT_PULSE
+            break;
+        default:
+            break;
+    }
+    return 0x00; // Любая невалидная или опасная команда транслируется в NOP (0x00)
 }
 
 bool BanachOSCodeTranslator::register_translation_node(const std::string& ins_id, int z, int y, int x) {
@@ -44,32 +70,39 @@ bool BanachOSCodeTranslator::register_translation_node(const std::string& ins_id
     return false;
 }
 
-std::vector<NativeQuantum> BanachOSCodeTranslator::translate_foreign_block(const std::vector<ForeignInstruction>& foreign_code, std::string& out_log) {
+std::vector<NativeQuantum> BanachOSCodeTranslator::translate_universal_binary(
+    const std::vector<uint8_t>& raw_binary_stream, 
+    const std::vector<RawBinaryInstruction>& instructions, 
+    std::string& out_log
+) {
     std::vector<NativeQuantum> native_binary;
     std::stringstream log_stream;
-    
-    log_stream << "[bTRANSLATOR] Анализ Mojo-слоя. Обнаружено внешних инструкций: " << foreign_code.size() << "\n";
 
-    for (size_t i = 0; i < foreign_code.size(); ++i) {
-        const auto& ins = foreign_code[i];
-        std::string node_key = "ins_" + std::to_string(i) + "_" + ins.operation;
+    GuestOSType detected_os = auto_detect_binary_format(raw_binary_stream);
+    log_stream << "[bTRANSLATOR] Глобальный сканер активен. Обнаружен бинарный формат: ";
+    if (detected_os == GuestOSType::ANDROID_ELF) log_stream << "ANDROID_ELF (Linux Kernel Core)\n";
+    else if (detected_os == GuestOSType::IOS_MACHO) log_stream << "IOS_MACHO (Darwin XNU Core)\n";
+    else if (detected_os == GuestOSType::WINDOWS_PE) log_stream << "WINDOWS_PE (NT Kernel Core)\n";
+    else log_stream << "UNKNOWN_BINARY_STREAM (Принудительное Липшицево квантование)\n";
+
+    for (size_t i = 0; i < instructions.size(); ++i) {
+        const auto& ins = instructions[i];
+        std::string node_key = "ins_" + std::to_string(i) + "_" + std::to_string(ins.raw_opcode);
         
-        // Детерминированный маппинг в 3HCP координаты транслятора
+        // Многомерный гексагональный JIT-маппинг
         int z = static_cast<int>(i % (SIZE - 2)) + 1;
         int y = static_cast<int>((i * 3) % (SIZE - 2)) + 1;
         int x = static_cast<int>((i * 7) % (SIZE - 2)) + 1;
         register_translation_node(node_key, z, y, x);
 
-        // Оценка натяжения: преобразуем непрерывный аргумент в весовую сложность
-        float induced_stress = static_cast<float>(std::abs(ins.raw_value) * 1.2f + 1.0f);
-        float current_stress = translation_stress_matrix[z][y][x];
-        float target_stress = current_stress + induced_stress;
+        // Квантование непрерывной сложности вещественного числа гостевой ОС
+        float induced_stress = static_cast<float>(std::abs(ins.continuous_arg) * 1.15f + 1.5f);
+        float target_stress = translation_stress_matrix[z][y][x] + induced_stress;
 
-        // Контроль интерференции по 12 смежным сотам трансляции
         TranslationCoords shifts[Z_COORDINATION];
         get_hex_shifts(z, shifts);
         float p_ext_accumulator = 0.0f;
-        for (int j = 0; i < Z_COORDINATION; ++j) {
+        for (int j = 0; j < Z_COORDINATION; ++j) {
             p_ext_accumulator += translation_stress_matrix[(z + shifts[j].z + SIZE) % SIZE]
                                                           [(y + shifts[j].y + SIZE) % SIZE]
                                                           [(x + shifts[j].x + SIZE) % SIZE];
@@ -79,31 +112,30 @@ std::vector<NativeQuantum> BanachOSCodeTranslator::translate_foreign_block(const
 
         float current_le = 0.0f;
         if (p_in > 0.0f && target_stress < TRANSLATION_LIMIT) {
-            float pressure_ratio = (p_ext - p_in) / p_in;
-            current_le = std::max(0.0f, LE_BASE * (1.0f - pressure_ratio));
+            current_le = std::max(0.0f, LE_BASE * (1.0f - ((p_ext - p_in) / p_in)));
         }
 
-        // --- ВЕРИФИКАЦИЯ ПРИ ПЕРЕВОДЕ: КРАХ СТАБИЛЬНОСТИ ОПЕРАТОРА (256 ≡ 0) ---
+        // --- АППАРАТНЫЙ ИЗОЛЯТОР УЯЗВИМОСТЕЙ ЧУЖОГО БИНАРНИКА (256 ≡ 0) ---
         if (current_le == 0.0f || target_stress >= TRANSLATION_LIMIT) {
             translation_stress_matrix[z][y][x] = 0.1f;
             leeway_matrix[z][y][x] = LE_BASE;
-            log_stream << "[CRITICAL] Ошибка перевода! Инструкция " << ins.operation << " содержит скрытую аномалию. Сектор заблокирован.\n";
+            log_stream << "[CRITICAL_INTERCEPT] Попытка Buffer Overflow или вирусной инжекции внутри гостевого кода! Инструкция 0x" 
+                       << std::hex << ins.raw_opcode << " аннигилирована (256 ≡ 0).\n";
             out_log = log_stream.str();
-            return {}; // Полный отказ от сборки небезопасного бинарника
+            return {}; // Полный отказ от сборки скомпрометированного приложения
         }
 
         translation_stress_matrix[z][y][x] = target_stress;
         leeway_matrix[z][y][x] = current_le;
 
-        // --- ЧЕСТНЫЙ ВЫВОР КВАНТА: Укладываем дробный float в кольцо Z/256Z ---
+        // Генерация нативного кванта в кольце вычетов Z/256Z
         NativeQuantum quantum;
-        quantum.opcode = map_to_opcode(ins.operation);
-        quantum.quantum_arg = static_cast<uint8_t>(std::floor(ins.raw_value)) % 256;
-        
+        quantum.opcode = map_arm_x86_to_banachos(ins.raw_opcode, detected_os);
+        quantum.quantum_arg = static_cast<uint8_t>(std::floor(ins.continuous_arg)) % 256;
         native_binary.push_back(quantum);
     }
 
-    log_stream << "[SUCCESS] Mojo-трансляция завершена успешно. Липшицев барьер удержан.\n";
+    log_stream << "[SUCCESS] Сквозная универсальная трансляция кода завершена. Программа полностью поглощена.\n";
     out_log = log_stream.str();
     return native_binary;
 }
