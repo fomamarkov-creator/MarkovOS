@@ -33,7 +33,7 @@ DEPS = banachos_mem.hpp \
        banachos_bgui.hpp \
        banachos_bproc.hpp \
        banachos_fs.hpp \
-       banachos_smart_contract.hpp \
+  т    banachos_smart_contract.hpp \
        banachos_bcontainer.hpp \
        banachos_baudio.hpp \
        banachos_bdma.hpp \
@@ -76,7 +76,9 @@ DEPS += banachos_blens.hpp \
         banachos_bredshift.hpp \
         banachos_bedge_state.hpp \
         banachos_bdiscreteslit.hpp \
-        banachos_bchem.hpp
+        banachos_bchem.hpp \
+        banachos_bgraphics.hpp \
+        banachos_bmux_wave.hpp 
 
 all: $(TARGET)
 	@echo "================================================================================"
