@@ -32,29 +32,29 @@ jobs:
         python -c "
         import os
         
-        # Защита на случай, если тесты пропустили генерацию отчета
-        if not os.path.exists('umm_report.md'):
+        readme_path = 'README.md'
+        report_path = 'umm_report.md'
+        start_tag = '<!-- MARKOV_REPORT_START -->'
+        
+        if not os.path.exists(report_path):
             print('Критическая ошибка: узел bDEBUG не сформировал umm_report.md')
             exit(1)
             
-        with open('README.template.md', 'r', encoding='utf-8') as f:
-            template = f.read()
-        with open('umm_report.md', 'r', encoding='utf-8') as f:
-            report = f.read()
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            readme_text = f.read()
             
-        start_tag = '<!-- MARKOV_REPORT_START -->'
-        end_tag = '<!-- MARKOV_REPORT_END -->'
-        
-        # Корректное строковое разделение шаблона по тегам-маркерам
-        try:
-            head, rest = template.split(start_tag, 1)
-            _, tail = rest.split(end_tag, 1)
-        except ValueError:
-            print('Ошибка: В файле README.template.md не найдены обязательные маркерные теги!')
-            exit(1)
+        with open(report_path, 'r', encoding='utf-8') as f:
+            report_content = f.read()
             
-        final_readme = head + start_tag + '\n' + report + '\n' + end_tag + tail
-        with open('README.md', 'w', encoding='utf-8') as f:
+        if start_tag in readme_text:
+            # Безопасное строковое расщепление: берем только то, что до тега
+            head = readme_text.split(start_tag)[0]
+            final_readme = head + start_tag + '\n\n' + report_content + '\n'
+        else:
+            # Предохранитель на случай случайного удаления тега из README
+            final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
+            
+        with open(readme_path, 'w', encoding='utf-8') as f:
             f.write(final_readme)
         "
 
