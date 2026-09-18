@@ -38,7 +38,7 @@ test_native_core.py::test_native_binary_execution_flow PASSED
 test_native_core.py::test_equatorial_register_lockup PASSED
 test_native_core.py::test_installer_symbiote_generation PASSED
 
-============================== 4 passed in 7.76s ===============================
+============================== 4 passed in 12.44s ==============================
 ```
 <!-- CRASH_END -->
 
