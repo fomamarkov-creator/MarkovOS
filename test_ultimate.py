@@ -70,32 +70,56 @@ def test_banachos_cuda_scheduler():
     n_channels = 512
     mock_tasks = torch.randn(n_channels)
     mock_matrix_q = cp.eye(n_channels, dtype=cp.float32)
+    
     stable_registers = apply_lipschitz_scheduler_resonance(mock_tasks, mock_matrix_q)
+    
     assert stable_registers.shape == n_channels
-
+    assert not torch.isnan(stable_registers).any()
 def test_banachos_memory_buffer_overflow_protection():
     """Тест защиты диспетчера памяти от переполнения буфера по формуле 256 ≡ 0."""
     allocator = BanachOSMemoryAllocator(cube_size=16)
-    success, msg = allocator.allocate_cell(z=8, y=8, x=8, payload_bytes=100.0)
+    z, y, x = 8, 8, 8
+    
+    # 1. Запись легитимного объема данных в соту памяти
+    success, msg = allocator.allocate_cell(z=z, y=y, x=x, payload_bytes=100.0)
     assert success == True
-    allocator.free_cell(z=8, y=8, x=8)
-    overflow_success, overflow_msg = allocator.allocate_cell(z=8, y=8, x=8, payload_bytes=260.0)
+    assert allocator.allocation_mask[z, y, x] == True
+    assert allocator.memory_matrix[z, y, x] == 100.1
+    
+    # Освобождаем ячейку для следующего теста
+    allocator.free_cell(z=z, y=y, x=x)
+    
+    # 2. Имитируем атаку переполнения буфера: пишем объем данных, превышающий LAMBDA_LIMIT (256)
+    overflow_success, overflow_msg = allocator.allocate_cell(z=z, y=y, x=x, payload_bytes=260.0)
+    
     assert overflow_success == False
     assert "CRITICAL_LOCKUP" in overflow_msg
+    assert allocator.allocation_mask[z, y, x] == False
+    assert allocator.memory_matrix[z, y, x] == 0.1  # Жесткий марковский сброс в покой
+    assert allocator.leeway_tensor[z, y, x] == allocator.LE_BASE
 
 def test_banachos_file_system_integrity():
     """Тест атомарной записи bFS и триггера 256Кб лимита."""
     fs = BanachOSFileSystem(disk_size=16)
+    
+    # 1. Запись нормального блока
     success, msg = fs.write_file_block("kernel_log.txt", (5, 5, 5), 50.0)
     assert success == True
+    
+    # Чтение блока
     weight, read_msg = fs.read_file_block("kernel_log.txt")
     assert weight == 50.0
+    
+    # 2. Атака переполнением дискового сектора (пишем 300Кб при лимите 256)
     overflow_success, overflow_msg = fs.write_file_block("malicious_stream.bin", (5, 5, 5), 300.0)
     assert overflow_success == False
     assert "FS_LOCKUP" in overflow_msg
+    assert fs.disk_matrix[5, 5, 5] == 0.1
+
 def test_banachos_ipc_messenger_protection():
     """Тест защиты межпроцессной шины bIPC от взаимных блокировок (Deadlocks)."""
     ipc = BanachOSIPCMessenger(max_processes=16)
+    
     ipc.register_process(pid=101, coords=(4, 4, 4))
     ipc.register_process(pid=102, coords=(6, 6, 6))
     
@@ -110,6 +134,7 @@ def test_banachos_ipc_messenger_protection():
 def test_banachos_network_stack_ddos_protection():
     """Тест защиты сетевого стека bNET от DDoS-атак через марковский замок."""
     net = BanachOSNetworkStack(routing_table_size=16)
+    
     net.open_socket(socket_id=80, coords=(5, 5, 5))
     
     success, msg = net.ingest_packet_stream(socket_id=80, incoming_packets=15.0)
@@ -151,14 +176,13 @@ def test_banachos_terminal_buffer_loop():
     tty = BanachOSTerminalDriver(buffer_dimensions=16)
     tty.open_tty_session(tty_id=0, coords=(3, 3, 3))
     
-    success, msg = tty.write_char_stream(tty_id=0, ascii_char_code=65) # Код 'A'
+    success, msg = tty.write_char_stream(tty_id=0, ascii_char_code=65)
     assert success == True
     
-    # Имитируем спам-шторм для сброса буфера (256 ≡ 0)
     reset_success, reset_msg = tty.write_char_stream(tty_id=0, ascii_char_code=260)
     assert reset_success == False
     assert "TTY_RESET" in reset_msg
-    assert tty.tty_matrix[3, 3, 3] == 32 # Сброс в код пробела
+    assert tty.tty_matrix[3, 3, 3] == 32
 
 def test_banachos_crypto_entropy_tamper():
     """Тест крипто-ядра bCRYPTO на аппаратное зануление при атаке подбором битов."""
@@ -168,7 +192,6 @@ def test_banachos_crypto_entropy_tamper():
     success, msg = crypto.encrypt_system_data(key_id=99, raw_data_byte=128.0)
     assert success == True
     
-    # Атака Brute Force (вызов лавинообразного переполнения)
     tamper_success, tamper_msg = crypto.encrypt_system_data(key_id=99, raw_data_byte=255.0)
     assert tamper_success == False
     assert "CRYPTO_TAMPER_DETECTED" in tamper_msg
