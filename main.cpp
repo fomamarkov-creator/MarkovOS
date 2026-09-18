@@ -61,7 +61,7 @@
 // ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
 #include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG
 #include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ Ефима Маркова
-#include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI оболочки
+#include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI и bFONT оболочки
 
 // Подключение прикладного слоя
 #include "banachos_bfan.hpp"
@@ -80,13 +80,13 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[1]; 
+        std::string arg1 = argv; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
     }
 
-    // Выделение памяти под стек управления BanachOS
+    // Аллокация памяти под стек управления BanachOS
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -222,15 +222,16 @@ int main(int argc, char* argv[]) {
     std::string blang_log;
     blang_runtime.execute_jit_utility("bSYS_PROVISION", mock_script, blang_log);
 
-    // --- НАТИВНЫЙ ОНТОГЕНЕЗ ИИ bNEURAL НА КРЕМНИЕВЫХ ШУМАХ ЯДРА ---
-    // Моментальная JIT-эволюция весов структуры на основе флуктуаций питания (0.015f шум)
+    // bNEURAL: Автоэволюция онтогенеза ИИ на кремниевых шумах чипсета
     float ai_mean_leeway = lattice_intelligence.execute_live_ontogenesis(0.015f);
     std::vector<float> mock_inputs = {12.0f, 24.0f, 48.0f};
     float neural_inference = lattice_intelligence.forward_crystalline_inference(4, 4, 4, mock_inputs);
 
-    // bGRAPHICS: Инжекция импульса оболочки bSHELL во фреймбуфер и интерференционный расчет VRAM
-    wave_graphics.inject_graphics_pulse(64, 64, 200.0f);
-    float pixel_excitation = wave_graphics.get_pixel_excitation(64, 65);
+    // bGRAPHICS & bFONT: Инжекция волнового фронта интерфейса и Huygens-синтез литер оболочки bSHELL
+    wave_graphics.inject_graphics_pulse(64, 64, 100.0f);
+    wave_graphics.synthesize_wave_glyph('B', 32, 32, 150.0f); // Волновой рендеринг буквы B
+    wave_graphics.synthesize_wave_glyph('S', 32, 40, 150.0f); // Волновой рендеринг буквы S
+    float pixel_excitation = wave_graphics.get_pixel_excitation(32, 32);
 
     // Вывод телеметрии физических инвариантов новой математики в лог загрузки
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
@@ -248,7 +249,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : " << dynamic_zeta << " : " << dynamic_leeway << " (Ячейка пространства расширена)" << std::endl;
     std::cout << "[BOOT] Среда исполнения утилит bLANG (JIT-Рантайм)      : " << blang_log << std::endl;
     std::cout << "[BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : " << ai_mean_leeway << " / Логический инференс = " << neural_inference << std::endl;
-    std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS (VRAM Порог): " << pixel_excitation << " (Кадр bSHELL возбужден)" << std::endl;
+    std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS & bFONT     : " << pixel_excitation << " (Символы bSHELL синтезированы по Гюйгенсу)" << std::endl;
     // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
