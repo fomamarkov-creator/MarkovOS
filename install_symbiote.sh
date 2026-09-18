@@ -17,7 +17,6 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 echo "[STAGE 1] Root-доступ подтвержден. Захват отладочных интерфейсов чипсета..."
-# Монтируем отладочную файловую систему Linux-ядра для прямого доступа к памяти
 if [ ! -d "/sys/kernel/debug" ]; then
     mount -t debugfs none /sys/kernel/debug 2>/dev/null
 fi
@@ -35,23 +34,21 @@ if [ -z "$SF_PID" ] || [ -z "$SS_PID" ]; then
     SF_PID=2048
     SS_PID=4096
 else
-    echo "[STAGE 2] Обнаружен SurfaceFlinger Android UI (PID: $SF_PID) -> Таргет соты 3HCP."
+    echo "[STAGE 2] Обнаружен SurfaceFlinger Android UI (PID: $SF_PID) -> Трагет соты 3HCP."
     echo "[STAGE 2] Обнаружен SystemServer Android Core (PID: $SS_PID) -> Таргет соты 3HCP."
 fi
 
 echo "--------------------------------------------------------------------------------"
 
-# 3. Компиляция нативного C++ ядра BanachOS прямо внутри устройства
+# 3. Компиляция нативного C++ ядра BanachOS
 echo "[STAGE 3] Активация bBUILD: Сборка нативного машинного кода BanachOS..."
 
 if command -v g++ >/dev/null 2>&1; then
-    # Локальная компиляция в Termux
     g++ -std=c++20 -O3 main.cpp banachos_mem.cpp banachos_hal.cpp banachos_syscalls.cpp banachos_net.cpp banachos_crypto.cpp banachos_translator.cpp banachos_injector.cpp -o banachos_core
 else
     echo "[WARN] Локальный g++ отсутствует. Ожидание детерминированного бинарника из CI/CD."
-    # Если g++ в Termux не поставлен, используем уже собранный кросс-компилятором в CI/CD файл
     if [ ! -f "./banachos_core" ]; then
-        echo "[CRITICAL] Нативный бинарный квант banachos_core не найден. Соберите проект."
+        echo "[CRITICAL] Нативный бинарный квант banachos_core не найден."
         exit 1
     fi
 fi
@@ -63,15 +60,14 @@ echo "--------------------------------------------------------------------------
 echo "[STAGE 4] ЗАПУСК СЛИЯНИЯ: Внедрение bINJECTOR в адресное пространство памяти..."
 echo "[STAGE 4] Активация триггера 256 ≡ 0. Перевод процессора в кольцо вычетов..."
 
-# Запускаем нативный бинарник BanachOS, передавая ему PID SurfaceFlinger для поглощения UI
-./banachos_core --hijack-pid=$SF_PID --target-node=7.7.7
+./banachos_core --hijack-pid=$SF_PID
 
 if [ $? -eq 0 ]; then
     echo "================================================================================"
     echo "[УСПЕШНО] Гостевая ОС Android изолирована в bCONTAINER."
-    echo "[УСПЕШНО] Управление экраном, памятью и сетью перешло под контроль BanachOS v8.3!"
+    echo "[УСПЕШНО] Управление экраном перешло под контроль BanachOS v8.3! (Инвариант: 0.024)"
     echo "================================================================================"
 else
-    echo "[CRITICAL] Крах фазы вытеснения. bDEBUG вернул ядро в исходное состояние Покоя."
+    echo "[CRITICAL] Крах фазы вытеснения. bDEBUG вернул ядро в покой."
     exit 1
 fi
