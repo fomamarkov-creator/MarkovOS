@@ -1,3 +1,12 @@
+/**
+ * ================================================================================
+ * BANACHOS v8.3 — HARDWARE ABSTRACTION LAYER & BOOT LOAD (banachos_hal.cpp)
+ * Author: Efim S. Markov & AI Collaborator (2026 Revision)
+ * Formalism: 3HCP Physical Frame Mapping, ARMv8-A Peripheral Signal Hardening
+ * Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
+ * ================================================================================
+ */
+
 #include "banachos_hal.hpp"
 #include <cmath>
 #include <algorithm>
@@ -14,17 +23,29 @@ BanachOSHardwareAbstractionLayer::BanachOSHardwareAbstractionLayer() {
 }
 
 void BanachOSHardwareAbstractionLayer::get_hal_shifts(int k, HalCoords* shifts) const {
-    HalCoords plane_shifts[6] = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}};
-    for (int i = 0; i < 6; ++i) shifts[i] = plane_shifts[i];
+    // 6 базовых векторов плоскости
+    HalCoords plane_shifts[6] = {
+        {1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {1,-1,0}, {-1,1,0}
+    };
+    for (int i = 0; i < 6; ++i) {
+        shifts[i] = plane_shifts[i];
+    }
 
+    // 6 векторов межслойного зацепления в зависимости от чётности Z
     if (k % 2 == 0) {
-        HalCoords inter_shifts[6] = {{0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}};
-        for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        HalCoords inter_shifts[6] = {
+            {0,0,1}, {1,0,1}, {0,1,1}, {0,0,-1}, {1,0,-1}, {0,1,-1}
+        };
+        for (int i = 0; i < 6; ++i) {
+            shifts[i+6] = inter_shifts[i];
+        }
     } else {
-        HalCoords inter_shifts[6] = {{0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, (-HalCoords){1,0,1}, {0,-1,-1}}; // Гарантированный сдвиг нечетного слоя
-        // Корректный маппинг структур
-        inter_shifts[4] = {-1,0,-1}; 
-        for (int i = 0; i < 6; ++i) shifts[i+6] = inter_shifts[i];
+        HalCoords inter_shifts[6] = {
+            {0,0,1}, {-1,0,1}, {0,-1,1}, {0,0,-1}, {-1,0,-1}, {0,-1,-1}
+        };
+        for (int i = 0; i < 6; ++i) {
+            shifts[i+6] = inter_shifts[i];
+        }
     }
 }
 
