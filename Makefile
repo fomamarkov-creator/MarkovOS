@@ -17,7 +17,8 @@ SRCS = main.cpp \
        banachos_net.cpp \
        banachos_crypto.cpp \
        banachos_translator.cpp \
-       banachos_injector.cpp
+       banachos_injector.cpp \
+       banachos_bgui.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
