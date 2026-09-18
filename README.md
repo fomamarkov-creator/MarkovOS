@@ -1,46 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-
-    def test_native_binary_execution_flow():
-        """Проверка базового детерминированного рантайма и фаз слияния."""
-        result = subprocess.run(["./banachos_core"], capture_output=True, text=True)
-        assert result.returncode == 0, "Нативное ядро завершилось с критической ошибкой!"
-        output = result.stdout
->       assert "Нативная архитектура BanachOS успешно развернута" in output
-E       AssertionError: assert 'Нативная архитектура BanachOS успешно развернута' in '================================================================================\n    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             \n================================================================================\n[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...\n[WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.\n[BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея\n[BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче\n[BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS\n[BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.\n[BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.\n[BOOT] Слой bHEALER   : HEAL_SUCCESS: Текущие микро-деформации ядра успешно сглажены Липшицевым барьером.\n--------------------------------------------------------------------------------\n[bINJECTOR] Запуск фазы мимикрии. Захват гостевого PID: 2048...\n[WARN] PTRACE_ATTACH отклон... смоделирована в облаке GitHub Actions.\n[bINJECTOR] УСПЕШНО: Гостевой процесс полностью растворился в решетке 3HCP.\n[CONTAINER] Кросс-платформенный запрос: CONTAINER_SUCCESS: Запрос ресурсов детерминированно выполнен в рамках Липшицевой нормы\n[SWARM_CONTRACT] CONTRACT_SUCCESS: Роевая транзакция детерминированно зафиксирована. Квант состояния: 42\n--------------------------------------------------------------------------------\n--------------------------------------------------------------------------------\n[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:\n  -> Песочницы bCONTAINER (Индекс люфта): 0.024006 / 0.024\n  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = 0.960938\n  -> Драйвер экрана bGUI (Люфт упругости) : 0.024006\n  -> Диспетчер потоков bPROC (Люфт шины)  : 0.024006\n  -> Спецификация bREGISTRY               : REGISTRY_LOCKED: Инварианты UMM v8.3 запечатаны на уровне кремния.\n  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)\n\n[МЕТА-ПЛАТФОРМА АКТИВНА] Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER.\n================================================================================\n'
-
-test_native_core.py:54: AssertionError
-_______________________ test_equatorial_register_lockup ________________________
-
-    def test_equatorial_register_lockup():
-        """Тест на автоматическое отражение хакерской атаки брутфорса (256 ≡ 0)."""
-        result = subprocess.run(["./banachos_core"], capture_output=True, text=True)
-        output = result.stdout
->       assert "Попытка нарушения консенсуса или атаки double-spend" in output
-E       AssertionError: assert 'Попытка нарушения консенсуса или атаки double-spend' in '================================================================================\n    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             \n================================================================================\n[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...\n[WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.\n[BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея\n[BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче\n[BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS\n[BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.\n[BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.\n[BOOT] Слой bHEALER   : HEAL_SUCCESS: Текущие микро-деформации ядра успешно сглажены Липшицевым барьером.\n--------------------------------------------------------------------------------\n[bINJECTOR] Запуск фазы мимикрии. Захват гостевого PID: 2048...\n[WARN] PTRACE_ATTACH отклон... смоделирована в облаке GitHub Actions.\n[bINJECTOR] УСПЕШНО: Гостевой процесс полностью растворился в решетке 3HCP.\n[CONTAINER] Кросс-платформенный запрос: CONTAINER_SUCCESS: Запрос ресурсов детерминированно выполнен в рамках Липшицевой нормы\n[SWARM_CONTRACT] CONTRACT_SUCCESS: Роевая транзакция детерминированно зафиксирована. Квант состояния: 42\n--------------------------------------------------------------------------------\n--------------------------------------------------------------------------------\n[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:\n  -> Песочницы bCONTAINER (Индекс люфта): 0.024006 / 0.024\n  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = 0.960938\n  -> Драйвер экрана bGUI (Люфт упругости) : 0.024006\n  -> Диспетчер потоков bPROC (Люфт шины)  : 0.024006\n  -> Спецификация bREGISTRY               : REGISTRY_LOCKED: Инварианты UMM v8.3 запечатаны на уровне кремния.\n  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)\n\n[МЕТА-ПЛАТФОРМА АКТИВНА] Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER.\n================================================================================\n'
-
-test_native_core.py:62: AssertionError
-=========================== short test summary info ============================
-FAILED test_native_core.py::test_check_for_forgotten_native_modules - AssertionError: КРИТИЧЕСКИЙ РАЗРЫВ: Забыли перевести на C++ модули:
-   - banachos_bridge.hpp
-   - banachos_mesh.hpp
-   - banachos_evolution.hpp
-   - banachos_bhid.hpp
-   - banachos_ipc.hpp
-   - banachos_defrag.hpp
-   - banachos_iso_builder.hpp
-   - banachos_compiler.hpp
-   - banachos_hijacker.hpp
-   - banachos_dropper.hpp
-   - banachos_shell.hpp
-   - banachos_genesis.hpp
-   - banachos_hll_compiler.hpp
-   - banachos_thread_symbiote.hpp
-assert False
-FAILED test_native_core.py::test_native_binary_execution_flow - AssertionError: assert 'Нативная архитектура BanachOS успешно развернута' in '================================================================================\n    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             \n================================================================================\n[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...\n[WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.\n[BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея\n[BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче\n[BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS\n[BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.\n[BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.\n[BOOT] Слой bHEALER   : HEAL_SUCCESS: Текущие микро-деформации ядра успешно сглажены Липшицевым барьером.\n--------------------------------------------------------------------------------\n[bINJECTOR] Запуск фазы мимикрии. Захват гостевого PID: 2048...\n[WARN] PTRACE_ATTACH отклон... смоделирована в облаке GitHub Actions.\n[bINJECTOR] УСПЕШНО: Гостевой процесс полностью растворился в решетке 3HCP.\n[CONTAINER] Кросс-платформенный запрос: CONTAINER_SUCCESS: Запрос ресурсов детерминированно выполнен в рамках Липшицевой нормы\n[SWARM_CONTRACT] CONTRACT_SUCCESS: Роевая транзакция детерминированно зафиксирована. Квант состояния: 42\n--------------------------------------------------------------------------------\n--------------------------------------------------------------------------------\n[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:\n  -> Песочницы bCONTAINER (Индекс люфта): 0.024006 / 0.024\n  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = 0.960938\n  -> Драйвер экрана bGUI (Люфт упругости) : 0.024006\n  -> Диспетчер потоков bPROC (Люфт шины)  : 0.024006\n  -> Спецификация bREGISTRY               : REGISTRY_LOCKED: Инварианты UMM v8.3 запечатаны на уровне кремния.\n  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)\n\n[МЕТА-ПЛАТФОРМА АКТИВНА] Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER.\n================================================================================\n'
-FAILED test_native_core.py::test_equatorial_register_lockup - AssertionError: assert 'Попытка нарушения консенсуса или атаки double-spend' in '================================================================================\n    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             \n================================================================================\n[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...\n[WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.\n[BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея\n[BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче\n[BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS\n[BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.\n[BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.\n[BOOT] Слой bHEALER   : HEAL_SUCCESS: Текущие микро-деформации ядра успешно сглажены Липшицевым барьером.\n--------------------------------------------------------------------------------\n[bINJECTOR] Запуск фазы мимикрии. Захват гостевого PID: 2048...\n[WARN] PTRACE_ATTACH отклон... смоделирована в облаке GitHub Actions.\n[bINJECTOR] УСПЕШНО: Гостевой процесс полностью растворился в решетке 3HCP.\n[CONTAINER] Кросс-платформенный запрос: CONTAINER_SUCCESS: Запрос ресурсов детерминированно выполнен в рамках Липшицевой нормы\n[SWARM_CONTRACT] CONTRACT_SUCCESS: Роевая транзакция детерминированно зафиксирована. Квант состояния: 42\n--------------------------------------------------------------------------------\n--------------------------------------------------------------------------------\n[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:\n  -> Песочницы bCONTAINER (Индекс люфта): 0.024006 / 0.024\n  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = 0.960938\n  -> Драйвер экрана bGUI (Люфт упругости) : 0.024006\n  -> Диспетчер потоков bPROC (Люфт шины)  : 0.024006\n  -> Спецификация bREGISTRY               : REGISTRY_LOCKED: Инварианты UMM v8.3 запечатаны на уровне кремния.\n  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)\n\n[МЕТА-ПЛАТФОРМА АКТИВНА] Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER.\n================================================================================\n'
-========================= 3 failed, 1 passed in 4.50s ==========================
+  banachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’
+     90 |         float target_density = current_density + signal_intensity cleavage;
+        |                                                                   ^~~~~~~~
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
+    175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
+        |                                                    ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:36:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ERROR test_native_core.py::test_equatorial_register_lockup - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  In file included from main.cpp:36:
+  banachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:
+  banachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’
+     90 |         float target_density = current_density + signal_intensity cleavage;
+        |                                                                   ^~~~~~~~
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
+    175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
+        |                                                    ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:36:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  In file included from main.cpp:36:
+  banachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:
+  banachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’
+     90 |         float target_density = current_density + signal_intensity cleavage;
+        |                                                                   ^~~~~~~~
+  main.cpp: In function ‘int main(int, char**)’:
+  main.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]
+    175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};
+        |                                                    ^~~~
+  make: *** [Makefile:78: main.o] Error 1
+  
+assert 2 == 0
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra -c main.cpp -o main.o\n', stderr='In file included from main.cpp:36:\nbanachos_bhid.hpp: In member function ‘std::pair<bool, std::__cxx11::basic_string<char> > BanachOSHIDDriver::inject_input_event(int, float)’:\nbanachos_bhid.hpp:90:67: error: expected ‘,’ or ‘;’ before ‘cleavage’\n   90 |         float target_density = current_density + signal_intensity cleavage;\n      |                                                                   ^~~~~~~~\nmain.cpp: In function ‘int main(int, char**)’:\nmain.cpp:175:52: error: narrowing conversion of ‘9999’ from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} [-Wnarrowing]\n  175 |     SwarmTransaction exploit_tx = {0x9999, 0x9999, 9999};\n      |                                                    ^~~~\nmake: *** [Makefile:78: main.o] Error 1\n').returncode
+============================== 4 errors in 0.69s ===============================
 ```
 <!-- CRASH_END -->
 
