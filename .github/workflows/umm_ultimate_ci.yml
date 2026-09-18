@@ -2,13 +2,13 @@ name: UMM v8.3 Production Math Engine & Documentation CI
 
 on:
   push:
-    branches: [ "main" ] # Автоматический триггер при изменении файлов и пуше
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch: # МГНОВЕННЫЙ РУЧНОЙ ТРИГГЕР (Добавляет кнопку "Run workflow" на GitHub)
+  workflow_dispatch:
 
 permissions:
-  contents: write # Разрешение боту GitHub Actions перезаписывать README.md
+  contents: write
 
 jobs:
   mathematical_validation_and_doc:
@@ -26,7 +26,8 @@ jobs:
     - name: Inject Strict Computational Stack
       run: |
         python -m pip install --upgrade pip
-        pip install numpy pytest
+        # Добавляем torch и cupy для сборки нашего планировщика прерываний
+        pip install numpy pytest torch cupy-cuda12x
 
     - name: Execute Strict Matrix and Spectral Tests
       run: pytest test_ultimate.py -v -s
@@ -56,5 +57,4 @@ jobs:
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions Bot"
         git add README.md
-        # Коммитим только если таблица реально обновилась, предотвращая зацикливание сборки
         git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants table [skip ci]" && git push)
