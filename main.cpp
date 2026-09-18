@@ -56,8 +56,6 @@
 #include "banachos_bredshift.hpp"      // Глава 6.1: Субнодальное сдвиговое старение пакетов
 #include "banachos_bedge_state.hpp"    // Глава 9.3: Топологический отказоустойчивый маршрутизатор
 #include "banachos_bdiscreteslit.hpp"  // Глава 14: Квантовый детектор скрытого чтения Наблюдателя
-
-// НОВЕЙШИЙ ТОПОЛОГИЧЕСКИЙ ХИМИЧЕСКИЙ ДВИЖОК:
 #include "banachos_bchem.hpp"          // Глава 4.2: Валентность и квантовый обмен зарядами
 
 // Подключение прикладного слоя
@@ -77,12 +75,13 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv; 
+        std::string arg1 = argv[1]; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
     }
 
+    // Полная bare-metal аллокация управляющих классов на стеке ядра
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -123,8 +122,6 @@ int main(int argc, char* argv[]) {
     BanachOSRedshiftCalculator redshift_calculator;
     BanachOSEdgeRouter edge_router;
     BanachOSDiscreteSlitDetector slit_detector;
-
-    // Стек-аллокация химического движка bCHEM
     BanachOSTopologicalChemistry topology_chemistry;
 
     BanachOSFanController fan;
@@ -137,8 +134,6 @@ int main(int argc, char* argv[]) {
     BanachOSSwapController bswap; 
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
-
-    std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
     // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
     
@@ -215,6 +210,11 @@ int main(int argc, char* argv[]) {
     float transferred_charge = topology_chemistry.execute_charge_exchange(1, 1, 1, 2.5f);
     int active_valence = topology_chemistry.calculate_geometrical_valence(1, 1, 1);
 
+    // bGENESIS (Динамическая экспансия): Имитируем экстремальный импульс накачки центральной ячейки пространства
+    genesis_bootloader.inject_metric_expansion_impulse(8, 8, 8, 200.0f);
+    float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
+    float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
+
     // Вывод телеметрии физических инвариантов новой математики в лог загрузки
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
@@ -228,8 +228,10 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Каскадный роутер краевых токов bEDGE_STATE        : Скорость сигнала = " << protected_velocity << std::endl;
     std::cout << "[BOOT] Детектор скрытого чтения bDISCRETE_SLIT           : " << slit_msg << std::endl;
     std::cout << "[BOOT] Топологическая химия bCHEM (Перенос заряда)      : " << transferred_charge << " Кл, Валентность соты = " << active_valence << std::endl;
+    std::cout << "[BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : " << dynamic_zeta << " : " << dynamic_leeway << " (Ячейка пространства расширена)" << std::endl;
 
-    // Опрос диагностических и прикладных узлов
+    std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
+    // Опрос стандартных диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
     mux.switch_active_frame_buffer(1, 10.0f, out_msg);
