@@ -1,3 +1,11 @@
+/**
+ * ================================================================================
+ * BANACHOS v8.3 — PROCESS MANAGER IMPLEMENTATION (banachos_bproc.cpp)
+ * Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
+ * Formalism: Easticity & Metric Strain Core Integration
+ * ================================================================================
+ */
+
 #include "banachos_bproc.hpp"
 #include <cmath>
 #include <algorithm>
@@ -46,8 +54,6 @@ bool BanachOSProcessManager::update_process_state(int pid, float task_execution_
     int x = it->second.x;
 
     float current_stress = proc_stress_matrix[z][y][x];
-    
-    // Детерминированное приведение типов (static_cast + floor) исключает ворнинги оптимизации -O3
     float target_stress = current_stress + std::floor(task_execution_stress);
     
     ProcCoords shifts[Z_COORDINATION];
@@ -66,21 +72,17 @@ bool BanachOSProcessManager::update_process_state(int pid, float task_execution_
 
     float current_le = 0.0f;
     if (p_in > 0.0f && target_stress < LOAD_LIMIT) {
-        const float MU_SHEAR = 0.85f; // Коэффициент сдвиговой эластичности матрицы All-Born
+        const float MU_SHEAR = 0.85f; 
         float pressure_ratio = (p_ext - p_in) / p_in;
         
-        // Модифицировано v8.3.2: внедрена нелинейная эластичность
         current_le = LE_BASE * (1.0f - MU_SHEAR * pressure_ratio);
 
-        // ЭФФЕКТ МИКРО-ЭКСПАНСИИ ЯЧЕЙКИ ПРОСТРАНСТВА ЕФИМА МАРКОВА
-        // При критической нагрузке сфера упруго расширяется наружу, локально увеличивая люфт
         if (target_stress > 10.0f) {
             float expansion_factor = std::log1p(target_stress / LOAD_LIMIT) * 0.005f;
             current_le += expansion_factor;
         }
     }
 
-    // --- АППАРАТНАЯ ИЗОЛЯЦИЯ И СБРОС ЗАВИСШЕГО ПРОЦЕССА (Триггер 256 ≡ 0) ---
     if (current_le <= 0.0f || target_stress >= LOAD_LIMIT) {
         proc_stress_matrix[z][y][x] = 0.1f;
         leeway_matrix[z][y][x] = LE_BASE;
