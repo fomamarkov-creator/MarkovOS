@@ -1,191 +1,184 @@
 <svg xmlns="http://w3.org" viewBox="0 0 800 650" width="100%" height="100%">
-  <style>
-    .bg { fill: #0d1117; }
-    .term-text { font-family: "Courier New", monospace; font-size: 11px; fill: #c9d1d9; }
-    .accent { fill: #58a6ff; font-weight: bold; }
-    .success { fill: #3fb950; font-weight: bold; }
-    .warn { fill: #d29922; font-weight: bold; }
-  </style>
-  <rect class="bg" width="100%" height="100%" rx="6" />
-  <g class="term-text" transform="translate(20, 30)">
+  <rect width="100%" height="100%" fill="#0d1117" rx="6" />
+  <g font-family="monospace" font-size="12px" fill="#c9d1d9" transform="translate(20, 30)">
     <text x="0" y="0.0" opacity="0">
       <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.00s" fill="freeze" />
       ================================================================================
     </text>
     <text x="0" y="13.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.04s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.05s" fill="freeze" />
       BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER
     </text>
     <text x="0" y="27.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.08s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.10s" fill="freeze" />
       ================================================================================
     </text>
     <text x="0" y="40.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.12s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.15s" fill="freeze" />
       [INIT] Драйвер banachos_bridge.py успешно инициализирован в пространстве C++.
     </text>
     <text x="0" y="54.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.16s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.20s" fill="freeze" />
       [INIT] Расширенный рантайм bLANG (v8.3.5) интегрирован в монолит ядра.
     </text>
     <text x="0" y="67.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.20s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.25s" fill="freeze" />
       [INIT] Драйвер banachos_bridge.py успешно инициализирован в пространстве C++.
     </text>
     <text x="0" y="81.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.24s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.30s" fill="freeze" />
+      [BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...
     </text>
     <text x="0" y="94.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.28s" fill="freeze" />
-      <tspan class="warn">[WARN]</tspan> bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.35s" fill="freeze" />
+      [WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.
     </text>
     <text x="0" y="108.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.32s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Графика дисплея: GUI_<tspan class="success">SUCCESS</tspan>: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.40s" fill="freeze" />
+      [BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея
     </text>
     <text x="0" y="121.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.36s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Диспетчер bPROC: PROC_<tspan class="success">SUCCESS</tspan>: Квант времени ЦП детерминированно выделен задаче
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.45s" fill="freeze" />
+      [BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче
     </text>
     <text x="0" y="135.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.40s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Накопитель bFS : FS_<tspan class="success">SUCCESS</tspan>: Данные зафиксированы вектором деформации bFS
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.50s" fill="freeze" />
+      [BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS
     </text>
     <text x="0" y="148.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.44s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Аудиосистема bAUDIO: AUDIO_<tspan class="success">SUCCESS</tspan>: Звуковой квант детерминированно обработан в рамках Липшицева зазора.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.55s" fill="freeze" />
+      [BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.
     </text>
     <text x="0" y="162.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.48s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Контроллер bDMA    : DMA_<tspan class="success">SUCCESS</tspan>: Прямой доступ к памяти верифицирован геометрическим цензором.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.60s" fill="freeze" />
+      [BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.
     </text>
     <text x="0" y="175.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.52s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.65s" fill="freeze" />
       [bCOMPILER] Накапливается исходный код программы... Строк обнаружено: 5
     </text>
     <text x="0" y="189.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.56s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Оптический процессор bLENS (Отклонение луча X:Y:Z): 0:0.0437181 -0.0512397
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.70s" fill="freeze" />
+      [BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): 0:0.0437181 -0.0512397
     </text>
     <text x="0" y="202.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.60s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Локальный хронометр bCLOCK (Вековое смещение)  : -0.00327461 тиков
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.75s" fill="freeze" />
+      [BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : -0.00327461 тиков
     </text>
     <text x="0" y="216.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.64s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Анизотропный расщепитель bAUDIO (Частоты Fx:Fy:Fz): 85424.5:93190.3:78853.4 Гц
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.80s" fill="freeze" />
+      [BOOT] Анизотропный расщепитель bAUDIO (Частоты Fx:Fy:Fz): 85424.5:93190.3:78853.4 Гц
     </text>
     <text x="0" y="229.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.68s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Слой eBPF-валидации bGUARD (Активных фильтров)   : 1
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.85s" fill="freeze" />
+      [BOOT] Слой eBPF-валидации bGUARD (Активных фильтров)   : 1
     </text>
     <text x="0" y="243.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.72s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> JIT-компилятор CUDA-ядер bGEN_CUDA                : CUDA_JIT_<tspan class="success">SUCCESS</tspan>: Нативное ядро 3HCP успешно скомпилировано через NVRTC и развернуто на GPU.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.90s" fill="freeze" />
+      [BOOT] JIT-компилятор CUDA-ядер bGEN_CUDA                : CUDA_JIT_SUCCESS: Нативное ядро 3HCP успешно скомпилировано через NVRTC и развернуто на GPU.
     </text>
     <text x="0" y="256.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.76s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Драйвер All-Born границ bCASIMIR (Вектор силы)   : X=-15.889, Y=-1.5889, Z=-0.794449
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.95s" fill="freeze" />
+      [BOOT] Драйвер All-Born границ bCASIMIR (Вектор силы)   : X=-15.889, Y=-1.5889, Z=-0.794449
     </text>
     <text x="0" y="270.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.80s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Топологический триггер bTHRUST (Реактивный выброс): 23.0272 Па
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.00s" fill="freeze" />
+      [BOOT] Топологический триггер bTHRUST (Реактивный выброс): 23.0272 Па
     </text>
     <text x="0" y="283.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.84s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Рециркуляция матрицы bRESPIRATION (Лог фазы 2)   : RESPIRATION_EXHALATION_COMPLETE: Избыточное натяжение успешно отведено через полярный канал Z (256 ≡ 0).
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.05s" fill="freeze" />
+      [BOOT] Рециркуляция матрицы bRESPIRATION (Лог фазы 2)   : RESPIRATION_EXHALATION_COMPLETE: Избыточное натяжение успешно отведено через полярный канал Z (256 ≡ 0).
     </text>
     <text x="0" y="297.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.88s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Субнодальное сдвиговое старение пакетов bREDSHIFT : 0.000339462 z-единиц
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.10s" fill="freeze" />
+      [BOOT] Субнодальное сдвиговое старение пакетов bREDSHIFT : 0.000339462 z-единиц
     </text>
     <text x="0" y="310.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.92s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Каскадный роутер краевых токов bEDGE_STATE        : Скорость сигнала = 0.9964
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.15s" fill="freeze" />
+      [BOOT] Каскадный роутер краевых токов bEDGE_STATE        : Скорость сигнала = 0.9964
     </text>
     <text x="0" y="324.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="0.96s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Детектор скрытого чтения bDISCRETE_SLIT           : OBSERVER_DETECTED: Механическое вмешательство зафиксировано! Волна пилота разрушена (256 ≡ 0)
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.20s" fill="freeze" />
+      [BOOT] Детектор скрытого чтения bDISCRETE_SLIT           : OBSERVER_DETECTED: Механическое вмешательство зафиксировано! Волна пилота разрушена (256 ≡ 0)
     </text>
     <text x="0" y="337.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.00s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Топологическая химия bCHEM (Перенос заряда)      : 112.5 Кл, Валентность соты = 12
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.25s" fill="freeze" />
+      [BOOT] Топологическая химия bCHEM (Перенос заряда)      : 112.5 Кл, Валентность соты = 12
     </text>
     <text x="0" y="351.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.04s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : 1.0596 : 0.0596026 (Ячейка пространства расширена)
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.30s" fill="freeze" />
+      [BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : 1.0596 : 0.0596026 (Ячейка пространства расширена)
     </text>
     <text x="0" y="364.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.08s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Среда исполнения утилит bLANG (Расширенный JIT)  : bLANG_JIT_<tspan class="success">SUCCESS</tspan>: Утилита &#x27;bSYS_PROVISION&#x27; выполнена. R1=114 (mod 256), Люфт матрицы=0
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.35s" fill="freeze" />
+      [BOOT] Среда исполнения утилит bLANG (Расширенный JIT)  : bLANG_JIT_SUCCESS: Утилита 'bSYS_PROVISION' выполнена. R1=114 (mod 256), Люфт матрицы=0
     </text>
     <text x="0" y="378.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.12s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : 0.0239536 / Логический инференс = 86
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.40s" fill="freeze" />
+      [BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : 0.0239536 / Логический инференс = 86
     </text>
     <text x="0" y="391.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.16s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Нативный волновой рендеринг bGRAPHICS &amp; bFONT     : 113 (Символы bSHELL синтезированы)
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.45s" fill="freeze" />
+      [BOOT] Нативный волновой рендеринг bGRAPHICS &amp; bFONT     : 113 (Символы bSHELL синтезированы)
     </text>
     <text x="0" y="405.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.20s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Частотный оконный микшер bMUX_WAVE (Excitation)  : 24 (Слои окон скомпонованы без SurfaceFlinger)
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.50s" fill="freeze" />
+      [BOOT] Частотный оконный микшер bMUX_WAVE (Excitation)  : 24 (Слои окон скомпонованы без SurfaceFlinger)
     </text>
     <text x="0" y="418.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.24s" fill="freeze" />
-      <tspan class="accent">[BOOT]</tspan> Слой bHEALER   : HEAL_<tspan class="success">SUCCESS</tspan>: Текущие микро-деформации ядра успешно сглажены Липшицевым барьером.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.55s" fill="freeze" />
+      [BOOT] Слой bHEALER   : HEAL_SUCCESS: Текущие микро-деформации ядра успешно сглажены Липшицевым барьером.
     </text>
     <text x="0" y="432.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.28s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.60s" fill="freeze" />
       --------------------------------------------------------------------------------
     </text>
     <text x="0" y="445.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.32s" fill="freeze" />
-      [bINJECTOR] <tspan class="success">УСПЕШНО</tspan>: Перехват контекста PID 2048 зафиксирован на уровне регистров ARM.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.65s" fill="freeze" />
+      [bINJECTOR] УСПЕШНО: Перехват контекста PID 2048 зафиксирован на уровне регистров ARM.
     </text>
     <text x="0" y="459.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.36s" fill="freeze" />
-      [bINJECTOR] <tspan class="success">УСПЕШНО</tspan>: Системные вызовы sys_socket/sys_connect Android перенаправлены в соты bNET.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.70s" fill="freeze" />
+      [bINJECTOR] УСПЕШНО: Системные вызовы sys_socket/sys_connect Android перенаправлены в соты bNET.
     </text>
     <text x="0" y="472.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.40s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.75s" fill="freeze" />
       [bINJECTOR] Обнаружен бинарный формат: ANDROID_ELF
     </text>
     <text x="0" y="486.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.44s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.80s" fill="freeze" />
       [bINJECTOR] Запуск фазы горячего вытеснения гостевого ядра Linux/Android...
     </text>
     <text x="0" y="499.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.48s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.85s" fill="freeze" />
       [bINJECTOR] Сквозная универсальная трансляция кода завершена
     </text>
     <text x="0" y="513.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.52s" fill="freeze" />
-      [bINJECTOR] TRANSLATOR_<tspan class="success">SUCCESS</tspan>: Байт-код bLANG детерминированно сгенерирован.
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.90s" fill="freeze" />
+      [bINJECTOR] TRANSLATOR_SUCCESS: Байт-код bLANG детерминированно сгенерирован.
     </text>
     <text x="0" y="526.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.56s" fill="freeze" />
-      [bINJECTOR] <tspan class="success">УСПЕШНО</tspan>: Гостевой ELF-образ (8 байт) полностью вытеснен. Индекс усадки матрицы = 0.03125
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.95s" fill="freeze" />
+      [bINJECTOR] УСПЕШНО: Гостевой ELF-образ (8 байт) полностью вытеснен. Индекс усадки матрицы = 0.03125
     </text>
     <text x="0" y="540.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.60s" fill="freeze" />
-      [CONTAINER] Кросс-платформенный запрос: CONTAINER_<tspan class="success">SUCCESS</tspan>: Запрос ресурсов детерминированно выполнен в рамках Липшицевой нормы
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="2.00s" fill="freeze" />
+      [CONTAINER] Кросс-платформенный запрос: CONTAINER_SUCCESS: Запрос ресурсов детерминированно выполнен в рамках Липшицевой нормы
     </text>
     <text x="0" y="553.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.64s" fill="freeze" />
-      [SWARM_CONTRACT] CONTRACT_<tspan class="success">SUCCESS</tspan>: Роевая транзакция детерминированно зафиксирована. Квант состояния: 42
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="2.05s" fill="freeze" />
+      [SWARM_CONTRACT] CONTRACT_SUCCESS: Роевая транзакция детерминированно зафиксирована. Квант состояния: 42
     </text>
     <text x="0" y="567.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.68s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="2.10s" fill="freeze" />
       [SWARM_CONTRACT] Попытка нарушения консенсуса или атаки double-spend изолирована аппаратно (256 ≡ 0)
     </text>
     <text x="0" y="580.5" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.72s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="2.15s" fill="freeze" />
       [SWARM_CONTRACT] Аномалия Липшица! Сота вывернута в 0.1 и переведена в режим Покоя.
     </text>
     <text x="0" y="594.0" opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="1.76s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="0.05s" begin="2.20s" fill="freeze" />
       [SWARM_CONTRACT] Вытеснение успешно инициировано и выведено на экран для полной изоляции.
     </text>
   </g>
