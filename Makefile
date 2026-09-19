@@ -69,6 +69,8 @@ DEPS = banachos_mem.hpp \
        banachos_genesis.hpp \
        banachos_bgraphics.hpp \
        banachos_bmux_wave.hpp \
+       banachos_baudio.cpp \
+       banachos_jni_bridge.cpp \
        banachos_apk_vulkan.hpp
 
 # Физико-химические модули расширения монографии
