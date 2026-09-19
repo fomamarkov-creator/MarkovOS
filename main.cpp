@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv; 
+        std::string arg1 = argv[1]; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
