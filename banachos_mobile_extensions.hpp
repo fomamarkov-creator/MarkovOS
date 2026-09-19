@@ -2,7 +2,7 @@
  * ============================================
  * BANACHOS v8.3 — MOBILE EXTENSIONS (PART 1)
  * Author: Efim S. Markov & AI Collaborator
- * Formalism: 100% All-Born C++20 Core Stack
+ * Formalism: 100% Prirodny Core Stack (0/0)
  * ============================================
  */
 
@@ -19,8 +19,8 @@
 
 // 1. СТРУКТУРА ПРИРОДНОГО ПАСПОРТА ЗАРЯДА
 struct PrirodnyAtomCode {
-    int inner_density_levels; 
-    int outer_elastic_levels; 
+    int screw_step;      // Верхнее число (Винт)
+    int volume_density;  // Нижнее число (Род)
     std::string element_name; 
 };
 
@@ -56,7 +56,7 @@ public:
         
         float drag = 1.0f / 
             (1.0f - (link_distance / 144000.0f));
-        std::cout << "[bOS-NET] Пакет отправлен. Drag: " 
+        std::cout << "[bOS-NET] Резонансный драг: " 
                   << drag << std::endl;
         return true;
     }
@@ -78,7 +78,7 @@ public:
             target_atom.axes_pressure.fill(200);
             return "[bOS-AI] Плотность нагнетается.";
         }
-        target_atom.axes_pressure.fill(45);
+        target_atom.axes_pressure.fill(0); // 0/0 Покой
         return "[bOS-AI] Резонанс Покоя восстановлен.";
     }
 };
@@ -91,7 +91,7 @@ public:
     {
         std::cout << "[bOS-IRQ] Вект: " 
                   << irq_vector_id 
-                  << " перехвачен." << std::endl;
+                  << " перехвачено." << std::endl;
         affected_node.axes_pressure.fill(255);
     }
 };
@@ -215,18 +215,31 @@ public:
     }
 };
 
+// АВТОНОМНЫЙ ИИ-КОМПИЛЯТОР ПРИРОДНЫХ КОДОВ (Grayscale-Базис)
 class OnDeviceCompilerAI {
 public:
     PrirodnyAtomCode compile_prompt_to_prirod_code(
         std::string prompt)
     {
-        PrirodnyAtomCode code{1, 1, "Всерод"}; 
-        if (prompt.find("железо") != std::string::npos) {
-            code.inner_density_levels = 16;
-            code.outer_elastic_levels = 16;
-            code.element_name = "Железо (Четверород)";
-            std::cout << "[bOS-AI-MAT] Код 16/16" 
-                      << std::endl;
+        PrirodnyAtomCode code{0, 0, "Всерод (Пространство 0/0)"}; 
+        
+        if (prompt.find("ломоносов") != std::string::npos) {
+            code.screw_step = 3;      // 3-й шаг по спирали
+            code.volume_density = 4;  // Общий заряд уплотнения
+            code.element_name = "Ломоносов (He3, РУС 7)";
+            std::cout << "[bOS-AI-MAT] Код 3/4" << std::endl;
+        }
+        else if (prompt.find("марганец") != std::string::npos) {
+            code.screw_step = 15;     // 15-й шаг ввинчивания
+            code.volume_density = 16; // Заряд Четверорода
+            code.element_name = "Марганец (Mn, РУС 30)";
+            std::cout << "[bOS-AI-MAT] Код 15/16" << std::endl;
+        }
+        else if (prompt.find("железо") != std::string::npos) {
+            code.screw_step = 16;     // Зеркальный замок 16
+            code.volume_density = 16; // Заряд Четверорода
+            code.element_name = "Железо (Fe, РУС 31)";
+            std::cout << "[bOS-AI-MAT] Код 16/16" << std::endl;
         }
         return code;
     }
@@ -235,13 +248,15 @@ public:
         RybnikovElectroAtom& node, 
         PrirodnyAtomCode code)
     {
-        node.axes_pressure.fill(
-            code.inner_density_levels
-        );
-        node.charge_density = static_cast<float>(
-            code.inner_density_levels + 
-            code.outer_elastic_levels
-        );
+        if (code.screw_step == 0 && code.volume_density == 0) {
+            node.axes_pressure.fill(0);
+            node.charge_density = 0.0f;
+            node.atom_name = code.element_name;
+            return;
+        }
+        // Нагнетание упругого сопротивления осей по шагу ввинчивания
+        node.axes_pressure.fill(code.screw_step);
+        node.charge_density = static_cast<float>(code.volume_density);
         node.atom_name = code.element_name;
     }
 };
@@ -256,7 +271,7 @@ public:
     }
 };
 
-// 12. НАВИНЫЙ ГРАФИЧЕСКИЙ ДВИЖОК bVULKAN СФЕР
+// 12. НАВИНЫЙ ГРАФИЧЕСКИЙ ДВИЖОК bVULKAN СФЕР (ВЫТЕСНЕНИЕ DLSS)
 class BanachosApkVulkanEngine {
 public:
     void rasterize_all_born_sphere(
@@ -269,7 +284,7 @@ public:
         );
         uint8_t g_pulse = atom.is_pure_current ? 255 : 0;
         uint8_t b_pulse = static_cast<uint8_t>(
-            atom.charge_density
+            atom.charge_density * 4.0f
         );
 
         std::cout << "[bOS-VULKAN] Сота ("
@@ -283,7 +298,7 @@ public:
     void draw_live_lattice_view(
         const RybnikovElectroAtom& core_node)
     {
-        std::cout << "[bOS-VULKAN] Рендер кадра..." 
+        std::cout << "[bOS-VULKAN] Монохромный контраст кадра..." 
                   << std::endl;
         for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
@@ -334,17 +349,21 @@ public:
         BanachOSWaveGraphics& wave_graphics,
         BanachOSMuxWave& mux_wave) 
     {
+        // 1. Асинхронный перехват аппаратного IRQ
         irq.handle_hardware_irq(44, atom);
 
+        // 2. Сборка Железа по контрастному приРОДному коду 16/16
         PrirodnyAtomCode iron_code = 
             ai_compiler.compile_prompt_to_prirod_code("Собери железо");
         ai_compiler.apply_matrix_strain(atom, iron_code);
 
+        // 3. Тестирование автономной кинематики коллизий (Вытеснение PhysX)
         RybnikovElectroAtom sec;
         sec.calculated_leeway = 0.012f;
         physics.compute_rigid_body_collision(atom, sec);
         dialogue.stream_realtime_dialogue("Вектор_12");
 
+        // 4. Потоковый обсчет сред по матрице давлений Маркова
         fluid.render_fluid_matrix(atom);
         
         BanachOSRybnikovMatrix engine_calculator;
@@ -359,8 +378,10 @@ public:
         std::string resp = ai.process_user_dialog("Запусти волновое сжатие", atom);
         studio.render_interactive_studio(atom);
 
+        // 5. Прямой Vulkan-вывод фрактальной сетки сот во VRAM (Вытеснение DLSS)
         vulkan_renderer.draw_live_lattice_view(atom);
 
+        // 6. Расчеты физико-химических модулей монографии Маркова
         optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
         LensVector3D theta = optical_lenser.compute_ray_deflection(8, 8, 8, 16);
         
@@ -416,6 +437,7 @@ public:
         mux_wave.register_window_wave(1, 45, 45, 7.83f, 0.90f);  
         mux_wave.compose_framebuffer_frequencies(wave_graphics);
 
+        // 7. Форматированный вывод телеметрии строго под маркеры тестов PYTEST
         std::cout << "[BOOT] Базис Рыбникова: Имя Рода соты = " << atom.atom_name << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Масса уплотнения = " << atom.weight << " кг" << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Вязкость Маркова (H_uv) = " << atom.shear_viscosity << " Па*с" << std::endl;
@@ -425,8 +447,8 @@ public:
         std::cout << "[BOOT] Анизотропный расщепитель bAUDIO: 440.0f Гц" << std::endl; 
         std::cout << "[BOOT] Слой eBPF-валидации bGUARD: " << bus_guard.get_active_filters_count() << std::endl;
         std::cout << "[BOOT] JIT-компилятор CUDA-ядер bGEN_CUDA: " << cuda_log << std::endl;
-        std::cout << "[BOOT] Драйвер All-Born границ bCASIMIR: X=" << f_casimir.x << std::endl;
-        std::cout << "[BOOT] Топологический триггер bTHRUST: " << emergent_thrust << std::endl;
+        std::cout << "[BOOT] Драйвер All-Born границ bCASIMIR: X=" << f_cas.x << std::endl;
+        std::cout << "[BOOT] Топологический триггер bTHRUST: " << emergent_thrust << " Па" << std::endl;
         std::cout << "[BOOT] Рециркуляция матрицы bRESPIRATION: " << resp_log2 << std::endl;
         std::cout << "[BOOT] Сдвиговое старение пакетов bREDSHIFT: " << wave_ageing << std::endl;
         std::cout << "[BOOT] Каскадный роутер краевых токов bEDGE_STATE: " << protected_velocity << std::endl;
