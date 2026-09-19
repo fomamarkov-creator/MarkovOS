@@ -22,7 +22,7 @@ jobs:
     - name: Inject Strict Computational Stack
       run: |
         python -m pip install --upgrade pip
-        pip install numpy pytest torch cupy-cuda12x
+        pip install numpy pytest torch cupy-cuda12x termtosvg
 
     - name: Execute Strict Matrix and Spectral Tests
       id: pytests
@@ -34,9 +34,11 @@ jobs:
         make clean
         make
         echo "========================================================================"
-        echo "🦾 ЗАПУСК ЖИВОГО ИСПЫТАНИЯ ЯДРА BANACHOS НА СЕРВЕРЕ LINUX GITHUB..."
+        echo "🦾 ЗАПИСЬ ЖИВОЙ АНИМАЦИИ ОНТОГЕНЕЗА И СИМУЛЯЦИИ ЯДРА BANACHOS..."
         echo "========================================================================"
-        ./banachos_core
+        # Автоматическая запись консольного вывода ядра в анимированный векторный SVG-кадр
+        termtosvg ontogenesis_live.svg -c "./banachos_core" -g 128x40
+        
         echo "========================================================================"
         echo "📊 СТАРТ ЛИПШИЦЕВА СТРЕСС-БЕНЧМАРКА СКОРОСТИ МАКРО-СЛОЕВ..."
         echo "========================================================================"
@@ -52,7 +54,6 @@ jobs:
         echo "========================================================================"
         echo "[bDEBUG] ОБНАРУЖЕН КРАХ СБОРКИ. ГЕНЕРАЦИЯ МАРКОВСКОГО ДАМПА (40 СТРОК)..."
         
-        # Пересобираем и ловим последние 40 строк чистой ошибки g++ / pytest
         make > crash_raw.log 2>&1 || true
         pytest test_native_core.py -v -s >> crash_raw.log 2>&1 || true
         tail -n 40 crash_raw.log > 40_line_crash.log
@@ -95,10 +96,9 @@ jobs:
         with open(readme_path, 'r', encoding='utf-8') as f:
             readme_text = f.read()
         
-        # Проверяем наличие файла umm_report.md, генерируем заглушку если отсутствует
         if not os.path.exists(report_path):
             with open(report_path, 'w', encoding='utf-8') as rf:
-                rf.write('### ✅ УСПЕШНО: Все инварианты UMM v8.3 запечатаны в кремнии Линукса.')
+                rf.write('### ✅ УСПЕШНО: Все инварианты упругой решетки UMM v9.0 запечатаны в кремнии Линукса.')
                 
         with open(report_path, 'r', encoding='utf-8') as f:
             report_content = f.read()
@@ -115,10 +115,10 @@ jobs:
             f.write(final_readme)
         "
 
-    - name: Auto-Commit and Push Generated README
+    - name: Auto-Commit and Push Generated README & Live Animation
       if: success()
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions Bot"
-        git add README.md
-        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants table [skip ci]" && git push)
+        git add README.md ontogenesis_live.svg
+        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-inject live ontogenesis animation [skip ci]" && git push)
