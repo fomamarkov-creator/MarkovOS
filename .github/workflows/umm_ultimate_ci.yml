@@ -50,29 +50,13 @@ jobs:
             
         with open('ontogenesis_live.svg', 'w', encoding='utf-8') as sf:
             sf.write('<svg xmlns=\"http://w3.org\" viewBox=\"0 0 800 650\" width=\"100%\" height=\"100%\">\n')
-            sf.write('  <style>\n')
-            sf.write('    .bg { fill: #0d1117; }\n')
-            sf.write('    .term-text { font-family: \"Courier New\", monospace; font-size: 11px; fill: #c9d1d9; }\n')
-            sf.write('    .accent { fill: #58a6ff; font-weight: bold; }\n')
-            sf.write('    .success { fill: #3fb950; font-weight: bold; }\n')
-            sf.write('    .warn { fill: #d29922; font-weight: bold; }\n')
-            sf.write('  </style>\n')
-            sf.write('  <rect class=\"bg\" width=\"100%\" height=\"100%\" rx=\"6\" />\n')
-            sf.write('  <g class=\"term-text\" transform=\"translate(20, 30)\">\n')
+            sf.write('  <rect width=\"100%\" height=\"100%\" fill=\"#0d1117\" rx=\"6\" />\n')
+            sf.write('  <g font-family=\"monospace\" font-size=\"12px\" fill=\"#c9d1d9\" transform=\"translate(20, 30)\">\n')
             
             for i, line in enumerate(lines[:45]):
-                safe_line = html.escape(line.strip())
-                delay_sec = i * 0.04
+                safe_line = line.strip().replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                delay_sec = i * 0.05
                 
-                if '[BOOT]' in safe_line:
-                    safe_line = safe_line.replace('[BOOT]', '<tspan class=\"accent\">[BOOT]</tspan>')
-                if '[STAGE 3]' in safe_line:
-                    safe_line = safe_line.replace('[STAGE 3]', '<tspan class=\"accent\">[STAGE 3]</tspan>')
-                if 'SUCCESS' in safe_line or 'PASSED' in safe_line or 'УСПЕШНО' in safe_line:
-                    safe_line = safe_line.replace('SUCCESS', '<tspan class=\"success\">SUCCESS</tspan>').replace('УСПЕШНО', '<tspan class=\"success\">УСПЕШНО</tspan>')
-                if '[WARN]' in safe_line or 'REJECTED' in safe_line:
-                    safe_line = safe_line.replace('[WARN]', '<tspan class=\"warn\">[WARN]</tspan>').replace('REJECTED', '<tspan class=\"warn\">REJECTED</tspan>')
-                    
                 sf.write(f'    <text x=\"0\" y=\"{i*13.5}\" opacity=\"0\">\n')
                 sf.write(f'      <animate attributeName=\"opacity\" from=\"0\" to=\"1\" dur=\"0.05s\" begin=\"{delay_sec:.2f}s\" fill=\"freeze\" />\n')
                 sf.write(f'      {safe_line}\n')
@@ -102,16 +86,24 @@ jobs:
         tail -n 40 crash_raw.log > 40_line_crash.log
         
         python -c "
+        import os
+        
         with open('40_line_crash.log', 'r', encoding='utf-8') as f:
             crash_lines = f.read()
-        crash_data = '<!-- CRASH_START -->\n### 🚨 MARKOV_CORE CRASH DUMP:\n\`\`\`text\n' + crash_lines + '\`\`\`\n<!-- CRASH_END -->\n\n'
+            
+        crash_data = '<!-- CRASH_START -->\n### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):\n\`\`\`text\n' + crash_lines + '\`\`\`\n<!-- CRASH_END -->\n\n'
+        
         with open('README.md', 'r', encoding='utf-8') as f:
             old_readme = f.read()
+            
         if '<!-- CRASH_START -->' in old_readme:
             old_readme = old_readme.split('<!-- CRASH_END -->')[1].strip()
+            
+        new_readme = crash_data + old_readme
         with open('README.md', 'w', encoding='utf-8') as f:
-            f.write(crash_data + old_readme)
+            f.write(new_readme)
         "
+        
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions Bot"
         git add README.md
@@ -127,20 +119,26 @@ jobs:
         readme_path = 'README.md'
         report_path = 'umm_report.md'
         start_tag = '<!-- MARKOV_REPORT_START -->'
+        
         with open(readme_path, 'r', encoding='utf-8') as f:
             readme_text = f.read()
+        
         if not os.path.exists(report_path):
             with open(report_path, 'w', encoding='utf-8') as rf:
                 rf.write('### ✅ УСПЕШНО: Все инварианты упругой решетки UMM v9.0 запечатаны в кремнии Линукса.')
+                
         with open(report_path, 'r', encoding='utf-8') as f:
             report_content = f.read()
+            
         if '<!-- CRASH_START -->' in readme_text:
             readme_text = readme_text.split('<!-- CRASH_END -->')[1].strip()
+            
         if start_tag in readme_text:
             head = readme_text.split(start_tag)
             final_readme = head[0] + start_tag + '\n\n' + report_content + '\n'
         else:
             final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
+            
         with open(readme_path, 'w', encoding='utf-8') as f:
             f.write(final_readme)
         "
