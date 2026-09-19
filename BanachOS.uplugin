@@ -1,0 +1,29 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "8.3",
+    "FriendlyName": "BanachOS V256 Physics Engine",
+    "Description": "Prirodny Lattice Engine Suite",
+    "Category": "Physics",
+    "CreatedBy": "Efim S. Markov & AI",
+    "CreatedByURL": "http://ruvserod.ru",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "CanContainContent": true,
+    "IsBetaVersion": false,
+    "IsExperimentalVersion": false,
+    "Installed": false,
+    "Modules": [
+        {
+            "Name": "BanachOSPhysics",
+            "Type": "Runtime",
+            "LoadingPhase": "PostConfigInit",
+            "PlatformAllowList": [
+                "Android",
+                "Win64",
+                "Linux"
+            ]
+        }
+    ]
+}
