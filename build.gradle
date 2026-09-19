@@ -1,5 +1,25 @@
+// 1. КОНТУР РЕПОЗИТОРИЕВ И ЗАГРУЗКИ АНДРОИД-ПЛАГИНОВ
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Подключаем стабильный Android Gradle Plugin
+        classpath 'com.android.tools.build:gradle:8.2.2'
+    }
+}
+
 plugins {
-    id 'com.android.application'
+    id 'com.android.application' version '8.2.2' apply false
+}
+
+// Применяем плагин к нашему мобильному приложению
+apply plugin: 'com.android.application'
+
+repositories {
+    google()
+    mavenCentral()
 }
 
 android {
@@ -13,7 +33,6 @@ android {
         versionCode 1
         versionName "8.3"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -23,7 +42,7 @@ android {
         }
     }
 
-    // Вшиваем наш нативный ARM64 С++ бинарник
+    // Принудительно вшиваем нативный С++ бинарник V256
     sourceSets {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
