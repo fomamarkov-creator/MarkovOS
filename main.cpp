@@ -83,8 +83,9 @@ int main(int argc, char* argv[]) {
     std::cout << "================================================================================" << std::endl;
     
     int target_pid = 2048; 
-    if (argc > 1) {
-        std::string arg1 = argv; 
+    // Исправлено: корректное чтение строкового аргумента из массива указателей char**
+    if (argc > 1 && argv[1] != nullptr) {
+        std::string arg1(argv[1]); 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
