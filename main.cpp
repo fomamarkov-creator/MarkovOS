@@ -59,7 +59,7 @@
 #include "banachos_bchem.hpp"          // Глава 4.2: Валентность и квантовый обмен зарядами
 
 // ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
-#include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG
+#include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG (Расширенная)
 #include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ Ефима Маркова
 #include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI и bFONT оболочки
 #include "banachos_bmux_wave.hpp"      // Глава 7.2: Частотный композитор окон bMUX_WAVE
@@ -67,7 +67,7 @@
 // Подключение прикладного слоя
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
-#include "banachos_bmux.hpp"           // Легаси-заголовок
+#include "banachos_bmux.hpp"           // Легаси-заголовок мультиплексора
 #include "banachos_btty.hpp"
 #include "banachos_bprobe.hpp"
 #include "banachos_bswap.hpp"
@@ -81,13 +81,13 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[1]; 
+        std::string arg1 = argv; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
     }
 
-    // Выделение памяти под стек управления BanachOS
+    // Аллокация памяти под стек управления BanachOS
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -104,12 +104,13 @@ int main(int argc, char* argv[]) {
     BanachOSDmaController dma_controller;
     BanachOSPowerController power_controller;
     BanachOsInterruptController irq_controller;
-    
+    // Инициализация переведенных C++20 модулей решетки 
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
     BanachOSHIDDriver hid_driver;
     BanachOSIPCMessenger ipc_messenger;
+    BanachOSDriverEvolver bswap; // Алиас легаси-контроллера для обратной совместимости
     BanachOSDefragmenter defragmenter;
     BanachOSIsoBuilder iso_builder;
     BanachOSCompiler static_verifier;
@@ -117,6 +118,7 @@ int main(int argc, char* argv[]) {
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
     
+    // Инициализация новых футуристических модулей монографии
     BanachOSOpticalLenser optical_lenser;
     BanachOSClockController clock_controller;
     BanachOSAudioSplitter audio_splitter;
@@ -136,18 +138,19 @@ int main(int argc, char* argv[]) {
     BanachOSWaveGraphics wave_graphics;
     BanachOSMuxWave mux_wave;
 
+    // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
-    BanachOSWindowMultiplexer mux; // Легаси-объект сохранен для совместимости
+    BanachOSWindowMultiplexer mux; 
     BanachOSTtyConsole tty;
     BanachOSDiagnosticProbe probe;
     BanachOSHardwareBridge bridge;
     BanachOSSwapController swap;
-    BanachOSSwapController bswap; 
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
 
     std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
+
     // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
     
@@ -216,8 +219,15 @@ int main(int argc, char* argv[]) {
     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
 
-    // bLANG: JIT-компиляция и исполнение системной утилиты в рамках ВМ кольца вычетов
-    std::vector<std::string> mock_script = {"ALLOC_MEM 64", "ADD_REG 0", "SUB_REG 12"};
+    // --- bLANG: ТЕСТИРОВАНИЕ РАСШИРЕННОГО НАБОРА ИНСТРУКЦИЙ (v8.3.5) ---
+    // Скрипт задействует волновые сдвиги, Липшицеву валидацию, экспансию ячеек и квантовую химию
+    std::vector<std::string> mock_script = {
+        "ALLOC_MEM 64", 
+        "WAVE_PROP 16",  // Волновое смещение через инвариант ZETA
+        "LIP_CHECK 50",  // Контроль Липшицева предела градиента
+        "CELL_EXP 8",    // Локальное расширение зазора электроатома
+        "CHEM_EX 32"     // Квантовый фазовый перенос заряда с инверсией
+    };
     std::string blang_log;
     blang_runtime.execute_jit_utility("bSYS_PROVISION", mock_script, blang_log);
 
@@ -232,10 +242,9 @@ int main(int argc, char* argv[]) {
     wave_graphics.synthesize_wave_glyph('S', 32, 40, 150.0f); 
     float pixel_excitation = wave_graphics.get_pixel_excitation(32, 32);
 
-    // --- bMUX_WAVE: ЧАСТОТНЫЙ КОМПОЗИТИНГ И МИKШИРОВАНИЕ ГАРМОНИК ОКOН ---
-    // Регистрируем два частотных источника окон (Основное окно и Оверлей) напрямую в композитор
-    mux_wave.register_window_wave(1, 45, 45, 7.83f, 0.90f);  // Частота Шумана Fx = 7.83 Гц, непрозрачность 90%
-    mux_wave.register_window_wave(2, 60, 70, 14.3f, 0.45f);  // Вторая гармоника Fy = 14.3 Гц, полупрозрачность 45%
+    // bMUX_WAVE: Частотный композитинг и микширование гармоник окон
+    mux_wave.register_window_wave(1, 45, 45, 7.83f, 0.90f);  
+    mux_wave.register_window_wave(2, 60, 70, 14.3f, 0.45f);  
     mux_wave.compose_framebuffer_frequencies(wave_graphics);
     float composited_excitation = wave_graphics.get_pixel_excitation(45, 45);
 
@@ -253,7 +262,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Детектор скрытого чтения bDISCRETE_SLIT           : " << slit_msg << std::endl;
     std::cout << "[BOOT] Топологическая химия bCHEM (Перенос заряда)      : " << transferred_charge << " Кл, Валентность соты = " << active_valence << std::endl;
     std::cout << "[BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : " << dynamic_zeta << " : " << dynamic_leeway << " (Ячейка пространства расширена)" << std::endl;
-    std::cout << "[BOOT] Среда исполнения утилит bLANG (JIT-Рантайм)      : " << blang_log << std::endl;
+    std::cout << "[BOOT] Среда исполнения утилит bLANG (Расширенный JIT)  : " << blang_log << std::endl;
     std::cout << "[BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : " << ai_mean_leeway << " / Логический инференс = " << neural_inference << std::endl;
     std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS & bFONT     : " << pixel_excitation << " (Символы bSHELL синтезированы)" << std::endl;
     std::cout << "[BOOT] Частотный оконный микшер bMUX_WAVE (Excitation)  : " << composited_excitation << " (Слои окон скомпонованы без SurfaceFlinger)" << std::endl;
