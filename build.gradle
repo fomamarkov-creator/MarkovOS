@@ -1,25 +1,6 @@
-// 1. КОНТУР РЕПОЗИТОРИЕВ И ЗАГРУЗКИ АНДРОИД-ПЛАГИНОВ
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        // Подключаем стабильный Android Gradle Plugin
-        classpath 'com.android.tools.build:gradle:8.2.2'
-    }
-}
-
 plugins {
-    id 'com.android.application' version '8.2.2' apply false
-}
-
-// Применяем плагин к нашему мобильному приложению
-apply plugin: 'com.android.application'
-
-repositories {
-    google()
-    mavenCentral()
+    // Подключаем стабильный Android Gradle Plugin
+    id 'com.android.application' version '8.2.2'
 }
 
 android {
