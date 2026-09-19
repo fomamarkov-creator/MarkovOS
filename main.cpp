@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
+    BanachOSCompiler static_verifier; // Декларация возвращена!
     BanachOSHllCompiler hll_compiler(static_verifier);
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
@@ -134,13 +135,15 @@ int main(int argc, char* argv[]) {
     BanachOSWaveGraphics wave_graphics;
     BanachOSMuxWave mux_wave;
     BanachOSX86Translator x86_pc_translator; 
-    BanachOSRybnikovMatrix rybnikov_matrix; // Активация нативного атомарного слоя UMM v9.0
+    BanachOSRybnikovMatrix rybnikov_matrix; 
 
     // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
+    BanachOSWindowMultiplexer mux; // Декларация возвращена!
     BanachOSTtyConsole tty;
     BanachOSDiagnosticProbe probe;
+    BanachOSHardwareBridge bridge;
     BanachOSSwapController swap;
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
@@ -172,7 +175,6 @@ int main(int argc, char* argv[]) {
 
     // --- bRYBNIKOV_MATRIX: ТЕСТИРОВАНИЕ ЭМЕРДЖЕНТНОЙ ДИНАМИКИ ВСЕРОДОВ ---
     RybnikovElectroAtom test_atom;
-    // Подаем анизотропное сжатие по 12 координационным осям Kepler-сферы
     test_atom.axes_pressure = {128, 64, 32, 16, 128, 64, 32, 16, 200, 200, 10, 10};
     rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom);
     
