@@ -39,11 +39,10 @@ jobs:
         run: |
           make clean
           make
-          # Прямая монолитная сборка в корень для тестов производительности Липшица
+          # Прямая монолитная сборка для тестов производительности Липшица
           g++ -std=c++20 -O3 main.cpp banachos_mem.cpp banachos_hal.cpp banachos_syscalls.cpp banachos_net.cpp banachos_crypto.cpp banachos_translator.cpp banachos_injector.cpp banachos_bgui.cpp banachos_bproc.cpp banachos_bcontainer.cpp banachos_baudio.cpp -o banachos_core
-          # Прописываем файл во все подкаталоги репозитория для pytest
-          cp banachos_core ./banachos_core
-          find . -type d -exec cp banachos_core {}/banachos_core \; 2>/dev/null || true
+          # Рекурсивно распространяем бинарник только во внутренние подкаталоги для pytest
+          find . -mindepth 2 -type d -exec cp -f banachos_core {}/banachos_core \; 2>/dev/null || true
 
       - name: Verify Core Telemetry via Pytest
         run: |
