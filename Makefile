@@ -66,7 +66,10 @@ DEPS = banachos_mem.hpp \
        banachos_thread_symbiote.hpp \
        banachos_x86_translator.hpp \
        banachos_dropper.hpp \
-       banachos_genesis.hpp
+       banachos_genesis.hpp \
+       banachos_bgraphics.hpp \
+       banachos_bmux_wave.hpp \
+       banachos_apk_vulkan.hpp
 
 # Физико-химические модули расширения монографии
 DEPS += banachos_blens.hpp \
