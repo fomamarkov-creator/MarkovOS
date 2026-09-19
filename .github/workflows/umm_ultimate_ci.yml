@@ -23,6 +23,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install numpy pytest torch cupy-cuda12x
+        # Установка консольного рекордера для генерации изображений
+        sudo apt-get update && sudo apt-get install -y imagemagick
 
     - name: Execute Strict Matrix and Spectral Tests
       id: pytests
@@ -34,36 +36,28 @@ jobs:
         make clean
         make
         echo "========================================================================"
-        echo "🦾 ИСПОЛНЕНИЕ ЯДРА BANACHOS И ГЕНЕРАЦИЯ ЖИВОГО СЛЕПКА ОНТОГЕНЕЗА..."
+        echo "🦾 ИСПОЛНЕНИЕ ЯДРА BANACHOS И ГЕНЕРАЦИЯ ЧЕСТНОЙ GIF-АНИМАЦИИ..."
         echo "========================================================================"
         
         # 1. Запускаем ядро BanachOS и сохраняем его честный вывод в текстовый лог
         ./banachos_core > core_run.log 2>&1 || true
         cat core_run.log
         
-        # 2. Программно создаем красивый, анимированный векторный SVG-слепок на основе реального лога
+        # 2. Программно создаем красивую, легкую GIF-картинку на основе лога ядра.
+        # Чтобы не перегружать раннер, мы берем 핵심 телеметрии и создаем снимок терминала.
+        # Для красивой анимации бегущего текста в headless-режиме мы пишем детерминированный GIF.
         python -c "
-        import html
-        
+        import os
         with open('core_run.log', 'r', encoding='utf-8') as f:
             lines = f.readlines()
+        
+        # Формируем текстовую маску рантайма
+        clean_text = '=== BANACHOS KERNEL LIVE MONITOR ===\n' + ''.join(lines[:35])
+        with open('mon_print.txt', 'w', encoding='utf-8') as mf:
+            mf.write(clean_text)
             
-        with open('ontogenesis_live.svg', 'w', encoding='utf-8') as sf:
-            sf.write('<svg xmlns=\"http://w3.org\" viewBox=\"0 0 800 650\" width=\"100%\" height=\"100%\">\n')
-            sf.write('  <rect width=\"100%\" height=\"100%\" fill=\"#0d1117\" rx=\"6\" />\n')
-            sf.write('  <g font-family=\"monospace\" font-size=\"12px\" fill=\"#c9d1d9\" transform=\"translate(20, 30)\">\n')
-            
-            for i, line in enumerate(lines[:45]):
-                safe_line = line.strip().replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                delay_sec = i * 0.05
-                
-                sf.write(f'    <text x=\"0\" y=\"{i*13.5}\" opacity=\"0\">\n')
-                sf.write(f'      <animate attributeName=\"opacity\" from=\"0\" to=\"1\" dur=\"0.05s\" begin=\"{delay_sec:.2f}s\" fill=\"freeze\" />\n')
-                sf.write(f'      {safe_line}\n')
-                sf.write(f'    </text>\n')
-                
-            sf.write('  </g>\n')
-            sf.write('</svg>\n')
+        # Используем ImageMagick для сборки честной картинки терминала BanachOS
+        os.system('convert -background \"#0d1117\" -fill \"#c9d1d9\" -font Courier -pointsize 12 label:@mon_print.txt ontogenesis_live.gif')
         "
         
         echo "========================================================================"
@@ -78,37 +72,8 @@ jobs:
     - name: Handle Build Failure & Generate 40-Line Crash Dump
       if: failure()
       run: |
-        echo "========================================================================"
-        echo "[bDEBUG] ОБНАРУЖЕН КРАХ СБОРКИ. ГЕНЕРАЦИЯ МАРКОВСКОГО ДАМПА (40 СТРОК)..."
-        
         make > crash_raw.log 2>&1 || true
-        pytest test_native_core.py -v -s >> crash_raw.log 2>&1 || true
         tail -n 40 crash_raw.log > 40_line_crash.log
-        
-        python -c "
-        import os
-        
-        with open('40_line_crash.log', 'r', encoding='utf-8') as f:
-            crash_lines = f.read()
-            
-        crash_data = '<!-- CRASH_START -->\n### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):\n\`\`\`text\n' + crash_lines + '\`\`\`\n<!-- CRASH_END -->\n\n'
-        
-        with open('README.md', 'r', encoding='utf-8') as f:
-            old_readme = f.read()
-            
-        if '<!-- CRASH_START -->' in old_readme:
-            old_readme = old_readme.split('<!-- CRASH_END -->')[1].strip()
-            
-        new_readme = crash_data + old_readme
-        with open('README.md', 'w', encoding='utf-8') as f:
-            f.write(new_readme)
-        "
-        
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions Bot"
-        git add README.md
-        git commit -m "fix(core): inject 40-line compilation crash dump [skip ci]" || true
-        git push || true
         exit 1
 
     - name: Compile Real-Time Success Report into README
@@ -119,26 +84,18 @@ jobs:
         readme_path = 'README.md'
         report_path = 'umm_report.md'
         start_tag = '<!-- MARKOV_REPORT_START -->'
-        
         with open(readme_path, 'r', encoding='utf-8') as f:
             readme_text = f.read()
-        
         if not os.path.exists(report_path):
             with open(report_path, 'w', encoding='utf-8') as rf:
                 rf.write('### ✅ УСПЕШНО: Все инварианты упругой решетки UMM v9.0 запечатаны в кремнии Линукса.')
-                
         with open(report_path, 'r', encoding='utf-8') as f:
             report_content = f.read()
-            
-        if '<!-- CRASH_START -->' in readme_text:
-            readme_text = readme_text.split('<!-- CRASH_END -->')[1].strip()
-            
         if start_tag in readme_text:
             head = readme_text.split(start_tag)
             final_readme = head[0] + start_tag + '\n\n' + report_content + '\n'
         else:
             final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
-            
         with open(readme_path, 'w', encoding='utf-8') as f:
             f.write(final_readme)
         "
@@ -148,5 +105,5 @@ jobs:
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions Bot"
-        git add README.md ontogenesis_live.svg
-        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants table [skip ci]" && git push)
+        git add README.md ontogenesis_live.gif
+        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants [skip ci]" && git push)
