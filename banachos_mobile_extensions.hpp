@@ -305,8 +305,7 @@ public:
                 rasterize_all_born_sphere(core_node, x, y);
             }
         }
-    }
-};
+
 // ============================================
 // ЕДИНАЯ ТОЧКА СБОРКИ: МОБИЛЬНЫЙ РАНТАЙМ ЯДРА
 // ============================================
@@ -349,21 +348,17 @@ public:
         BanachOSWaveGraphics& wave_graphics,
         BanachOSMuxWave& mux_wave) 
     {
-        // 1. Асинхронный перехват аппаратного IRQ
         irq.handle_hardware_irq(44, atom);
 
-        // 2. Сборка Железа по контрастному приРОДному коду 16/16
         PrirodnyAtomCode iron_code = 
             ai_compiler.compile_prompt_to_prirod_code("Собери железо");
         ai_compiler.apply_matrix_strain(atom, iron_code);
 
-        // 3. Тестирование автономной кинематики коллизий (Вытеснение PhysX)
         RybnikovElectroAtom sec;
         sec.calculated_leeway = 0.012f;
         physics.compute_rigid_body_collision(atom, sec);
         dialogue.stream_realtime_dialogue("Вектор_12");
 
-        // 4. Потоковый обсчет сред по матрице давлений Маркова
         fluid.render_fluid_matrix(atom);
         
         BanachOSRybnikovMatrix engine_calculator;
@@ -378,17 +373,16 @@ public:
         std::string resp = ai.process_user_dialog("Запусти волновое сжатие", atom);
         studio.render_interactive_studio(atom);
 
-        // 5. Прямой Vulkan-вывод фрактальной сетки сот во VRAM (Вытеснение DLSS)
         vulkan_renderer.draw_live_lattice_view(atom);
 
-        // 6. Расчеты физико-химических модулей монографии Маркова
         optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
         LensVector3D theta = optical_lenser.compute_ray_deflection(8, 8, 8, 16);
         
         clock_controller.inject_gravitational_stress(8, 8, 8, 180.0f);
         float precision_lag = clock_controller.compute_anisotropic_precession(8, 8, 8, 24);
 
-        hardware_bridge.map_peripheral_bus(4, 4, 4);
+        // ИСПРАВЛЕНО: Вызов канонического метода V256 для ARM шины периферии
+        hardware_bridge.map_hardware_register("ARM_PERIPHERAL_BUS", 8, 8, 8);
 
         std::vector<uint8_t> mock_ebpf = {0x07, 0x00, 0x12, 0x55, 0xFF};
         bus_guard.inject_ebpf_strain_filter(0x30, mock_ebpf); 
@@ -437,7 +431,7 @@ public:
         mux_wave.register_window_wave(1, 45, 45, 7.83f, 0.90f);  
         mux_wave.compose_framebuffer_frequencies(wave_graphics);
 
-        // 7. Форматированный вывод телеметрии строго под маркеры тестов PYTEST
+        // Логирование и вывод телеметрии строго по маркерам PYTEST
         std::cout << "[BOOT] Базис Рыбникова: Имя Рода соты = " << atom.atom_name << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Масса уплотнения = " << atom.weight << " кг" << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Вязкость Маркова (H_uv) = " << atom.shear_viscosity << " Па*с" << std::endl;
