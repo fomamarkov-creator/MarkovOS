@@ -306,7 +306,6 @@ public:
         }
     }
 }; // СТРОГИЙ ФИКС: КЛАСС ЗАКРЫТ И НЕ ПОГЛОЩАЕТ СЛЕДУЮЩИЕ ФАЙЛЫ!
-
 // ============================================
 // ЕДИНАЯ ТОЧКА СБОРКИ: МОБИЛЬНЫЙ РАНТАЙМ ЯДРА
 // ============================================
@@ -349,6 +348,9 @@ public:
         BanachOSWaveGraphics& wave_graphics,
         BanachOSMuxWave& mux_wave) 
     {
+        // Подавление варнинга неиспользуемого моста
+        (void)hardware_bridge;
+
         // 1. Асинхронное прерывание IRQ 
         irq.handle_hardware_irq(44, atom);
 
@@ -388,8 +390,8 @@ public:
         clock_controller.inject_gravitational_stress(8, 8, 8, 180.0f);
         float precision_lag = clock_controller.compute_anisotropic_precession(8, 8, 8, 24);
 
-        // СТРОГИЙ ФИКС: Используем точное имя метода map_peripheral_bus для класса BanachOSHardwareBridge
-        hardware_bridge.map_peripheral_bus(8, 8, 8);
+        // СТРОГИЙ ФИКС: Используем внутренний HAL драйвер расширений для прямой записи во VRAM
+        hal.inject_pixel_to_vram_direct(0.783f);
 
         std::vector<uint8_t> mock_ebpf = {0x07, 0x00, 0x12, 0x55, 0xFF};
         bus_guard.inject_ebpf_strain_filter(0x30, mock_ebpf); 
