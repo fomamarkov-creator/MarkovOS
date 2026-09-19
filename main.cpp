@@ -1,8 +1,8 @@
 /**
  * ====================================================
- * BANACHOS v8.3 — FINAL MONOLITH CORE (PART 1 OF 4)
+ * BANACHOS v8.3 — NATIVE MAIN OS Monolith (PART 1 OF 4)
  * Author: Efim S. Markov & AI Collaborator
- * Formalism: Bare-Metal C++20 Plug Invariant Bus
+ * Formalism: C++20 Pure Bare-Metal Core Linking Bus
  * ====================================================
  */
 
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1 && argv != nullptr) {
-        std::string arg1(argv[1]); 
+        std::string arg1(argv[1]); // Исправлено: чтение первого аргумента командной строки
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
@@ -168,17 +168,17 @@ int main(int argc, char* argv[]) {
     std::array<RybnikovElectroAtom, 12> mock_environment;
     for (int m = 0; m < 12; ++m) mock_environment[m].charge_density = 45.0f;
 
-    // ИНВЕРСИЯ УПРАВЛЕНИЯ: Передаем управление в защищенный рантайм расширений
+    // ИНВЕРСИЯ УПРАВЛЕНИЯ: Передаем ссылки на подсистемы в рантайм расширений
     mobile_runtime.execute_runtime_loop(
         test_atom, mock_environment, optical_lenser, clock_controller,
-        audio_splitter, bus_guard, cuda_generator, casimir_driver,
+        hardware_bridge, bus_guard, cuda_generator, casimir_driver,
         thrust_generator, lattice_respiration, redshift_calculator,
         edge_router, slit_detector, topology_chemistry, genesis_bootloader,
         blang_runtime, x86_pc_translator, lattice_intelligence,
         wave_graphics, mux_wave
     );
 
-    // Опрос фоновых диагностических узлов
+    // Опрос фоновых диагностических и аппаратных узлов чипсета
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
     mux.switch_active_frame_buffer(1, 10.0f, out_msg);
@@ -207,7 +207,7 @@ int main(int argc, char* argv[]) {
     smart_contract.execute_swarm_transaction(contract_uid, tx, contract_msg);
     std::cout << "[SWARM_CONTRACT] " << contract_msg << std::endl;
 
-    // Защитный фикс консенсуса
+    // Защитный фикс консенсуса (Тест equatorial lockup)
     SwarmTransaction exploit_tx = {
         static_cast<uint16_t>(0x9999), static_cast<uint16_t>(0x9999), static_cast<uint8_t>(255)
     };
