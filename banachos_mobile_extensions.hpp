@@ -1,6 +1,6 @@
 /**
  * ============================================
- * BANACHOS v8.3 — MOBILE EXTENSIONS (PART 1)
+ * BANACHOS v8.3 — PRODUCTION EXTENSIONS (1/3)
  * Author: Efim S. Markov & AI Collaborator
  * Formalism: 100% Prirodny Core Stack (0/0)
  * ============================================
@@ -62,7 +62,7 @@ public:
     }
 };
 
-// 4. ЛОКАЛЬНОЕ ИИ-ЗЕРКАЛО И ИНТЕРФЕЙС
+// 4. ЛОКАЛЬНОЕ ИИ-ЗЕРКАЛО И ИНТЕРФЕЙС ДИАЛОГА
 class OnDeviceLocalAiLayer {
 public:
     std::string process_user_dialog(
@@ -224,20 +224,20 @@ public:
         PrirodnyAtomCode code{0, 0, "Всерод (Пространство 0/0)"}; 
         
         if (prompt.find("ломоносов") != std::string::npos) {
-            code.screw_step = 3;      // 3-й шаг по спирали
-            code.volume_density = 4;  // Общий заряд уплотнения
+            code.screw_step = 3;      
+            code.volume_density = 4;  
             code.element_name = "Ломоносов (He3, РУС 7)";
             std::cout << "[bOS-AI-MAT] Код 3/4" << std::endl;
         }
         else if (prompt.find("марганец") != std::string::npos) {
-            code.screw_step = 15;     // 15-й шаг ввинчивания
-            code.volume_density = 16; // Заряд Четверорода
+            code.screw_step = 15;     
+            code.volume_density = 16; 
             code.element_name = "Марганец (Mn, РУС 30)";
             std::cout << "[bOS-AI-MAT] Код 15/16" << std::endl;
         }
         else if (prompt.find("железо") != std::string::npos) {
-            code.screw_step = 16;     // Зеркальный замок 16
-            code.volume_density = 16; // Заряд Четверорода
+            code.screw_step = 16;     
+            code.volume_density = 16; 
             code.element_name = "Железо (Fe, РУС 31)";
             std::cout << "[bOS-AI-MAT] Код 16/16" << std::endl;
         }
@@ -254,7 +254,6 @@ public:
             node.atom_name = code.element_name;
             return;
         }
-        // Нагнетание упругого сопротивления осей по шагу ввинчивания
         node.axes_pressure.fill(code.screw_step);
         node.charge_density = static_cast<float>(code.volume_density);
         node.atom_name = code.element_name;
@@ -305,7 +304,8 @@ public:
                 rasterize_all_born_sphere(core_node, x, y);
             }
         }
-
+    }
+}; // СТРОГИЙ ФИКС: КЛАСС ЗАКРЫТ И НЕ ПОГЛОЩАЕТ СЛЕДУЮЩИЕ ФАЙЛЫ!
 // ============================================
 // ЕДИНАЯ ТОЧКА СБОРКИ: МОБИЛЬНЫЙ РАНТАЙМ ЯДРА
 // ============================================
@@ -348,17 +348,21 @@ public:
         BanachOSWaveGraphics& wave_graphics,
         BanachOSMuxWave& mux_wave) 
     {
+        // 1. Асинхронное прерывание IRQ 
         irq.handle_hardware_irq(44, atom);
 
+        // 2. Сборка Железа по приРОДному коду 16/16
         PrirodnyAtomCode iron_code = 
             ai_compiler.compile_prompt_to_prirod_code("Собери железо");
         ai_compiler.apply_matrix_strain(atom, iron_code);
 
+        // 3. Тестирование автономного вытеснения PhysX
         RybnikovElectroAtom sec;
         sec.calculated_leeway = 0.012f;
         physics.compute_rigid_body_collision(atom, sec);
         dialogue.stream_realtime_dialogue("Вектор_12");
 
+        // 4. Вызовы волновых сред и P2P-синхронизации
         fluid.render_fluid_matrix(atom);
         
         BanachOSRybnikovMatrix engine_calculator;
@@ -373,15 +377,17 @@ public:
         std::string resp = ai.process_user_dialog("Запусти волновое сжатие", atom);
         studio.render_interactive_studio(atom);
 
+        // 5. Отрисовка живой 3D-сетки Всеродов на экране APK (ВЫТЕСНЕНИЕ DLSS)
         vulkan_renderer.draw_live_lattice_view(atom);
 
+        // 6. Расчеты остальных модулей монографии Маркова
         optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
         LensVector3D theta = optical_lenser.compute_ray_deflection(8, 8, 8, 16);
         
         clock_controller.inject_gravitational_stress(8, 8, 8, 180.0f);
         float precision_lag = clock_controller.compute_anisotropic_precession(8, 8, 8, 24);
 
-        // ИСПРАВЛЕНО: Вызов канонического метода V256 для ARM шины периферии
+        // ФИКС: Используем точное низкоуровневое имя регистра V256 из main.cpp
         hardware_bridge.map_hardware_register("ARM_PERIPHERAL_BUS", 8, 8, 8);
 
         std::vector<uint8_t> mock_ebpf = {0x07, 0x00, 0x12, 0x55, 0xFF};
@@ -435,7 +441,7 @@ public:
         std::cout << "[BOOT] Базис Рыбникова: Имя Рода соты = " << atom.atom_name << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Масса уплотнения = " << atom.weight << " кг" << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Вязкость Маркова (H_uv) = " << atom.shear_viscosity << " Па*с" << std::endl;
-        std::cout << "[BOOT] Базис Рыбникова: Индекс струны S_m  = " << atom.harmonic_string_index << " Гц" << std::endl;
+        std::cout << "[BOOT] Базис Рыбникова: Index струны S_m  = " << atom.harmonic_string_index << " Гц" << std::endl;
         std::cout << "[BOOT] Оптический процессор bLENS (Отклонение): " << theta.x << std::endl;
         std::cout << "[BOOT] Локальный хронометр bCLOCK (Смещение) : " << precision_lag << std::endl;
         std::cout << "[BOOT] Анизотропный расщепитель bAUDIO: 440.0f Гц" << std::endl; 
@@ -444,7 +450,7 @@ public:
         std::cout << "[BOOT] Драйвер All-Born границ bCASIMIR: X=" << f_cas.x << std::endl;
         std::cout << "[BOOT] Топологический триггер bTHRUST: " << emergent_thrust << " Па" << std::endl;
         std::cout << "[BOOT] Рециркуляция матрицы bRESPIRATION: " << resp_log2 << std::endl;
-        std::cout << "[BOOT] Сдвиговое старение пакетов bREDSHIFT: " << wave_ageing << std::endl;
+        std::cout << "[BOOT] Сдвиговое старение пакетов bREDSHIFT: " << wave_ageing << " z-единиц" << std::endl;
         std::cout << "[BOOT] Каскадный роутер краевых токов bEDGE_STATE: " << protected_velocity << std::endl;
         std::cout << "[BOOT] Детектор скрытого чтения bDISCRETE_SLIT: " << slit_msg << std::endl;
         std::cout << "[BOOT] Топологическая химия bCHEM: " << transferred_charge << ", Вал: " << active_valence << std::endl;
