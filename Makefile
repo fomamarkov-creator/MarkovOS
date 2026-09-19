@@ -32,6 +32,7 @@ DEPS = banachos_mem.hpp \
        banachos_translator.hpp \
        banachos_bgui.hpp \
        banachos_bproc.hpp \
+       banachos_mobile_extensions.hpp \
        banachos_fs.hpp \
        banachos_smart_contract.hpp \
        banachos_bcontainer.hpp \
