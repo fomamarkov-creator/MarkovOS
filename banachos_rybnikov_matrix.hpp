@@ -63,15 +63,13 @@ public:
         atom.charge_density = static_cast<float>(total_axes_stress) / 12.0f;
 
         // --- ВЕРИФИКАЦИЯ ТОЧКИ ТОПОЛОГИЧЕСКОЙ ИНВЕРСИИ (256 ≡ 0) ---
-        // Предел стабильного вещества — атом 255. На пороге 256 сота сбрасывается в чистый ток.
         if (total_axes_stress >= 256 || atom.charge_density >= 255.0f) {
             atom.is_pure_current = true;
-            atom.static_cast<int>(0);
             atom.valence_mod = 0;
             atom.calculated_leeway = 0.1f;       // Экваториальный Lockup (L_uv -> 0)
             atom.weight = 0.0f;                  // Свободный ток не удерживает барионную массу
             atom.phase_screwing = 0.0f;
-            atom.electro_conductivity = 1000.0f; // Сверхпроводимость без диссипации
+            atom.electro_conductivity = 1000.0f; // Сверхпроводимость свободного тока Всерода
             atom.thermal_conductivity = 0.0f;
             atom.refractive_index = 1.0f;
             atom.emergent_thrust = 100.0f;
@@ -104,12 +102,9 @@ public:
             atom.refractive_index = 1.0f / (1.0f - 0.95f * (atom.charge_density / 256.0f));
             if (atom.refractive_index > 20.0f) atom.refractive_index = 20.0f;
         } else {
-            atom.refractive_index = 20.0f; // Полное оптическое застревание (Horizon of Rest)
+            atom.refractive_index = 20.0f; 
         }
 
         // 7. ЭКЗО-АКУСТИЧЕСКАЯ РЕАКТИВНАЯ ТЯГА (Discrete Divergence химического стресса)
         atom.emergent_thrust = static_cast<float>(anisotropy_gradient) * (L_E0 - atom.calculated_leeway) * 500.0f;
     }
-};
-
-#endif // BANACHOS_RYBNIKOV_MATRIX_HPP
