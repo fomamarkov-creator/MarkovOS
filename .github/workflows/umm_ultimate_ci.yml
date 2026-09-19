@@ -1,129 +1,54 @@
-name: UMM v8.3 Production Math Engine & Documentation CI
+# ============================================
+# BANACHOS v8.3 — GLOBAL CI/CD PIPELINE (1/3)
+# Author: Efim S. Markov & AI Collaborator
+# Formalism: 100% Prirodny Core Stack (0/0)
+# ============================================
+
+name: BanachOS Core Build
 
 on:
-  workflow_dispatch: # РУЧНОЙ ТРИГГЕР С ТЕЛЕФОНА
-
-permissions:
-  contents: write
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
 
 jobs:
-  mathematical_validation_and_doc:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository Code
-      uses: actions/checkout@v4
+      - name: Checkout Repository Source
+        uses: actions/checkout@v4
 
-    - name: Set up Enterprise Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+      - name: Install System GNU Compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ make
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-python-version: '3.10'
 
-    - name: Inject Strict Computational Stack
-      run: |
-        python -m pip install --upgrade pip
-        pip install numpy pytest torch cupy-cuda12x Pillow
+      - name: Install Pytest Verification Suite
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
 
-    - name: Execute Strict Matrix and Spectral Tests
-      id: pytests
-      run: pytest test_ultimate.py -v -s
+      - name: Execute BanachOS Bare-Metal Build
+        run: |
+          make clean
+          make
+      - name: Verify Core Telemetry via Pytest
+        run: |
+          pytest -v
 
-    - name: Compile and Test Native C++ Monolith
-      id: cppbuild
-      run: |
-        make clean
-        make
-        echo "========================================================================"
-        echo "🦾 ИСПОЛНЕНИЕ ЯДРА BANACHOS И ГЕНЕРАЦИЯ ЧЕСТНОЙ GIF-АНИМАЦИИ..."
-        echo "========================================================================"
-        
-        # 1. Запускаем ядро BanachOS и сохраняем его честный вывод в текстовый лог
-        ./banachos_core > core_run.log 2>&1 || true
-        cat core_run.log
-        
-        # 2. Программно создаем красивую, легкую GIF-картинку терминала на чистом Python Pillow
-        python -c "
-        import os
-        from PIL import Image, ImageDraw, ImageFont
-        
-        with open('core_run.log', 'r', encoding='utf-8') as f:
-            lines = [line.strip() for line in f.readlines()[:40]]
-            
-        # Создаем изображение фиксированного размера под терминал
-        width, height = 800, 600
-        image = Image.new('RGB', (width, height), color='#0d1117')
-        draw = ImageDraw.Draw(image)
-        
-        # Используем стандартный моноширинный шрифт системы
-        try:
-            font = ImageFont.truetype('LiberationMono-Regular.ttf', 12)
-        except:
-            font = ImageFont.load_default()
-            
-        # Построчно отрисовываем честную телеметрию
-        y_offset = 20
-        for line in lines:
-            # Детерминированная цветовая подсветка логов ядра в растре
-            text_color = '#c9d1d9'
-            if '[BOOT]' in line or '[STAGE 3]' in line:
-                text_color = '#58a6ff'
-            elif 'SUCCESS' in line or 'PASSED' in line or 'УСПЕШНО' in line:
-                text_color = '#3fb950'
-            elif '[WARN]' in line or 'REJECTED' in line:
-                text_color = '#d29922'
-                
-            draw.text((20, y_offset), line, fill=text_color, font=font)
-            y_offset += 14
-            
-        # Запечатываем готовый GIF-кадр в корень репозитория
-        image.save('ontogenesis_live.gif')
-        print('[bBUILD] Честный GIF-слепок рантайма детерминированно сгенерирован.')
-        "
-        
-        echo "========================================================================"
-        echo "📊 СТАРТ ЛИПШИЦЕВА СТРЕСС-БЕНЧМАРКА СКОРОСТИ МАКРО-СЛОЕВ..."
-        echo "========================================================================"
-        pytest test_performance_lipschitz.py -v -s
-
-    - name: Execute Massive 10,000 Node Swarm Stress Test
-      if: success()
-      run: python test_swarm_stress.py
-
-    - name: Handle Build Failure & Generate 40-Line Crash Dump
-      if: failure()
-      run: |
-        make > crash_raw.log 2>&1 || true
-        tail -n 40 crash_raw.log > 40_line_crash.log
-        exit 1
-
-    - name: Compile Real-Time Success Report into README
-      if: success()
-      run: |
-        python -c "
-        import os
-        readme_path = 'README.md'
-        report_path = 'umm_report.md'
-        start_tag = '<!-- MARKOV_REPORT_START -->'
-        with open(readme_path, 'r', encoding='utf-8') as f:
-            readme_text = f.read()
-        if not os.path.exists(report_path):
-            with open(report_path, 'w', encoding='utf-8') as rf:
-                rf.write('### ✅ УСПЕШНО: Все инварианты упругой решетки UMM v9.0 запечатаны в кремнии Линукса.')
-        with open(report_path, 'r', encoding='utf-8') as f:
-            report_content = f.read()
-        if start_tag in readme_text:
-            head = readme_text.split(start_tag)
-            final_readme = head[0] + start_tag + '\n\n' + report_content + '\n'
-        else:
-            final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
-        with open(readme_path, 'w', encoding='utf-8') as f:
-            f.write(final_readme)
-        "
-
-    - name: Auto-Commit and Push Generated README & Live Animation
-      if: success()
-      run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions Bot"
-        git add README.md ontogenesis_live.gif
-        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants [skip ci]" && git push)
+      # ФИКС: Принудительный сбор и публикация бинарников V256 на сайт
+      - name: Upload BanachOS Mobile Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: banachos-binaries
+          path: |
+            *.so
+            *.bin
+            banachos_core
