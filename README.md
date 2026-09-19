@@ -1,46 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:73:17: error: ‘RawBinaryInstruction’ was not declared in this scope\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                 ^~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp:73:37: error: template argument 1 is invalid\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                                     ^\nbanachos_injector.cpp:73:37: error: template argument 2 is invalid\nbanachos_injector.cpp:73:39: error: scalar object ‘target_ins’ requires one element in initializer\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                                       ^~~~~~~~~~\nbanachos_injector.cpp:79:30: error: ‘class BanachOSCodeTranslator’ has no member named ‘translate_universal_binary’\n   79 |     auto quants = translator.translate_universal_binary(raw_kernel_stream, target_ins, log);\n      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
-ERROR test_native_core.py::test_equatorial_register_lockup - AssertionError: Крах компиляции ядра микроядра через Makefile:
+     16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {
+        |                                                    ^~~~~~~~~~~~~~~
+  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:
+  banachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope
+     25 |         target_attached = true;
+        |         ^~~~~~~~~~~~~~~
+  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:
+  banachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope
+     36 |     if (target_attached) {
+        |         ^~~~~~~~~~~~~~~
   banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:
-  banachos_injector.cpp:73:17: error: ‘RawBinaryInstruction’ was not declared in this scope
-     73 |     std::vector<RawBinaryInstruction> target_ins = {
-        |                 ^~~~~~~~~~~~~~~~~~~~
-  banachos_injector.cpp:73:37: error: template argument 1 is invalid
-     73 |     std::vector<RawBinaryInstruction> target_ins = {
-        |                                     ^
-  banachos_injector.cpp:73:37: error: template argument 2 is invalid
-  banachos_injector.cpp:73:39: error: scalar object ‘target_ins’ requires one element in initializer
-     73 |     std::vector<RawBinaryInstruction> target_ins = {
-        |                                       ^~~~~~~~~~
-  banachos_injector.cpp:79:30: error: ‘class BanachOSCodeTranslator’ has no member named ‘translate_universal_binary’
-     79 |     auto quants = translator.translate_universal_binary(raw_kernel_stream, target_ins, log);
-        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  banachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope
+     49 |     if (!target_attached) {
+        |          ^~~~~~~~~~~~~~~
   make: *** [<builtin>: banachos_injector.o] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:73:17: error: ‘RawBinaryInstruction’ was not declared in this scope\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                 ^~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp:73:37: error: template argument 1 is invalid\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                                     ^\nbanachos_injector.cpp:73:37: error: template argument 2 is invalid\nbanachos_injector.cpp:73:39: error: scalar object ‘target_ins’ requires one element in initializer\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                                       ^~~~~~~~~~\nbanachos_injector.cpp:79:30: error: ‘class BanachOSCodeTranslator’ has no member named ‘translate_universal_binary’\n   79 |     auto quants = translator.translate_universal_binary(raw_kernel_stream, target_ins, log);\n      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In constructor ‘BanachOSKernelInjector::BanachOSKernelInjector()’:\nbanachos_injector.cpp:16:52: error: class ‘BanachOSKernelInjector’ does not have any field named ‘target_attached’\n   16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {\n      |                                                    ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:\nbanachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope\n   25 |         target_attached = true;\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:\nbanachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope\n   36 |     if (target_attached) {\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope\n   49 |     if (!target_attached) {\n      |          ^~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
 ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
+  banachos_injector.cpp: In constructor ‘BanachOSKernelInjector::BanachOSKernelInjector()’:
+  banachos_injector.cpp:16:52: error: class ‘BanachOSKernelInjector’ does not have any field named ‘target_attached’
+     16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {
+        |                                                    ^~~~~~~~~~~~~~~
+  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:
+  banachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope
+     25 |         target_attached = true;
+        |         ^~~~~~~~~~~~~~~
+  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:
+  banachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope
+     36 |     if (target_attached) {
+        |         ^~~~~~~~~~~~~~~
   banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:
-  banachos_injector.cpp:73:17: error: ‘RawBinaryInstruction’ was not declared in this scope
-     73 |     std::vector<RawBinaryInstruction> target_ins = {
-        |                 ^~~~~~~~~~~~~~~~~~~~
-  banachos_injector.cpp:73:37: error: template argument 1 is invalid
-     73 |     std::vector<RawBinaryInstruction> target_ins = {
-        |                                     ^
-  banachos_injector.cpp:73:37: error: template argument 2 is invalid
-  banachos_injector.cpp:73:39: error: scalar object ‘target_ins’ requires one element in initializer
-     73 |     std::vector<RawBinaryInstruction> target_ins = {
-        |                                       ^~~~~~~~~~
-  banachos_injector.cpp:79:30: error: ‘class BanachOSCodeTranslator’ has no member named ‘translate_universal_binary’
-     79 |     auto quants = translator.translate_universal_binary(raw_kernel_stream, target_ins, log);
-        |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  banachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope
+     49 |     if (!target_attached) {
+        |          ^~~~~~~~~~~~~~~
   make: *** [<builtin>: banachos_injector.o] Error 1
   
 assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:73:17: error: ‘RawBinaryInstruction’ was not declared in this scope\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                 ^~~~~~~~~~~~~~~~~~~~\nbanachos_injector.cpp:73:37: error: template argument 1 is invalid\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                                     ^\nbanachos_injector.cpp:73:37: error: template argument 2 is invalid\nbanachos_injector.cpp:73:39: error: scalar object ‘target_ins’ requires one element in initializer\n   73 |     std::vector<RawBinaryInstruction> target_ins = {\n      |                                       ^~~~~~~~~~\nbanachos_injector.cpp:79:30: error: ‘class BanachOSCodeTranslator’ has no member named ‘translate_universal_binary’\n   79 |     auto quants = translator.translate_universal_binary(raw_kernel_stream, target_ins, log);\n      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
-============================== 4 errors in 9.21s ===============================
+ +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In constructor ‘BanachOSKernelInjector::BanachOSKernelInjector()’:\nbanachos_injector.cpp:16:52: error: class ‘BanachOSKernelInjector’ does not have any field named ‘target_attached’\n   16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {\n      |                                                    ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:\nbanachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope\n   25 |         target_attached = true;\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:\nbanachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope\n   36 |     if (target_attached) {\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope\n   49 |     if (!target_attached) {\n      |          ^~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
+============================== 4 errors in 9.20s ===============================
 ```
 <!-- CRASH_END -->
 
