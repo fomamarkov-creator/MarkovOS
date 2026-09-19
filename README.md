@@ -1,29 +1,3 @@
-<!-- CRASH_START -->
-### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
-```text
-================================================================================
-[bBUILD] 100% МОНОЛИТ ОПЕРАЦИОННОЙ СИСТЕМЫ BANACHOS v8.3 СКОМПИЛИРОВАН!
-[bBUILD] Последние Python-макеты вытеснены. Все инварианты кремния активны.
-================================================================================
-============================= test session starts ==============================
-platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.16/x64/bin/python
-cachedir: .pytest_cache
-rootdir: /home/runner/work/MarkovOS/MarkovOS
-collecting ... collected 4 items
-
-test_native_core.py::test_check_for_forgotten_native_modules 
-[CI/CD] Запуск промышленной сборки bBUILD...
-
-[SCANNER] Проверка архитектурной целостности репозитория...
-PASSED
-test_native_core.py::test_native_binary_execution_flow PASSED
-test_native_core.py::test_equatorial_register_lockup PASSED
-test_native_core.py::test_installer_symbiote_generation PASSED
-
-============================== 4 passed in 18.72s ==============================
-```
-<!-- CRASH_END -->
-
 # BanachOS / UMM v8.3 — Production Math Engine
 
 Репозиторий содержит низкоуровневое вычислительное ядро **Universal Metric Mismatch (UMM) v8.3**, реализующее принципы Новой Физической Математики Е. С. Маркова над 12-координатной гексагональной $3\text{HCP}$-решеткой. 
