@@ -441,6 +441,17 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] bATOM-Сериализатор: Вывод JSON матрицы = " << serialized_data << std::endl;
     std::cout << "[BOOT] bOS-Диалог-AI: Ответ локального зеркала = " << ai_response << std::endl;
 
+    // АВТОНОМНОЕ ТЕСТИРОВАНИЕ ПОДСИСТЕМ ВЫТЕСНЕНИЯ NVIDIA PhysX
+    PhysicalMatrixEngine phys_engine;
+    OnDeviceCompilerAI local_compiler_ai;
+    InteractiveDialogStream dialogue_stream;
+    
+    RybnikovElectroAtom secondary_atom;
+    secondary_atom.calculated_leeway = 0.012f;
+    phys_engine.compute_rigid_body_collision(test_atom, secondary_atom);
+    local_compiler_ai.compile_prompt_to_matrix("Создай поток плазмы", test_atom);
+    dialogue_stream.stream_realtime_dialogue("Вектор_12");
+
     // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
@@ -478,7 +489,6 @@ int main(int argc, char* argv[]) {
         static_cast<uint16_t>(0x9999), 
         static_cast<uint8_t>(255) 
     };
-    // Исправлено: явное объявление attack_msg в скоупе
     std::string attack_msg;
     smart_contract.execute_swarm_transaction(contract_uid, exploit_tx, attack_msg);
     
