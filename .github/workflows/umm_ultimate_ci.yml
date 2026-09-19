@@ -55,11 +55,6 @@ jobs:
             .accent { fill: #58a6ff; font-weight: bold; }
             .success { fill: #3fb950; font-weight: bold; }
             .warn { fill: #d29922; font-weight: bold; }
-            @keyframes type {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            .line { animation: type 0.05s ease-in-out both; }
           </style>
           <rect class=\"bg\" width=\"100%\" height=\"100%\" rx=\"6\" />
           <g class=\"term-text\" transform=\"translate(20, 30)\">
@@ -67,18 +62,22 @@ jobs:
         
         for i, line in enumerate(lines[:45]):
             safe_line = html.escape(line.strip())
-            delay = i * 0.04
+            delay_sec = i * 0.05  # Детерминированная задержка появления каждой строки
             
             if '[BOOT]' in safe_line:
                 safe_line = safe_line.replace('[BOOT]', '<tspan class=\"accent\">[BOOT]</tspan>')
             if '[STAGE 3]' in safe_line:
                 safe_line = safe_line.replace('[STAGE 3]', '<tspan class=\"accent\">[STAGE 3]</tspan>')
-            if 'SUCCESS' in safe_line or 'PASSED' in safe_line or 'УСПЕШНО' in safe_line or 'SUCCESS' in safe_line:
+            if 'SUCCESS' in safe_line or 'PASSED' in safe_line or 'УСПЕШНО' in safe_line:
                 safe_line = safe_line.replace('SUCCESS', '<tspan class=\"success\">SUCCESS</tspan>').replace('УСПЕШНО', '<tspan class=\"success\">УСПЕШНО</tspan>')
             if '[WARN]' in safe_line:
                 safe_line = safe_line.replace('[WARN]', '<tspan class=\"warn\">[WARN]</tspan>')
                 
-            svg_content += f'    <text class=\"line\" x=\"0\" y=\"{i*13.5}\" style=\"animation-delay: {delay}s;\">{safe_line}</text>\n'
+            # Использование честных тегов <animate>, защищенных от вырезания кэшем GitHub
+            svg_content += f'    <text x=\"0\" y=\"{i*13.5}\" opacity=\"0\">\n'
+            svg_content += f'      <animate attributeName=\"opacity\" from=\"0\" to=\"1\" dur=\"0.05s\" begin=\"{delay_sec:.2f}s\" fill=\"freeze\" />\n'
+            svg_content += f'      {safe_line}\n'
+            svg_content += f'    </text>\n'
             
         svg_content += r'''  </g>
         </svg>'''
@@ -119,7 +118,7 @@ jobs:
             
         if '<!-- CRASH_START -->' in old_readme:
             parts = old_readme.split('<!-- CRASH_END -->')
-            old_readme = parts[1].strip()
+            old_readme = parts.strip()
             
         new_readme = crash_data + old_readme
         with open('README.md', 'w', encoding='utf-8') as f:
@@ -152,11 +151,11 @@ jobs:
             report_content = f.read()
             
         if '<!-- CRASH_START -->' in readme_text:
-            readme_text = readme_text.split('<!-- CRASH_END -->')[1].strip()
+            readme_text = readme_text.split('<!-- CRASH_END -->').strip()
             
         if start_tag in readme_text:
             head = readme_text.split(start_tag)
-            final_readme = head[0] + start_tag + '\n\n' + report_content + '\n'
+            final_readme = head + start_tag + '\n\n' + report_content + '\n'
         else:
             final_readme = readme_text + '\n\n' + start_tag + '\n\n' + report_content + '\n'
         with open(readme_path, 'w', encoding='utf-8') as f:
@@ -169,4 +168,4 @@ jobs:
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions Bot"
         git add README.md ontogenesis_live.svg
-        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-inject live ontogenesis animation [skip ci]" && git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-update physical invariants table [skip ci]" && git push)
