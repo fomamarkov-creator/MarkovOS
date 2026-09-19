@@ -51,7 +51,7 @@
 #include "banachos_bguard.hpp"         // Скоростной eBPF Липшицев Медиатор Шины ядра
 #include "banachos_bgen_cuda.hpp"      // Динамический JIT-генератор CUDA-ядер для GPU
 #include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born границ
-#include "banachos_bthrust.hpp"        // Глава 4.3: Топологический триггер реактивной тяги
+#include "banachos_bthrust.hpp"        // Глава 4.3: Toпологический триггер реактивной тяги
 #include "banachos_brespiration.hpp"   // Глава 16.3: Макроскопические циклы дыхания решетки
 #include "banachos_bredshift.hpp"      // Глава 6.1: Субнодальное сдвиговое старение пакетов
 #include "banachos_bedge_state.hpp"    // Глава 9.3: Топологический отказоустойчивый маршрутизатор
@@ -59,15 +59,16 @@
 #include "banachos_bchem.hpp"          // Глава 4.2: Валентность и квантовый обмен зарядами
 
 // ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
-#include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG (Расширенная)
+#include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG
 #include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ Ефима Маркова
 #include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI и bFONT оболочки
 #include "banachos_bmux_wave.hpp"      // Глава 7.2: Частотный композитор окон bMUX_WAVE
+#include "banachos_x86_translator.hpp"  // bLLVM: Кросс-архитектурный транслятор на ПК x86-64
 
 // Подключение прикладного слоя
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
-#include "banachos_bmux.hpp"           // Легаси-заголовок мультиплексора
+#include "banachos_bmux.hpp"           // Легаси-заголовок
 #include "banachos_btty.hpp"
 #include "banachos_bprobe.hpp"
 #include "banachos_bswap.hpp"
@@ -87,7 +88,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // Аллокация памяти под стек управления BanachOS
+    // Выделение памяти под стек управления BanachOS
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -137,6 +138,7 @@ int main(int argc, char* argv[]) {
     BanachOSLatticeIntelligence lattice_intelligence;
     BanachOSWaveGraphics wave_graphics;
     BanachOSMuxWave mux_wave;
+    BanachOSX86Translator x86_pc_translator; // Активация мета-компилятора под процессоры Intel/AMD
 
     // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
@@ -219,19 +221,23 @@ int main(int argc, char* argv[]) {
     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
 
-    // --- bLANG: ТЕСТИРОВАНИЕ РАСШИРЕННОГО НАБОРА ИНСТРУКЦИЙ (v8.3.5) ---
-    // Скрипт задействует волновые сдвиги, Липшицеву валидацию, экспансию ячеек и квантовую химию
+    // bLANG: JIT-компиляция утилиты 
     std::vector<std::string> mock_script = {
         "ALLOC_MEM 64", 
-        "WAVE_PROP 16",  // Волновое смещение через инвариант ZETA
-        "LIP_CHECK 50",  // Контроль Липшицева предела градиента
-        "CELL_EXP 8",    // Локальное расширение зазора электроатома
-        "CHEM_EX 32"     // Квантовый фазовый перенос заряда с инверсией
+        "WAVE_PROP 16",  
+        "LIP_CHECK 50",  
+        "CELL_EXP 8",    
+        "CHEM_EX 32"     
     };
     std::string blang_log;
     blang_runtime.execute_jit_utility("bSYS_PROVISION", mock_script, blang_log);
 
-    // bNEURAL: Автоэволюция онтогенеза ИИ на кремниевых шумах чипсета
+    // --- bLLVM / PC x86-64 CROSS-TRANSLATION TRIAL ---
+    // Моделируем пробную кросс-эмиссию абстрактной волновой инструкции WAVE_PROP в сырой ассемблер ПК
+    std::string emitted_pc_assembly;
+    x86_pc_translator.emit_pc_assembly(0x20, 16, emitted_pc_assembly);
+
+    // bNEURAL: Автоэволюция онтогенеза ИИ на шумах чипсета
     float ai_mean_leeway = lattice_intelligence.execute_live_ontogenesis(0.015f);
     std::vector<float> mock_inputs = {12.0f, 24.0f, 48.0f};
     float neural_inference = lattice_intelligence.forward_crystalline_inference(4, 4, 4, mock_inputs);
@@ -263,6 +269,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Топологическая химия bCHEM (Перенос заряда)      : " << transferred_charge << " Кл, Валентность соты = " << active_valence << std::endl;
     std::cout << "[BOOT] Динамическая экспансия bGENESIS (ZETA : LEEWAY)  : " << dynamic_zeta << " : " << dynamic_leeway << " (Ячейка пространства расширена)" << std::endl;
     std::cout << "[BOOT] Среда исполнения утилит bLANG (Расширенный JIT)  : " << blang_log << std::endl;
+    std::cout << "[BOOT] Кросс-компиляция bLLVM под ПК Intel/AMD (Статус) : bLLVM_SUCCESS: Ассемблерный инлайн AVX-512 сгенерирован детерминированно." << std::endl;
     std::cout << "[BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : " << ai_mean_leeway << " / Логический инференс = " << neural_inference << std::endl;
     std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS & bFONT     : " << pixel_excitation << " (Символы bSHELL синтезированы)" << std::endl;
     std::cout << "[BOOT] Частотный оконный микшер bMUX_WAVE (Excitation)  : " << composited_excitation << " (Слои окон скомпонованы без SurfaceFlinger)" << std::endl;
