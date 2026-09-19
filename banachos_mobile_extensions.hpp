@@ -306,6 +306,7 @@ public:
         }
     }
 }; // СТРОГИЙ ФИКС: КЛАСС ЗАКРЫТ И НЕ ПОГЛОЩАЕТ СЛЕДУЮЩИЕ ФАЙЛЫ!
+
 // ============================================
 // ЕДИНАЯ ТОЧКА СБОРКИ: МОБИЛЬНЫЙ РАНТАЙМ ЯДРА
 // ============================================
@@ -387,8 +388,8 @@ public:
         clock_controller.inject_gravitational_stress(8, 8, 8, 180.0f);
         float precision_lag = clock_controller.compute_anisotropic_precession(8, 8, 8, 24);
 
-        // ФИКС: Используем точное низкоуровневое имя регистра V256 из main.cpp
-        hardware_bridge.map_hardware_register("ARM_PERIPHERAL_BUS", 8, 8, 8);
+        // СТРОГИЙ ФИКС: Используем точное имя метода map_peripheral_bus для класса BanachOSHardwareBridge
+        hardware_bridge.map_peripheral_bus(8, 8, 8);
 
         std::vector<uint8_t> mock_ebpf = {0x07, 0x00, 0x12, 0x55, 0xFF};
         bus_guard.inject_ebpf_strain_filter(0x30, mock_ebpf); 
@@ -441,7 +442,7 @@ public:
         std::cout << "[BOOT] Базис Рыбникова: Имя Рода соты = " << atom.atom_name << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Масса уплотнения = " << atom.weight << " кг" << std::endl;
         std::cout << "[BOOT] Базис Рыбникова: Вязкость Маркова (H_uv) = " << atom.shear_viscosity << " Па*с" << std::endl;
-        std::cout << "[BOOT] Базис Рыбникова: Index струны S_m  = " << atom.harmonic_string_index << " Гц" << std::endl;
+        std::cout << "[BOOT] Базис Рыбникова: Индекс струны S_m  = " << atom.harmonic_string_index << " Гц" << std::endl;
         std::cout << "[BOOT] Оптический процессор bLENS (Отклонение): " << theta.x << std::endl;
         std::cout << "[BOOT] Локальный хронометр bCLOCK (Смещение) : " << precision_lag << std::endl;
         std::cout << "[BOOT] Анизотропный расщепитель bAUDIO: 440.0f Гц" << std::endl; 
