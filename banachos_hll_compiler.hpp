@@ -25,18 +25,18 @@
 class BanachOSHllCompiler {
 public:
     BanachOSHllCompiler(BanachOSCompiler& static_verifier) : verifier(static_verifier) {
-        // Карта кодов операций (Opcodes) нативной архитектуры процессора BanachOS
-        opcodes["ALLOC_MEM"]   = 0x10;  // Выделение гексагональной соты ОЗУ bMEM
-        opcodes["WRITE_DISK"]  = 0x20;  // Запись вектора деформации в хранилище bFS
-        opcodes["SEND_PACKET"] = 0x30;  // Передача пакетного импульса в стек bNET
-        opcodes["EMIT_PULSE"]  = 0x40;  // Межпроцессный импульс в шину bIPC
-        opcodes["ADD_REG"]     = 0x50;  // Нативное сложение регистров в кольце вычетов
-        opcodes["SUB_REG"]     = 0x60;  // Нативное вычитание регистров в кольце вычетов
+        // СИНХРОНИЗИРОВАННАЯ КАРТА ОПКОДОВ НАШЕЙ РАСШИРЕННОЙ АРХИТЕКТУРЫ ЯДРА
+        opcodes["ALLOC_MEM"] = 0x10;  // Выделение гексагональной соты ОЗУ bMEM
+        opcodes["WAVE_PROP"] = 0x20;  // Волновое продольное смещение через ZETA
+        opcodes["LIP_CHECK"] = 0x30;  // Липшицев цензор градиента
+        opcodes["CELL_EXP"]  = 0x40;  // Экспансия и раздувание объема электроатома
+        opcodes["ADD_REG"]   = 0x50;  // Нативное сложение регистров (mod 256)
+        opcodes["SUB_REG"]   = 0x60;  // Нативное вычитание регистров (mod 256)
+        opcodes["CHEM_EX"]   = 0x70;  // Квантовый фазовый перенос заряда по Маркову
     }
 
     /**
      * Компилирует текстовые строки bLang в исполняемый бинарный образ (std::vector<uint8_t>).
-     * Осуществляет жесткую сквозную верификацию Липшицева предела.
      */
     std::tuple<bool, std::vector<uint8_t>, std::string> compile_source_code(const std::vector<std::string>& source_lines) {
         compiled_binary.clear();
@@ -46,13 +46,12 @@ public:
         for (size_t line_idx = 0; line_idx < source_lines.size(); ++line_idx) {
             std::string line = source_lines[line_idx];
             
-            // Очистка строки от комментариев
-            size_t comment_pos = line.find('#');
+            // Исправлено: парсинг С++ комментариев // вместо легаси #
+            size_t comment_pos = line.find("//");
             if (comment_pos != std::string::npos) {
                 line = line.substr(0, comment_pos);
             }
 
-            // Токенизация строки по пробелам
             std::stringstream ss(line);
             std::string command;
             ss >> command;
@@ -74,7 +73,6 @@ public:
 
             std::string token_name = "line_" + std::to_string(line_idx) + "_" + command;
             
-            // Детерминированно выделяем соту в AST-решетке для статического цензора через std::hash
             size_t token_hash = std::hash<std::string>{}(token_name);
             int z = static_cast<int>(token_hash % BanachOSCompiler::SIZE);
             int y = static_cast<int>((line_idx * 3) % BanachOSCompiler::SIZE);
@@ -82,20 +80,14 @@ public:
             
             verifier.register_code_token(token_name, z, y, x);
             
-            // Рассчитываем вносимое оператором Липшицево натяжение
             float logical_complexity = static_cast<float>(std::abs(argument_val) * 1.8f + 2.0f);
-            
-            // Пропускаем оператор через геометрический Липшицев барьер стабильности
             auto [verified, msg] = verifier.compile_operator(token_name, logical_complexity);
             
             if (!verified) {
                 return {false, {}, "COMPILE_FAIL: Сборка заблокирована цензором! " + msg};
             }
 
-            // --- ЭМИССИЯ НАЛЕТУ: ГЕНЕРАЦИЯ БАЙТ-КОДОВ В КОЛЬЦЕ Z/256Z ---
             uint8_t opcode = opcodes[command];
-            
-            // Реализация математического округления пола (floor) и взятия вычета по модулю 256
             int floored_arg = static_cast<int>(std::floor(argument_val));
             uint8_t byte_arg = static_cast<uint8_t>((floored_arg % 256 + 256) % 256);
             
@@ -106,9 +98,6 @@ public:
         return {true, compiled_binary, "COMPILE_SUCCESS: Бинарный образ успешно собран и верифицирован по Липшицу"};
     }
 
-    /**
-     * Дизассемблирует нативный образ BanachOS обратно в текстовые инструкции bLang.
-     */
     std::vector<std::string> get_binary_disassembly(const std::vector<uint8_t>& binary_image) {
         std::vector<std::string> disassembly;
         std::map<uint8_t, std::string> opcode_reverse;
