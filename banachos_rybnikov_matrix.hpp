@@ -2,8 +2,8 @@
  * ================================================================================
  * BANACHOS v8.3 — COMPREHENSIVE RYBNIKOV ATOMIC LIBRARY (banachos_rybnikov_matrix.hpp)
  * Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
- * Formalism: Unified Taxonomy of Electroatoms, Fractional 2^n Quantization & Emergence
- * Strictly Zero-Fit Parameter Architecture (Academic Clean Edition)
+ * Formalism: Unified Taxonomy of Electroatoms, Winding Invariant (ZETA = 1.024)
+ * Supports Both Hyper-Compression & Localized Matrix Rarefaction (UMM v9.0)
  * Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
  * ================================================================================
  */
@@ -17,7 +17,6 @@
 #include <array>
 #include <cmath>
 
-// Возвращаем структуру в область видимости main.cpp
 struct RybnikovElectroAtom {
     std::array<uint8_t, 12> axes_pressure; // Натяжение по 12 осям контакта (Z/256Z)
     float calculated_leeway;               // Динамический локальный люфт упругости Маркова (L_uv)
@@ -33,6 +32,7 @@ struct RybnikovElectroAtom {
     float thermal_conductivity;            // Теплопроводность (скорость продольной акустической волны)
     float refractive_index;                // Нативный индекс преломления Electro-Light
     float emergent_thrust;                 // Экзо-акустическая реактивная тяга расширения
+    std::string density_state;             // Текстовый статус: УПЛОТНЕНИЕ или РАЗУПЛОТНЕНИЕ
 };
 
 class BanachOSRybnikovMatrix {
@@ -42,13 +42,11 @@ public:
     static constexpr float C_ETHER = 299792.458f; // Предельная скорость Электро-Света в вакууме
     static constexpr int SIZE = 16;
 
-    BanachOSRybnikovMatrix() {
-        // Конструктор атомарно-векторного базиса
-    }
+    BanachOSRybnikovMatrix() {}
 
     /**
      * Сквозной детерминированный расчет динамических свойств электроатома.
-     * Реализует эмерджентное рождение взаимодействий и текстовую классификацию Родов.
+     * Честно обрабатывает фазы нагнетания (сжатия) и разрежения (разуплотнения).
      */
     void compute_and_transfer_atomic_properties(RybnikovElectroAtom& atom) {
         uint32_t total_axes_stress = 0;
@@ -69,21 +67,21 @@ public:
             atom.is_pure_current = true;
             atom.valence_mod = 0;
             atom.atom_name = "Чистый Электроток (Инверсия)";
-            atom.calculated_leeway = 0.1f;       // Экваториальный Lockup (L_uv -> 0)
+            atom.density_state = "КРИТИЧЕСКИЙ КОЛЛАПС (ИНВЕРСИЯ)";
+            atom.calculated_leeway = 0.1f;       
             atom.weight = 0.0f;                  
             atom.phase_screwing = 0.0f;
-            atom.electro_conductivity = 1000.0f; // Сверхпроводимость без диссипации
+            atom.electro_conductivity = 1000.0f; 
             atom.thermal_conductivity = 0.0f;
             atom.refractive_index = 1.0f;
             atom.emergent_thrust = 100.0f;
             return;
         }
 
-        // --- ОБСЧЕТ ПОПУТНЫХ ДИНАМИЧЕСКИХ СВОЙСТВ (МОДИФИКАЦИИ ВСЕРОДОВ 1 - 255) ---
         atom.is_pure_current = false;
         atom.valence_mod = static_cast<int>(std::floor(atom.charge_density)) % 256;
 
-        // Присвоение древнерусских имен Родов по Ю.С. Рыбникову на основе плотности заряда
+        // Присвоение древнерусских имен Родов по Ю.С. Рыбникову
         if (atom.valence_mod <= 1)       { atom.atom_name = "Всерод"; }
         else if (atom.valence_mod <= 2)  { atom.atom_name = "Первород"; }
         else if (atom.valence_mod <= 4)  { atom.atom_name = "Двурод"; }
@@ -94,33 +92,42 @@ public:
         else if (atom.valence_mod <= 128){ atom.atom_name = "Семирод"; }
         else                             { atom.atom_name = "Высший Род"; }
 
-        // 1. Формула усадки динамического зазора Маркова (L_uv)
+        // --- ВЫЧИСЛЕНИЕ ЛЮФТА И РАЗДЕЛЕНИЕ НА РЕЖИМЫ (УПЛОТНЕНИЕ / РАЗУПЛОТНЕНИЕ) ---
         float stress_factor = atom.charge_density / 256.0f;
-        atom.calculated_leeway = L_E0 * (1.0f - stress_factor * ZETA);
-        if (atom.calculated_leeway < 0.0f) atom.calculated_leeway = 0.0f;
+        
+        // Порог покоя — среднее фоновое натяжение (атмосфера вакуума) равен 128 единицам
+        if (atom.charge_density < 12.0f) {
+            // ФАЗА РАЗУПЛОТНЕНИЯ (Rarefaction): Люфт расширяется выше базового 0.024 вплоть до L_e0 * ZETA
+            atom.density_state = "РАЗУПЛОТНЕНИЕ ПРОСТРАНСТВА (RAREFACTION)";
+            atom.calculated_leeway = L_E0 * (1.0f + (1.0f - stress_factor) * (ZETA - 1.0f));
+            if (atom.calculated_leeway > L_E0 * ZETA) atom.calculated_leeway = L_E0 * ZETA;
+            
+            atom.weight = 0.0f; // Разуплотненный Всерод полностью теряет барионный вес
+            atom.electro_conductivity = 100.0f; // Максимальная проводимость свободной решетки
+            atom.refractive_index = 1.0f; // Абсолютная оптическая прозрачность вакуума
+        } else {
+            // ФАЗА УПЛОТНЕНИЯ (Compression): Люфт усаживается, рождая массу и преломление
+            atom.density_state = "УПЛОТНЕНИЕ МАТРИЦЫ (COMPRESSION)";
+            atom.calculated_leeway = L_E0 * (1.0f - stress_factor * ZETA);
+            if (atom.calculated_leeway < 0.0f) atom.calculated_leeway = 0.0f;
+            
+            // Вес (Барионная масса квантования уплотнения слоев из уравнения 47)
+            atom.weight = atom.charge_density * (1.0f - (atom.calculated_leeway / L_E0)) * ZETA;
+            // Электропроводность падает по мере заклинивания границ
+            atom.electro_conductivity = (atom.calculated_leeway / L_E0) * 100.0f;
+            // Оптическое преломление N_mat растет (Уравнение 34 монографии)
+            atom.refractive_index = 1.0f / (1.0f - 0.95f * stress_factor);
+            if (atom.refractive_index > 20.0f) atom.refractive_index = 20.0f;
+        }
 
         // 2. ВВИНЧИВАНИЕ (Phase Screwing) — Прямое следствие анизотропного сдвига ZETA = 1.024
         atom.phase_screwing = static_cast<float>(anisotropy_gradient) * ZETA * 0.024f;
 
-        // 3. ВЕС (Барионная масса квантования поглощения пространства из уравнения 47)
-        atom.weight = atom.charge_density * (1.0f - (atom.calculated_leeway / L_E0)) * ZETA;
+        // 3. ТЕПЛОПРОВОДНОСТЬ (Скорость передачи импульса через сжатые/раздвинутые соты)
+        atom.thermal_conductivity = C_ETHER * (atom.calculated_leeway / L_E0);
 
-        // 4. ЭЛЕКТРОПРОВОДНОСТЬ (Поток свободных Всеродов)
-        atom.electro_conductivity = (atom.calculated_leeway / L_E0) * 100.0f;
-
-        // 5. ТЕПЛОПРОВОДНОСТЬ (Передача сжатия через жесткие границы контактов)
-        atom.thermal_conductivity = C_ETHER * (1.0f - 0.95f * (atom.charge_density / 256.0f));
-
-        // 6. ОПТИЧЕСКИЙ ИНДЕКС ПРЕЛОМЛЕНИЯ N_mat (Уравнение 34 монографии)
-        if (atom.calculated_leeway > 0.0f) {
-            atom.refractive_index = 1.0f / (1.0f - 0.95f * (atom.charge_density / 256.0f));
-            if (atom.refractive_index > 20.0f) atom.refractive_index = 20.0f;
-        } else {
-            atom.refractive_index = 20.0f; 
-        }
-
-        // 7. ЭКЗО-АКУСТИЧЕСКАЯ РЕАКТИВНАЯ ТЯГА (Discrete Divergence химического стресса)
-        atom.emergent_thrust = static_cast<float>(anisotropy_gradient) * (L_E0 - atom.calculated_leeway) * 500.0f;
+        // 4. ЭКЗО-АКУСТИЧЕСКАЯ РЕАКТИВНАЯ ТЯГА (Discrete Divergence химического стресса)
+        atom.emergent_thrust = static_cast<float>(anisotropy_gradient) * std::abs(L_E0 - atom.calculated_leeway) * 500.0f;
     }
 };
 
