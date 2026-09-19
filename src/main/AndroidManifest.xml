@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest 
+    xmlns:android="
+http://android.com"
+    package="com.banachos.app">
+
+    <!-- Права для роевого P2P стека связи -->
+    <uses-permission 
+        android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@android:drawable/sym_def_app_icon"
+        android:label="BanachOS v8.3"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+        
+        <!-- Привязка к нашей главной Java-активности -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action 
+                    android:name="
+android.intent.action.MAIN" />
+                <category 
+                    android:name="
+android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
