@@ -1,46 +1,46 @@
 <!-- CRASH_START -->
 ### 🚨 MARKOV_CORE CRASH DUMP (ПОСЛЕДНИЕ 40 СТРОК СБОЯ):
 ```text
-     16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {
-        |                                                    ^~~~~~~~~~~~~~~
-  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:
-  banachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope
-     25 |         target_attached = true;
-        |         ^~~~~~~~~~~~~~~
-  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:
-  banachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope
-     36 |     if (target_attached) {
-        |         ^~~~~~~~~~~~~~~
-  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:
-  banachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope
-     49 |     if (!target_attached) {
-        |          ^~~~~~~~~~~~~~~
-  make: *** [<builtin>: banachos_injector.o] Error 1
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In constructor ‘BanachOSKernelInjector::BanachOSKernelInjector()’:\nbanachos_injector.cpp:16:52: error: class ‘BanachOSKernelInjector’ does not have any field named ‘target_attached’\n   16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {\n      |                                                    ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:\nbanachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope\n   25 |         target_attached = true;\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:\nbanachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope\n   36 |     if (target_attached) {\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope\n   49 |     if (!target_attached) {\n      |          ^~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
-ERROR test_native_core.py::test_installer_symbiote_generation - AssertionError: Крах компиляции ядра микроядра через Makefile:
-  banachos_injector.cpp: In constructor ‘BanachOSKernelInjector::BanachOSKernelInjector()’:
-  banachos_injector.cpp:16:52: error: class ‘BanachOSKernelInjector’ does not have any field named ‘target_attached’
-     16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {
-        |                                                    ^~~~~~~~~~~~~~~
-  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:
-  banachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope
-     25 |         target_attached = true;
-        |         ^~~~~~~~~~~~~~~
-  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:
-  banachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope
-     36 |     if (target_attached) {
-        |         ^~~~~~~~~~~~~~~
-  banachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:
-  banachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope
-     49 |     if (!target_attached) {
-        |          ^~~~~~~~~~~~~~~
-  make: *** [<builtin>: banachos_injector.o] Error 1
-  
-assert 2 == 0
- +  where 2 = CompletedProcess(args=['make'], returncode=2, stdout='g++ -std=c++20 -O3 -Wall -Wextra   -c -o main.o main.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_mem.o banachos_mem.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_hal.o banachos_hal.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_syscalls.o banachos_syscalls.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_net.o banachos_net.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_crypto.o banachos_crypto.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_translator.o banachos_translator.cpp\ng++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_injector.o banachos_injector.cpp\n', stderr='banachos_injector.cpp: In constructor ‘BanachOSKernelInjector::BanachOSKernelInjector()’:\nbanachos_injector.cpp:16:52: error: class ‘BanachOSKernelInjector’ does not have any field named ‘target_attached’\n   16 | BanachOSKernelInjector::BanachOSKernelInjector() : target_attached(false) {\n      |                                                    ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::attach_to_target_system(int)’:\nbanachos_injector.cpp:25:9: error: ‘target_attached’ was not declared in this scope\n   25 |         target_attached = true;\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::hijack_android_network_sockets()’:\nbanachos_injector.cpp:36:9: error: ‘target_attached’ was not declared in this scope\n   36 |     if (target_attached) {\n      |         ^~~~~~~~~~~~~~~\nbanachos_injector.cpp: In member function ‘bool BanachOSKernelInjector::displace_system_core(BanachOSCodeTranslator&, const std::vector<unsigned char>&)’:\nbanachos_injector.cpp:49:10: error: ‘target_attached’ was not declared in this scope\n   49 |     if (!target_attached) {\n      |          ^~~~~~~~~~~~~~~\nmake: *** [<builtin>: banachos_injector.o] Error 1\n').returncode
-============================== 4 errors in 9.20s ===============================
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_bgui.o banachos_bgui.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_bproc.o banachos_bproc.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_bcontainer.o banachos_bcontainer.cpp
+g++ -std=c++20 -O3 -Wall -Wextra   -c -o banachos_baudio.o banachos_baudio.cpp
+g++ -std=c++20 -O3 -Wall -Wextra main.o banachos_mem.o banachos_hal.o banachos_syscalls.o banachos_net.o banachos_crypto.o banachos_translator.o banachos_injector.o banachos_bgui.o banachos_bproc.o banachos_bcontainer.o banachos_baudio.o -o banachos_core
+================================================================================
+[bBUILD] 100% МОНОЛИТ ОПЕРАЦИОННОЙ СИСТЕМЫ BANACHOS v8.3 СКОМПИЛИРОВАН!
+[bBUILD] Последние Python-макеты вытеснены. Все инварианты кремния активны.
+================================================================================
+============================= test session starts ==============================
+platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /opt/hostedtoolcache/Python/3.11.16/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/MarkovOS/MarkovOS
+collecting ... collected 4 items
+
+test_native_core.py::test_check_for_forgotten_native_modules 
+[CI/CD] Запуск промышленной сборки bBUILD...
+
+[SCANNER] Проверка архитектурной целостности репозитория...
+PASSED
+test_native_core.py::test_native_binary_execution_flow FAILED
+test_native_core.py::test_equatorial_register_lockup PASSED
+test_native_core.py::test_installer_symbiote_generation PASSED
+
+=================================== FAILURES ===================================
+______________________ test_native_binary_execution_flow _______________________
+
+    def test_native_binary_execution_flow():
+        """Проверка базового детерминированного рантайма и фаз слияния."""
+        result = subprocess.run(["./banachos_core"], capture_output=True, text=True)
+        assert result.returncode == 0, "Нативное ядро завершилось с критической ошибкой!"
+        output = result.stdout
+        assert "Нативная архитектура BanachOS успешно развернута" in output
+>       assert "Обнаружен бинарный формат: ANDROID_ELF" in output
+E       assert 'Обнаружен бинарный формат: ANDROID_ELF' in "================================================================================\n    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             \n================================================================================\n[INIT] Драйвер banachos_bridge.py успешно инициализирован в пространстве C++.\n[INIT] Расширенный рантайм bLANG (v8.3.5) интегрирован в монолит ядра.\n[INIT] Драйвер banachos_bridge.py успешно инициализирован в пространстве C++.\n[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...\n[WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.\n[BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея\n[BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче\n[BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS\n[BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.\n[BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.\n[bCOMPILER] Накапливается исходный код программы......[SWARM_CONTRACT] Вытеснение успешно инициировано и выведено на экран для полной изоляции.\n--------------------------------------------------------------------------------\n[bDROPPER] Запуск процесса упаковки BanachOS v8.3 в монолитную матрицу...\n[bDROPPER] УСПЕШНО: Монолитный файл мимикрии собран: 'banachos_installer.sh'\n--------------------------------------------------------------------------------\n--------------------------------------------------------------------------------\n[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:\n  -> Песочницы bCONTAINER (Индекс люфта): 0.024006 / 0.024\n  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = 0.960938\n  -> Драйвер экрана bGUI (Люфт упругости) : 0.024006\n  -> Диспетчер потоков bPROC (Люфт шины)  : 0.0240052\n  -> Спецификация bREGISTRY               : REGISTRY_LOCKED: Инварианты UMM v8.3 запечатаны на уровне кремния.\n  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)\n\nНативная архитектура BanachOS успешно развернута. Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER.\n================================================================================\n"
+
+test_native_core.py:55: AssertionError
+=========================== short test summary info ============================
+FAILED test_native_core.py::test_native_binary_execution_flow - assert 'Обнаружен бинарный формат: ANDROID_ELF' in "================================================================================\n    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             \n================================================================================\n[INIT] Драйвер banachos_bridge.py успешно инициализирован в пространстве C++.\n[INIT] Расширенный рантайм bLANG (v8.3.5) интегрирован в монолит ядра.\n[INIT] Драйвер banachos_bridge.py успешно инициализирован в пространстве C++.\n[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: 2048...\n[WARN] bGUI: Физический фреймбуфер недоступен. Запуск математической эмуляции видеопамяти VRAM.\n[BOOT] Графика дисплея: GUI_SUCCESS: Кадр bSHELL успешно выведен напрямую в кремний матрицы дисплея\n[BOOT] Диспетчер bPROC: PROC_SUCCESS: Квант времени ЦП детерминированно выделен задаче\n[BOOT] Накопитель bFS : FS_SUCCESS: Данные зафиксированы вектором деформации bFS\n[BOOT] Аудиосистема bAUDIO: AUDIO_SUCCESS: Звуковой квант детерминированно обработан в рамках Липшицева зазора.\n[BOOT] Контроллер bDMA    : DMA_SUCCESS: Прямой доступ к памяти верифицирован геометрическим цензором.\n[bCOMPILER] Накапливается исходный код программы......[SWARM_CONTRACT] Вытеснение успешно инициировано и выведено на экран для полной изоляции.\n--------------------------------------------------------------------------------\n[bDROPPER] Запуск процесса упаковки BanachOS v8.3 в монолитную матрицу...\n[bDROPPER] УСПЕШНО: Монолитный файл мимикрии собран: 'banachos_installer.sh'\n--------------------------------------------------------------------------------\n--------------------------------------------------------------------------------\n[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:\n  -> Песочницы bCONTAINER (Индекс люфта): 0.024006 / 0.024\n  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = 0.960938\n  -> Драйвер экрана bGUI (Люфт упругости) : 0.024006\n  -> Диспетчер потоков bPROC (Люфт шины)  : 0.0240052\n  -> Спецификация bREGISTRY               : REGISTRY_LOCKED: Инварианты UMM v8.3 запечатаны на уровне кремния.\n  -> Оперативная память bMEM (Индекс)     : 100% SECURE (LIPSCHITZ_BOUNDED)\n\nНативная архитектура BanachOS успешно развернута. Вытеснение успешно выполнено. Гостевая ОС изолирована внутри bCONTAINER.\n================================================================================\n"
+========================= 1 failed, 3 passed in 20.44s =========================
 ```
 <!-- CRASH_END -->
 
