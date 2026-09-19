@@ -33,7 +33,7 @@ DEPS = banachos_mem.hpp \
        banachos_bgui.hpp \
        banachos_bproc.hpp \
        banachos_fs.hpp \
-  т    banachos_smart_contract.hpp \
+       banachos_smart_contract.hpp \
        banachos_bcontainer.hpp \
        banachos_baudio.hpp \
        banachos_bdma.hpp \
@@ -62,6 +62,7 @@ DEPS = banachos_mem.hpp \
        banachos_compiler.hpp \
        banachos_hll_compiler.hpp \
        banachos_thread_symbiote.hpp \
+       banachos_x86_translator.hpp \
        banachos_dropper.hpp \
        banachos_genesis.hpp
 # Продолжение списка DEPS — Физико-химические модули расширения (Главы 4, 5, 6, 7, 8, 9, 10, 14, 16)
