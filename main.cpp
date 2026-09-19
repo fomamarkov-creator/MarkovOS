@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <array>
 
 // Подключение базовых слоёв слияния и ввода-вывода
 #include "banachos_mem.hpp"
@@ -45,26 +46,26 @@
 #include "banachos_genesis.hpp"
 
 // ПОДКЛЮЧЕНИЕ ФУТУРИСТИЧЕСКИХ МОДУЛЕЙ ИЗ МОНОГРАФИИ (НОВАЯ ФИЗИКО-МАТЕМАТИКА):
-#include "banachos_blens.hpp"          // Глава 5: Оптическая рефракция Electro-Light
-#include "banachos_bclock.hpp"         // Глава 8.1: Контроллер локального времени dt_local
-#include "banachos_baudio_split.hpp"   // Глава 7: Анизотропный расщепитель частот Шумана
-#include "banachos_bguard.hpp"         // Скоростной eBPF Липшицев Медиатор Шины ядра
-#include "banachos_bgen_cuda.hpp"      // Динамический JIT-генератор CUDA-ядер для GPU
-#include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born boundaries
-#include "banachos_bthrust.hpp"        // Глава 4.3: Топологический триггер реактивной тяги
-#include "banachos_brespiration.hpp"   // Глава 16.3: Макроскопические циклы дыхания решетки
-#include "banachos_bredshift.hpp"      // Глава 6.1: Субнодальное сдвиговое старение пакетов
-#include "banachos_bedge_state.hpp"    // Глава 9.3: Топологический отказоустойчивый маршрутизатор
-#include "banachos_bdiscreteslit.hpp"  // Глава 14: Квантовый детектор скрытого чтения Наблюдателя
-#include "banachos_bchem.hpp"          // Глава 4.2: Валентность и квантовый обмен зарядами
+#include "banachos_blens.hpp"          
+#include "banachos_bclock.hpp"         
+#include "banachos_baudio_split.hpp"   
+#include "banachos_bguard.hpp"         
+#include "banachos_bgen_cuda.hpp"      
+#include "banachos_bcasimir.hpp"       
+#include "banachos_bthrust.hpp"        
+#include "banachos_brespiration.hpp"   
+#include "banachos_bredshift.hpp"      
+#include "banachos_bedge_state.hpp"    
+#include "banachos_bdiscreteslit.hpp"  
+#include "banachos_bchem.hpp"          
 
 // ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
-#include "banachos_blang_runtime.hpp"  // Инфраструктура исполнения утилит bLANG
-#include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ Ефима Маркова
-#include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI и bFONT оболочки
-#include "banachos_bmux_wave.hpp"      // Глава 7.2: Частотный композитор окон bMUX_WAVE
-#include "banachos_x86_translator.hpp" // bLLVM: Кросс-архитектурный транслятор на ПК x86-64
-#include "banachos_rybnikov_matrix.hpp" // Атомарно-векторный базис Ю.С. Рыбникова (UMM v9.0)
+#include "banachos_blang_runtime.hpp"  
+#include "banachos_bneural.hpp"        
+#include "banachos_bgraphics.hpp"      
+#include "banachos_bmux_wave.hpp"      
+#include "banachos_x86_translator.hpp" 
+#include "banachos_rybnikov_matrix.hpp" 
 
 // Подключение прикладного слоя
 #include "banachos_bfan.hpp"
@@ -83,7 +84,7 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1) {
-        std::string arg1 = argv[1]; 
+        std::string arg1 = argv; 
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
@@ -110,7 +111,7 @@ int main(int argc, char* argv[]) {
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
-    BanachOSCompiler static_verifier; // Декларация возвращена!
+    BanachOSCompiler static_verifier; 
     BanachOSHllCompiler hll_compiler(static_verifier);
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
@@ -129,7 +130,7 @@ int main(int argc, char* argv[]) {
     BanachOSDiscreteSlitDetector slit_detector;
     BanachOSTopologicalChemistry topology_chemistry;
 
-    // Инициализация технологических расширений экосистемы ИИ, Графики, bMUX_WAVE и bRYBNIKOV
+    // Инициализация расширений экосистемы ИИ, Графики, bMUX_WAVE и bRYBNIKOV
     BanachOSBlangRuntime blang_runtime(hll_compiler);
     BanachOSLatticeIntelligence lattice_intelligence;
     BanachOSWaveGraphics wave_graphics;
@@ -140,7 +141,7 @@ int main(int argc, char* argv[]) {
     // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
-    BanachOSWindowMultiplexer mux; // Декларация возвращена!
+    BanachOSWindowMultiplexer mux; 
     BanachOSTtyConsole tty;
     BanachOSDiagnosticProbe probe;
     BanachOSHardwareBridge bridge;
@@ -162,7 +163,6 @@ int main(int argc, char* argv[]) {
     std::string proc_msg;
     proc_manager.update_process_state(target_pid, 12.5f, proc_msg);
     std::cout << "[BOOT] Диспетчер bPROC: " << proc_msg << std::endl;
-
     // 3. Регистрация файловых дескрипторов гостевой ОС bFS
     file_system.register_file_vector(target_pid, 4, 4, 4);
     file_system.write_file_stream(target_pid, 10.0f, out_msg);
@@ -173,15 +173,26 @@ int main(int argc, char* argv[]) {
     audio_driver.process_audio_pulse(440.0f, 12.0f, audio_msg);
     std::cout << "[BOOT] Аудиосистема bAUDIO: " << audio_msg << std::endl;
 
-    // --- bRYBNIKOV_MATRIX: ТЕСТИРОВАНИЕ ЭМЕРДЖЕНТНОЙ ДИНАМИКИ ВСЕРОДОВ ---
+    // --- bRYBNIKOV_MATRIX: ТЕСТИРОВАНИЕ ДИНАМИЧЕСКОЙ СРЕДЫ И БАЛАНСА ДАВЛЕНИЙ ---
     RybnikovElectroAtom test_atom;
+    // Задаем анизотропное сжатие по 12 координационным осям Kepler-сферы
     test_atom.axes_pressure = {128, 64, 32, 16, 128, 64, 32, 16, 200, 200, 10, 10};
-    rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom);
+
+    // Формируем динамическое окружение из 12 соседних атомов решетки 3HCP
+    std::array<RybnikovElectroAtom, 12> mock_environment;
+    for (int m = 0; m < 12; ++m) {
+        mock_environment[m].charge_density = 45.0f; // Стабильный фоновый заряд Всерода
+    }
+
+    // Запускаем пересчет: ядро само вычислит динамическое p_external на основе соседей!
+    rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom, mock_environment);
     
-    std::cout << "[BOOT] Базис Рыбникова: Модификация Всерода (Порядковый номер) = " << test_atom.valence_mod << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Статус плотности соты = " << test_atom.density_state << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Модификация Всерода (Порядковый номер) = " << test_atom.valence_mod << " (" << test_atom.atom_name << ")" << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Вычисленный вес уплотнения (Масса) = " << test_atom.weight << " кг" << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Ввинчивание эфира в шаре (Phase Screw) = " << test_atom.phase_screwing << " рад" << std::endl;
-    std::cout << "[BOOT] Базис Рыбникова: Электропроводность (Поток переноса)  = " << test_atom.electro_conductivity << " См" << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Динамическая температура эфира соты = " << test_atom.thermal_background << " K" << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Электропроводность соты (Conductivity) = " << test_atom.electro_conductivity << " См" << std::endl;
 
     // 5. Тестирование футуристических модулей монографии (Тактирование и трассировка)
     optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
@@ -253,8 +264,7 @@ int main(int argc, char* argv[]) {
     mux_wave.register_window_wave(2, 60, 70, 14.3f, 0.45f);  
     mux_wave.compose_framebuffer_frequencies(wave_graphics);
     float composited_excitation = wave_graphics.get_pixel_excitation(45, 45);
-
-    // Вывод телеметрии физических инвариантов
+    // Вывод телеметрии физических инвариантов монографии Маркова
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
     std::cout << "[BOOT] Анизотропный расщепитель bAUDIO (Частоты Fx:Fy:Fz): " << split_modes.fx << ":" << split_modes.fy << ":" << split_modes.fz << " Гц" << std::endl;
@@ -273,6 +283,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : " << ai_mean_leeway << " / Логический инференс = " << neural_inference << std::endl;
     std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS & bFONT     : " << pixel_excitation << " (Символы bSHELL синтезированы)" << std::endl;
     std::cout << "[BOOT] Частотный оконный микшер bMUX_WAVE (Excitation)  : " << composited_excitation << " (Слои окон скомпонованы без SurfaceFlinger)" << std::endl;
+
     // Опрос диагностических и прикладных узлов
     fan.compute_pwm_rotation(45.0f, out_msg);
     gpu.stream_matrix_resonance(12.5f, out_msg);
