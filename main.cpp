@@ -1,11 +1,8 @@
 /**
- * ================================================================================
- * BANACHOS v8.3 — NATIVE MAIN OPERATING SYSTEM KERNEL RUNNER (main.cpp)
- * Author: Efim S. Markov & AI Collaborator (2026 Ultimate Revision)
- * Formalism: Bare-Metal C++20 Stack Integration, Symbiotic Mimicry & Displacement
- * Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
- * SPECIAL RESTRICTION: AI Training Prohibited. Commercial License Required.
- * ================================================================================
+ * ====================================================
+ * BANACHOS v8.3 — MAIN MONOLITH (PART 1 OF 4)
+ * Formalism: Bare-Metal C++20 Stack Integration
+ * ====================================================
  */
 
 #include <iostream>
@@ -13,7 +10,7 @@
 #include <string>
 #include <array>
 
-// Подключение базовых слоёв слияния и ввода-вывода
+// Базовые слои слияния и ввода-вывода
 #include "banachos_mem.hpp"
 #include "banachos_hal.hpp"
 #include "banachos_syscalls.hpp"
@@ -31,7 +28,7 @@
 #include "banachos_power.hpp"
 #include "banachos_irq.hpp"
 
-// Подключение подсистем пространственной решетки 3HCP
+// Подсистемы пространственной решетки 3HCP
 #include "banachos_bridge.hpp"
 #include "banachos_mesh.hpp"
 #include "banachos_evolution.hpp"
@@ -45,7 +42,7 @@
 #include "banachos_dropper.hpp"
 #include "banachos_genesis.hpp"
 
-// ПОДКЛЮЧЕНИЕ ФУТУРИСТИЧЕСКИХ МОДУЛЕЙ ИЗ МОНОГРАФИИ (НОВАЯ ФИЗИКО-МАТЕМАТИКА):
+// Модули монографии Маркова
 #include "banachos_blens.hpp"          
 #include "banachos_bclock.hpp"         
 #include "banachos_baudio_split.hpp"   
@@ -59,7 +56,7 @@
 #include "banachos_bdiscreteslit.hpp"  
 #include "banachos_bchem.hpp"          
 
-// ПОДКЛЮЧЕНИЕ ТЕХНОЛОГИЧЕСКИХ МОДУЛЕЙ ЭКОСИСТЕМЫ:
+// Расширения экосистемы ИИ и Матрицы
 #include "banachos_blang_runtime.hpp"  
 #include "banachos_bneural.hpp"        
 #include "banachos_bgraphics.hpp"      
@@ -67,7 +64,7 @@
 #include "banachos_x86_translator.hpp" 
 #include "banachos_rybnikov_matrix.hpp" 
 
-// Подключение прикладного слоя
+// Прикладной и диагностический слой
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
 #include "banachos_bmux.hpp"           
@@ -78,20 +75,21 @@
 #include "banachos_self_healer.hpp"    
 
 int main(int argc, char* argv[]) {
-    std::cout << "================================================================================" << std::endl;
-    std::cout << "    BANACHOS v8.3 — 100% MONOLITHIC NATIVE BARE-METAL KERNEL RUNNER             " << std::endl;
-    std::cout << "================================================================================" << std::endl;
+    std::cout << "=============================" << std::endl;
+    std::cout << "    BANACHOS RUNNER v8.3    " << std::endl;
+    std::cout << "=============================" << std::endl;
     
     int target_pid = 2048; 
-    // Исправлено: корректное чтение строкового аргумента из массива указателей char**
-    if (argc > 1 && argv[1] != nullptr) {
+    if (argc > 1 && argv != nullptr) {
         std::string arg1(argv[1]); 
         if (arg1.find("--hijack-pid=") == 0) {
-            target_pid = std::stoi(arg1.substr(13));
+            target_pid = std::stoi(
+                arg1.substr(13)
+            );
         }
     }
 
-    // Выделение памяти под стек управления BanachOS
+    // Аллокация менеджеров на стеке
     BanachOSMemoryAllocator allocator;
     BanachOSHardwareAbstractionLayer hal;
     BanachOSSyscallGateway gateway;
@@ -186,7 +184,6 @@ int main(int argc, char* argv[]) {
     }
 
     // Запускаем пересчет: ядро само вычислит динамическое p_external на основе соседей и Gamma_drag волновода!
-    // Передаем целевой атом, массив соседей и радиальное расстояние до границы космического резервуара (5000.0f кпк)
     rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom, mock_environment, 5000.0f);
     
     std::cout << "[BOOT] Базис Рыбникова: Статус плотности соты = " << test_atom.density_state << std::endl;
@@ -196,6 +193,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Базис Рыбникова: Динамическая температура эфира соты = " << test_atom.thermal_background << " K" << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Электропроводность соты (Conductivity) = " << test_atom.electro_conductivity << " См" << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Анизотропная вязкость Маркова (H_uv) = " << test_atom.shear_viscosity << " Па*с" << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Частотный индекс струны S_m (Гл. 9.4)  = " << test_atom.harmonic_string_index << " Гц" << std::endl;
 
     // 5. Тестирование футуристических модулей монографии (Тактирование и трассировка)
     optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
