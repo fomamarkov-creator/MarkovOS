@@ -22,9 +22,7 @@ jobs:
     - name: Inject Strict Computational Stack
       run: |
         python -m pip install --upgrade pip
-        pip install numpy pytest torch cupy-cuda12x
-        # Установка консольного рекордера для генерации изображений
-        sudo apt-get update && sudo apt-get install -y imagemagick
+        pip install numpy pytest torch cupy-cuda12x Pillow
 
     - name: Execute Strict Matrix and Spectral Tests
       id: pytests
@@ -43,21 +41,43 @@ jobs:
         ./banachos_core > core_run.log 2>&1 || true
         cat core_run.log
         
-        # 2. Программно создаем красивую, легкую GIF-картинку на основе лога ядра.
-        # Чтобы не перегружать раннер, мы берем 핵심 телеметрии и создаем снимок терминала.
-        # Для красивой анимации бегущего текста в headless-режиме мы пишем детерминированный GIF.
+        # 2. Программно создаем красивую, легкую GIF-картинку терминала на чистом Python Pillow
         python -c "
         import os
-        with open('core_run.log', 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+        from PIL import Image, ImageDraw, ImageFont
         
-        # Формируем текстовую маску рантайма
-        clean_text = '=== BANACHOS KERNEL LIVE MONITOR ===\n' + ''.join(lines[:35])
-        with open('mon_print.txt', 'w', encoding='utf-8') as mf:
-            mf.write(clean_text)
+        with open('core_run.log', 'r', encoding='utf-8') as f:
+            lines = [line.strip() for line in f.readlines()[:40]]
             
-        # Используем ImageMagick для сборки честной картинки терминала BanachOS
-        os.system('convert -background \"#0d1117\" -fill \"#c9d1d9\" -font Courier -pointsize 12 label:@mon_print.txt ontogenesis_live.gif')
+        # Создаем изображение фиксированного размера под терминал
+        width, height = 800, 600
+        image = Image.new('RGB', (width, height), color='#0d1117')
+        draw = ImageDraw.Draw(image)
+        
+        # Используем стандартный моноширинный шрифт системы
+        try:
+            font = ImageFont.truetype('LiberationMono-Regular.ttf', 12)
+        except:
+            font = ImageFont.load_default()
+            
+        # Построчно отрисовываем честную телеметрию
+        y_offset = 20
+        for line in lines:
+            # Детерминированная цветовая подсветка логов ядра в растре
+            text_color = '#c9d1d9'
+            if '[BOOT]' in line or '[STAGE 3]' in line:
+                text_color = '#58a6ff'
+            elif 'SUCCESS' in line or 'PASSED' in line or 'УСПЕШНО' in line:
+                text_color = '#3fb950'
+            elif '[WARN]' in line or 'REJECTED' in line:
+                text_color = '#d29922'
+                
+            draw.text((20, y_offset), line, fill=text_color, font=font)
+            y_offset += 14
+            
+        # Запечатываем готовый GIF-кадр в корень репозитория
+        image.save('ontogenesis_live.gif')
+        print('[bBUILD] Честный GIF-слепок рантайма детерминированно сгенерирован.')
         "
         
         echo "========================================================================"
