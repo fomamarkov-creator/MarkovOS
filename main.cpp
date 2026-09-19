@@ -184,8 +184,9 @@ int main(int argc, char* argv[]) {
         mock_environment[m].charge_density = 45.0f; // Стабильный фоновый заряд Всерода
     }
 
-    // Запускаем пересчет: ядро само вычислит динамическое p_external на основе соседей!
-    rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom, mock_environment);
+    // Запускаем пересчет: ядро само вычислит динамическое p_external на основе соседей и Gamma_drag волновода!
+    // Передаем целевой атом, массив соседей и радиальное расстояние до границы космического резервуара (5000.0f кпк)
+    rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom, mock_environment, 5000.0f);
     
     std::cout << "[BOOT] Базис Рыбникова: Статус плотности соты = " << test_atom.density_state << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Модификация Всерода (Порядковый номер) = " << test_atom.valence_mod << " (" << test_atom.atom_name << ")" << std::endl;
@@ -193,6 +194,7 @@ int main(int argc, char* argv[]) {
     std::cout << "[BOOT] Базис Рыбникова: Ввинчивание эфира в шаре (Phase Screw) = " << test_atom.phase_screwing << " рад" << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Динамическая температура эфира соты = " << test_atom.thermal_background << " K" << std::endl;
     std::cout << "[BOOT] Базис Рыбникова: Электропроводность соты (Conductivity) = " << test_atom.electro_conductivity << " См" << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Анизотропная вязкость Маркова (H_uv) = " << test_atom.shear_viscosity << " Па*с" << std::endl;
 
     // 5. Тестирование футуристических модулей монографии (Тактирование и трассировка)
     optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
