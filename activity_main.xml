@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="
+http://android.com"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:padding="16dp">
+
+    <!-- Заголовок системы V256 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BANACHOS OS v8.3"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Окно ввода речевых команд ИИ -->
+    <EditText
+        android:id="@+id/prompt_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите элемент (Железо, Неон...)"
+        android:textColorHint="#555555"
+        android:textColor="#FFFFFF"
+        android:background="#111111"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Кнопка запуска уплотнения сфер -->
+    <Button
+        android:id="@+id/compile_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ЗАПУСТИТЬ СИНТЕЗ (V256)"
+        android:backgroundTint="#222222"
+        android:textColor="#FFFFFF"/>
+
+    <!-- Монитор вывода волновой телеметрии -->
+    <TextView
+        android:id="@+id/telemetry_output"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="24dp"
+        android:background="#050505"
+        android:padding="12dp"
+        android:text="Ожидание команды Покоя..."
+        android:textColor="#AAAAAA"
+        android:textSize="14sp"
+        android:fontFamily="monospace"/>
+
+</LinearLayout>
