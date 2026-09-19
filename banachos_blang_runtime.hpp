@@ -21,8 +21,8 @@
 #include "banachos_hll_compiler.hpp"
 
 struct BlangVirtualMachine {
-    uint8_t registers = {0}; // 8 нативных регистров в кольце вычетов Z/256Z
-    uint16_t pc = 0;            // Program Counter
+    uint8_t registers = {0}; // Нативный регистр в кольце вычетов Z/256Z
+    uint16_t pc = 0;         // Program Counter
     bool halted = false;
     float current_leeway = 0.024f; // Базовый динамический люфт упругости ВМ
 };
@@ -48,11 +48,11 @@ public:
         }
 
         BlangVirtualMachine vm;
-        size_t code_size = binary_image.size();
+        uint32_t max_code_limit = static_cast<uint32_t>(binary_image.size());
 
-        while (vm.pc < code_size && !vm.halted) {
+        while (static_cast<uint32_t>(vm.pc) < max_code_limit && !vm.halted) {
             uint8_t opcode = binary_image[vm.pc];
-            uint8_t arg = (vm.pc + 1 < code_size) ? binary_image[vm.pc + 1] : static_cast<uint8_t>(0);
+            uint8_t arg = (static_cast<uint32_t>(vm.pc) + 1 < max_code_limit) ? binary_image[vm.pc + 1] : static_cast<uint8_t>(0);
             
             // Интерпретация расширенного набора инструкций на кольце вычетов Z/256Z
             switch (opcode) {
@@ -89,8 +89,8 @@ public:
                     vm.halted = true;
                     break;
             }
-            // Гашение предупреждения о разнице знаков при сравнении индексов
-            if (vm.pc + 2 > 65530) {
+            
+            if (static_cast<uint32_t>(vm.pc) + 2 >= max_code_limit) {
                 vm.halted = true;
             } else {
                 vm.pc += 2; // Шаг по байт-парам инструкция:аргумент
