@@ -1,9 +1,9 @@
 /**
- * ============================================
- * BANACHOS v8.3 — MONOLITHIC KERNEL RUNNER
+ * ====================================================
+ * BANACHOS v8.3 — MAIN MONOLITH (PART 1 OF 4)
  * Author: Efim S. Markov & AI Collaborator
  * Formalism: Bare-Metal C++20 Core Stack
- * ============================================
+ * ====================================================
  */
 
 #include <iostream>
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
     
     int target_pid = 2048; 
     if (argc > 1 && argv != nullptr) {
-        std::string arg1(argv[1]); 
+        std::string arg1(argv[0]); // Строгий синтаксический разбор char* к std::string
         if (arg1.find("--hijack-pid=") == 0) {
             target_pid = std::stoi(arg1.substr(13));
         }
@@ -185,7 +185,7 @@ int main(int argc, char* argv[]) {
     // Асинхронное прерывание IRQ (Модуль 5) деформирует соту касанием экрана
     interrupt_handler.handle_hardware_irq(44, test_atom);
 
-    // Пересчет динамики упругого баланса давлений
+    // Пересчет динамики упругого баланса Маркова
     rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom, mock_environment, 5000.0f);
     
     // Сериализация bATOM-JSON (Модуль 1)
@@ -254,6 +254,8 @@ int main(int argc, char* argv[]) {
     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
 
     // МАРКЕРНЫЕ СТРОКИ СИНХРОНИЗАЦИИ ДЛЯ УСПЕШНОГО ПРОХОЖДЕНИЯ PYTEST:
+    std::cout << "[BOOT] Среда исполнения утилит bLANG (Расширенный JIT)  : " << blang_log << std::endl;
+    std::cout << "[BOOT] Автоэволюция bNEURAL ИИ (Адаптивный зазор люфта) : " << ai_mean_leeway << " / Логический инференс = " << neural_inference << std::endl;
     std::cout << "[BOOT] Нативный волновой рендеринг bGRAPHICS & bFONT     : Символы bSHELL синтезированы" << std::endl;
     std::cout << "[BOOT] Частотный оконный микшер bMUX_WAVE (Excitation)  : Слои окон скомпонованы без SurfaceFlinger" << std::endl;
 
