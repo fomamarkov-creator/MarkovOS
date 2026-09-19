@@ -1,0 +1,32 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.banachos.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.banachos.app"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "8.3"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile(
+                'proguard-android-optimize.txt'
+            ), 'proguard-rules.pro'
+        }
+    }
+
+    // Вшиваем наш нативный ARM64 С++ бинарник
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+}
