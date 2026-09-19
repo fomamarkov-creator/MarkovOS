@@ -33,6 +33,7 @@ DEPS = banachos_mem.hpp \
        banachos_bgui.hpp \
        banachos_bproc.hpp \
        banachos_mobile_extensions.hpp \
+       banachos_rybnikov_matrix.hpp \
        banachos_fs.hpp \
        banachos_smart_contract.hpp \
        banachos_bcontainer.hpp \
@@ -66,7 +67,8 @@ DEPS = banachos_mem.hpp \
        banachos_x86_translator.hpp \
        banachos_dropper.hpp \
        banachos_genesis.hpp
-# Продолжение списка DEPS — Физико-химические модули расширения (Главы 4, 5, 6, 7, 8, 9, 10, 14, 16)
+
+# Физико-химические модули расширения монографии
 DEPS += banachos_blens.hpp \
         banachos_bclock.hpp \
         banachos_baudio_split.hpp \
@@ -94,8 +96,12 @@ $(TARGET): $(OBJS)
 %.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Новая цель кросс-компиляции под мобильный APK (Этап 1)
+android:
+	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk
+
 clean:
 	rm -f $(OBJS) $(TARGET) banachos_firmware.bin banachos_distribution.iso banachos_installer.sh
 	@echo "[bBUILD] Очистка bFS завершена."
 
-.PHONY: all clean
+.PHONY: all clean android
