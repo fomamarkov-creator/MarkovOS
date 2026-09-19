@@ -44,11 +44,11 @@ jobs:
 
       - name: Initialize and Build Android APK via Gradle
         run: |
-          # 1. Генерируем Gradle-враппер для мобильной сборки
+          # 1. Генерируем локальный Gradle-враппер
           gradle wrapper
           chmod +x gradlew
           
-          # 2. Выполняем чистую bare-metal сборку C++ ядра
+          # 2. Выполняем чистую сборку C++ ядра
           make clean
           make
           
@@ -59,39 +59,15 @@ jobs:
           mkdir -p .pytest_cache
           cp -f banachos_core .pytest_cache/banachos_core
           
-          # 5. ГЕНЕРАЦИЯ СТЕРИЛЬНОГО МАНИФЕСТА БЕЗ СБОЕВ ЭКРАНИРОВАНИЯ
-          mkdir -p src/main
-          cat << 'EOF' > src/main/AndroidManifest.xml
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://android.com">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <application 
-                  android:allowBackup="false" 
-                  android:icon="@android:drawable/sym_def_app_icon" 
-                  android:label="BanachOS" 
-                  android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
-                  <activity 
-                      android:name="com.banachos.app.MainActivity" 
-                      android:exported="true">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-                  </activity>
-              </application>
-          </manifest>
-          EOF
-          
-          # 6. Запускаем компиляцию APK-приложения V256
+          # 5. Запускаем чистую компиляцию APK-приложения
           ./gradlew assembleDebug
 
       - name: Verify Core Telemetry via Pytest
         run: |
-          # Фиксируем путь бинарника для контура pytest
           export BANACHOS_CORE_PATH="./banachos_core"
           pytest -v --ignore=test_native_core.py
 
-      # Финишная публикация готового пакета и бинарников в артефакты
+      # Финишная публикация готового пакета и бинарников на скачивание
       - name: Upload BanachOS Mobile Application APK
         uses: actions/upload-artifact@v4
         with:
