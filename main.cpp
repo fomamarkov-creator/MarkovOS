@@ -50,8 +50,8 @@
 #include "banachos_baudio_split.hpp"   // Глава 7: Анизотропный расщепитель частот Шумана
 #include "banachos_bguard.hpp"         // Скоростной eBPF Липшицев Медиатор Шины ядра
 #include "banachos_bgen_cuda.hpp"      // Динамический JIT-генератор CUDA-ядер для GPU
-#include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born границ
-#include "banachos_bthrust.hpp"        // Глава 4.3: Toпологический триггер реактивной тяги
+#include "banachos_bcasimir.hpp"       // Глава 10: Расчет контактного давления All-Born boundaries
+#include "banachos_bthrust.hpp"        // Глава 4.3: Топологический триггер реактивной тяги
 #include "banachos_brespiration.hpp"   // Глава 16.3: Макроскопические циклы дыхания решетки
 #include "banachos_bredshift.hpp"      // Глава 6.1: Субнодальное сдвиговое старение пакетов
 #include "banachos_bedge_state.hpp"    // Глава 9.3: Топологический отказоустойчивый маршрутизатор
@@ -63,12 +63,13 @@
 #include "banachos_bneural.hpp"        // Кристаллический нейроморфный ИИ Ефима Маркова
 #include "banachos_bgraphics.hpp"      // Нативный волновой рендеринг GUI и bFONT оболочки
 #include "banachos_bmux_wave.hpp"      // Глава 7.2: Частотный композитор окон bMUX_WAVE
-#include "banachos_x86_translator.hpp"  // bLLVM: Кросс-архитектурный транслятор на ПК x86-64
+#include "banachos_x86_translator.hpp" // bLLVM: Кросс-архитектурный транслятор на ПК x86-64
+#include "banachos_rybnikov_matrix.hpp" // Атомарно-векторный базис Ю.С. Рыбникова (UMM v9.0)
 
 // Подключение прикладного слоя
 #include "banachos_bfan.hpp"
 #include "banachos_bgpu.hpp"
-#include "banachos_bmux.hpp"           // Легаси-заголовок
+#include "banachos_bmux.hpp"           
 #include "banachos_btty.hpp"
 #include "banachos_bprobe.hpp"
 #include "banachos_bswap.hpp"
@@ -109,12 +110,6 @@ int main(int argc, char* argv[]) {
     BanachOSHardwareBridge hardware_bridge;
     BanachOSSwarmMeshProtocol mesh_protocol;
     BanachOSDriverEvolver driver_evolver;
-    BanachOSHIDDriver hid_driver;
-    BanachOSIPCMessenger ipc_messenger;
-    BanachOSDriverEvolver bswap; // Алиас легаси-контроллера для обратной совместимости
-    BanachOSDefragmenter defragmenter;
-    BanachOSIsoBuilder iso_builder;
-    BanachOSCompiler static_verifier;
     BanachOSHllCompiler hll_compiler(static_verifier);
     BanachOSThreadSymbiote thread_symbiote;
     BanachOSGenesisBootloader genesis_bootloader;
@@ -133,27 +128,24 @@ int main(int argc, char* argv[]) {
     BanachOSDiscreteSlitDetector slit_detector;
     BanachOSTopologicalChemistry topology_chemistry;
 
-    // Инициализация технологических расширений экосистемы ИИ, Графики и bMUX_WAVE
+    // Инициализация технологических расширений экосистемы ИИ, Графики, bMUX_WAVE и bRYBNIKOV
     BanachOSBlangRuntime blang_runtime(hll_compiler);
     BanachOSLatticeIntelligence lattice_intelligence;
     BanachOSWaveGraphics wave_graphics;
     BanachOSMuxWave mux_wave;
-    BanachOSX86Translator x86_pc_translator; // Активация мета-компилятора под процессоры Intel/AMD
+    BanachOSX86Translator x86_pc_translator; 
+    BanachOSRybnikovMatrix rybnikov_matrix; // Активация нативного атомарного слоя UMM v9.0
 
     // Инициализация прикладных и диагностических инструментов
     BanachOSFanController fan;
     BanachOSGpuDriver gpu;
-    BanachOSWindowMultiplexer mux; 
     BanachOSTtyConsole tty;
     BanachOSDiagnosticProbe probe;
-    BanachOSHardwareBridge bridge;
     BanachOSSwapController swap;
     BanachOSSystemRegistry registry;
     BanachOSSelfHealer self_healer; 
 
     std::cout << "[BOOT] Активация bCONTAINER. Развертывание изолированной песочницы для PID: " << target_pid << "..." << std::endl;
-
-    // Спавним изолированную гексагональную соту песочницы для гостевой ОС
     container_manager.spawn_container_sandbox(target_pid, 4, 4, 4);
     
     // 1. Аппаратный видеовывод напрямую в обход SurfaceFlinger Android
@@ -168,19 +160,28 @@ int main(int argc, char* argv[]) {
     proc_manager.update_process_state(target_pid, 12.5f, proc_msg);
     std::cout << "[BOOT] Диспетчер bPROC: " << proc_msg << std::endl;
 
-    // 3. Регистрация файловых дескрипторов гостевой ОС
+    // 3. Регистрация файловых дескрипторов гостевой ОС bFS
     file_system.register_file_vector(target_pid, 4, 4, 4);
     file_system.write_file_stream(target_pid, 10.0f, out_msg);
     std::cout << "[BOOT] Накопитель bFS : " << out_msg << std::endl;
 
-    // 4. Инициализация и проверка нативного аудио- и DMA-контуров безопасности
+    // 4. Инициализация и проверка нативного аудио- и DMA-контуров
     std::string audio_msg, dma_msg;
     audio_driver.process_audio_pulse(440.0f, 12.0f, audio_msg);
-    dma_controller.verify_dma_channel_access(0x10007FFF, 1024, dma_msg);
     std::cout << "[BOOT] Аудиосистема bAUDIO: " << audio_msg << std::endl;
-    std::cout << "[BOOT] Контроллер bDMA    : " << dma_msg << std::endl;
 
-    // 5. Тестирование футуристических модулей монографии (Тактирование и опережающая трассировка)
+    // --- bRYBNIKOV_MATRIX: ТЕСТИРОВАНИЕ ЭМЕРДЖЕНТНОЙ ДИНАМИКИ ВСЕРОДОВ ---
+    RybnikovElectroAtom test_atom;
+    // Подаем анизотропное сжатие по 12 координационным осям Kepler-сферы
+    test_atom.axes_pressure = {128, 64, 32, 16, 128, 64, 32, 16, 200, 200, 10, 10};
+    rybnikov_matrix.compute_and_transfer_atomic_properties(test_atom);
+    
+    std::cout << "[BOOT] Базис Рыбникова: Модификация Всерода (Порядковый номер) = " << test_atom.valence_mod << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Вычисленный вес уплотнения (Масса) = " << test_atom.weight << " кг" << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Ввинчивание эфира в шаре (Phase Screw) = " << test_atom.phase_screwing << " рад" << std::endl;
+    std::cout << "[BOOT] Базис Рыбникова: Электропроводность (Поток переноса)  = " << test_atom.electro_conductivity << " См" << std::endl;
+
+    // 5. Тестирование футуристических модулей монографии (Тактирование и трассировка)
     optical_lenser.inject_baryonic_mass(8, 8, 8, 250.0f);
     LensVector3D theta = optical_lenser.compute_ray_deflection(8, 8, 8, 16);
     
@@ -203,9 +204,7 @@ int main(int argc, char* argv[]) {
     thrust_generator.provoke_topological_lockup(5, 5, 5, 255.0f);
     float emergent_thrust = thrust_generator.compute_emergent_thrust_pressure(5, 5, 5);
 
-    std::string resp_log1 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 150.0f);
     std::string resp_log2 = lattice_respiration.execute_matrix_respiration_tick(0, 0, 0, 0.0f);
-
     float wave_ageing = redshift_calculator.calculate_subnodal_redshift(5000.0f, 0.024f, 120.0f, 12);
 
     edge_router.lock_core_sector(4, 4, 4);
@@ -221,7 +220,7 @@ int main(int argc, char* argv[]) {
     float dynamic_zeta = genesis_bootloader.get_cell_volume_metric(8, 8, 8);
     float dynamic_leeway = genesis_bootloader.get_cell_clearance_metric(8, 8, 8);
 
-    // bLANG: JIT-компиляция утилиты 
+    // bLANG JIT-компиляция расширенного набора
     std::vector<std::string> mock_script = {
         "ALLOC_MEM 64", 
         "WAVE_PROP 16",  
@@ -232,29 +231,28 @@ int main(int argc, char* argv[]) {
     std::string blang_log;
     blang_runtime.execute_jit_utility("bSYS_PROVISION", mock_script, blang_log);
 
-    // --- bLLVM / PC x86-64 CROSS-TRANSLATION TRIAL ---
-    // Моделируем пробную кросс-эмиссию абстрактной волновой инструкции WAVE_PROP в сырой ассемблер ПК
+    // bLLVM: Кросс-эмиссия ассемблера x86-64 для ПК
     std::string emitted_pc_assembly;
     x86_pc_translator.emit_pc_assembly(0x20, 16, emitted_pc_assembly);
 
-    // bNEURAL: Автоэволюция онтогенеза ИИ на шумах чипсета
+    // bNEURAL: Автоэволюция онтогенеза ИИ на кремниевых шумах чипсета
     float ai_mean_leeway = lattice_intelligence.execute_live_ontogenesis(0.015f);
     std::vector<float> mock_inputs = {12.0f, 24.0f, 48.0f};
     float neural_inference = lattice_intelligence.forward_crystalline_inference(4, 4, 4, mock_inputs);
 
-    // bGRAPHICS & bFONT: Инжекция волнового фронта интерфейса и Huygens-синтез литер оболочки bSHELL
+    // bGRAPHICS & bFONT волновой синтез литер Гюйгенса
     wave_graphics.inject_graphics_pulse(64, 64, 100.0f);
     wave_graphics.synthesize_wave_glyph('B', 32, 32, 150.0f); 
     wave_graphics.synthesize_wave_glyph('S', 32, 40, 150.0f); 
     float pixel_excitation = wave_graphics.get_pixel_excitation(32, 32);
 
-    // bMUX_WAVE: Частотный композитинг и микширование гармоник окон
+    // bMUX_WAVE оконное микширование гармоник
     mux_wave.register_window_wave(1, 45, 45, 7.83f, 0.90f);  
     mux_wave.register_window_wave(2, 60, 70, 14.3f, 0.45f);  
     mux_wave.compose_framebuffer_frequencies(wave_graphics);
     float composited_excitation = wave_graphics.get_pixel_excitation(45, 45);
 
-    // Вывод телеметрии физических инвариантов новой математики в лог загрузки
+    // Вывод телеметрии физических инвариантов
     std::cout << "[BOOT] Оптический процессор bLENS (Отклонение луча X:Y:Z): " << theta.x << ":" << theta.y << " " << theta.z << std::endl;
     std::cout << "[BOOT] Локальный хронометр bCLOCK (Вековое смещение)  : " << precision_lag << " тиков" << std::endl;
     std::cout << "[BOOT] Анизотропный расщепитель bAUDIO (Частоты Fx:Fy:Fz): " << split_modes.fx << ":" << split_modes.fy << ":" << split_modes.fz << " Гц" << std::endl;
@@ -333,7 +331,7 @@ int main(int argc, char* argv[]) {
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
     // 8. Вывод итоговых инвариантов стабильности мета-платформы
-    std::cout << "[STAGE 3] Спектральная телеметрия стабильности Bare-Metal монолита:" << std::endl;
+    std::cout << "[STAGE 3] Сектральная телеметрия стабильности Bare-Metal монолита:" << std::endl;
     std::cout << "  -> Песочницы bCONTAINER (Индекс люфта): " << container_manager.get_average_isolation_leeway() << " / 0.024" << std::endl;
     std::cout << "  -> Модуль самоисцеления bHEALER (Статус): Целостность ядра = " << self_healer.get_integrity() << std::endl;
     std::cout << "  -> Драйвер экрана bGUI (Люфт упругости) : " << gui_driver.get_average_gui_leeway() << std::endl;
