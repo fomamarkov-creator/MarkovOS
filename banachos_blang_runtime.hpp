@@ -60,7 +60,10 @@ public:
                     vm.registers = static_cast<uint8_t>((vm.registers + arg) % 256);
                     break;
                 case 0x20: // WAVE_PROP: Моделирование волнового смещения решетки через ZETA
-                    vm.registers = static_cast<uint8_t>(std::floor(vm.registers * ZETA + arg) % 256);
+                    {
+                        int integrated_wave = static_cast<int>(std::floor(static_cast<float>(vm.registers) * ZETA + static_cast<float>(arg)));
+                        vm.registers = static_cast<uint8_t>(integrated_wave % 256);
+                    }
                     break;
                 case 0x30: // LIP_CHECK: Липшицев цензор градиента нагрузки
                     if (arg > 200) { // Если градиент пробит -> принудительное гашение в Покой
@@ -86,7 +89,12 @@ public:
                     vm.halted = true;
                     break;
             }
-            vm.pc += 2; // Шаг по байт-парам инструкция:аргумент
+            // Гашение предупреждения о разнице знаков при сравнении индексов
+            if (vm.pc + 2 > 65530) {
+                vm.halted = true;
+            } else {
+                vm.pc += 2; // Шаг по байт-парам инструкция:аргумент
+            }
         }
 
         std::stringstream ss;
