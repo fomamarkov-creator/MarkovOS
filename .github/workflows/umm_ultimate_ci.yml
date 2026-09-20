@@ -59,7 +59,53 @@ jobs:
           mkdir -p .pytest_cache
           cp -f banachos_core .pytest_cache/banachos_core
           
-          # 5. Запускаем чистую компиляцию APK-приложения
+          # 5. ГЕНЕРАЦИЯ СТЕРИЛЬНОГО МАНИФЕСТА БЕЗ СБОЕВ ЭКРАНИРОВАНИЯ
+          mkdir -p src/main
+          cat << 'EOF' > src/main/AndroidManifest.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://android.com">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application 
+                  android:allowBackup="false" 
+                  android:icon="@android:drawable/sym_def_app_icon" 
+                  android:label="BanachOS" 
+                  android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+                  <activity 
+                      android:name="com.banachos.app.MainActivity" 
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+          
+          # 6. АВТОМАТИЧЕСКАЯ ГЕНЕРАЦИЯ MAINACTIVITY ДЛЯ СВЯЗКИ ТЕРМИНАЛА В APK
+          mkdir -p src/main/java/com/banachos/app
+          cat << 'EOF' > src/main/java/com/banachos/app/MainActivity.java
+          package com.banachos.app;
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.webkit.WebSettings;
+          import android.webkit.WebView;
+          public class MainActivity extends Activity {
+              private WebView coreWebView;
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  coreWebView = new WebView(this);
+                  WebSettings settings = coreWebView.getSettings();
+                  settings.setJavaScriptEnabled(true);
+                  settings.setDomStorageEnabled(true);
+                  setContentView(coreWebView);
+                  coreWebView.loadUrl("file:///android_asset/index.html");
+              }
+          }
+          EOF
+          
+          # 7. Запускаем чистую компиляцию APK-приложения V256
           ./gradlew assembleDebug
 
       - name: Verify Core Telemetry via Pytest
