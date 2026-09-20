@@ -3,12 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
-        android:allowBackup="false"
-        android:icon="@android:drawable/sym_def_app_icon"
-        android:label="BanachOS v8.3"
-        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
-        
+    <application android:allowBackup="false" android:icon="@android:drawable/sym_def_app_icon" android:label="BanachOS" android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
         <activity android:name="com.banachos.app.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
