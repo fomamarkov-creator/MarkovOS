@@ -1,8 +1,9 @@
 # BanachOS / UMM v8.3 — Production Math Engine
 
-#Proprietary Code License — All Rights Reserved
+Proprietary Code License — All Rights Reserved
 
-#Copyright (c) 2026 Efim S. Markov. All Rights Reserved.
+Copyright (c) 2026 Efim S. Markov. All Rights Reserved.
+
 Репозиторий содержит низкоуровневое вычислительное ядро **Universal Metric Mismatch (UMM) v8.3**, реализующее принципы Новой Физической Математики Е. С. Маркова над 12-координатной гексагональной $3\text{HCP}$-решеткой. 
 
 Система полностью очищена от непрерывного исчисления Ньютона-Лейбница и работает на дискретных целочисленных регистрах с честной обработкой сингулярностей и деления на ноль ($256 \equiv 0$).
