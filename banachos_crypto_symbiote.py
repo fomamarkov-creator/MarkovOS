@@ -24,7 +24,7 @@ class BanachOSCryptoSymbiote:
     def get_crypto_shifts(self, k):
         plane_shifts = [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [1,-1,0], [-1,1,0]]
         if k % 2 == 0:
-            inter_shifts = [[0,0,1], {1,0,1}, [0,1,1], [0,0,-1], [1,0,-1], [0,1,-1]]
+            inter_shifts = [[0,0,1], [1,0,1], [0,1,1], [0,0,-1], [1,0,-1], [0,1,-1]]
         else:
             inter_shifts = [[0,0,1], [-1,0,1], [0,-1,1], [0,0,-1], [-1,0,-1], [0,-1,-1]]
         return plane_shifts + inter_shifts
